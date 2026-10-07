@@ -1,0 +1,319 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>WORKPULSE — Delete Performance</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+
+        .page-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .page-nav a {
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 10px;
+            background: #f3f4ff;
+            color: #25283a;
+            border: 1px solid #e4e5f1;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .page-nav a:hover {
+            background: #6848f5;
+            color: white;
+        }
+
+        .delete-warning {
+            padding: 22px;
+            border-radius: 15px;
+            background: #fff5f5;
+            border: 1px solid #ffd8d8;
+            margin: 25px 0;
+        }
+
+        .delete-warning h3 {
+            margin: 0 0 8px;
+            color: #c53030;
+            font-size: 18px;
+        }
+
+        .delete-warning p {
+            margin: 5px 0;
+            color: #666b7d;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .performance-info {
+            padding: 18px;
+            border-radius: 14px;
+            background: #fafaff;
+            border: 1px solid #e5e6ef;
+            margin-bottom: 20px;
+        }
+
+        .performance-info strong {
+            display: block;
+            color: #25283a;
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .performance-info span {
+            color: #85899b;
+            font-size: 12px;
+        }
+
+    </style>
+
+</head>
+
+
+<body class="form-page">
+
+
+<div class="form-background"></div>
+
+
+<main class="form-wrapper">
+
+
+    <!-- TOP BAR -->
+
+    <div class="form-top">
+
+        <a
+            href="{% url 'performance_list' %}"
+            class="back-link"
+        >
+            ← Back to Performance
+        </a>
+
+
+        <div class="form-brand">
+
+            <div class="brand-icon">
+                W
+            </div>
+
+            <div>
+
+                <strong>
+                    WORKPULSE
+                </strong>
+
+                <span>
+                    Employee Management
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="page-nav">
+
+        <a href="{% url 'dashboard_page' %}">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'employee_list' %}">
+            👥 Employees
+        </a>
+
+        <a href="{% url 'attendance_list' %}">
+            🕘 Attendance
+        </a>
+
+        <a href="{% url 'leave_list' %}">
+            📅 Leave
+        </a>
+
+        <a href="{% url 'task_list' %}">
+            📋 Tasks
+        </a>
+
+        <a href="{% url 'performance_list' %}">
+            ⭐ Performance
+        </a>
+
+        <a href="{% url 'payroll_list' %}">
+            💰 Payroll
+        </a>
+
+    </nav>
+
+
+
+    <!-- DELETE CARD -->
+
+    <section class="form-card">
+
+
+        <div class="form-heading">
+
+            <div class="form-icon">
+                🗑️
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    PERFORMANCE MANAGEMENT
+                </span>
+
+                <h1>
+                    Delete Performance
+                </h1>
+
+                <p>
+                    Confirm that you want to remove this performance record.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PERFORMANCE INFORMATION -->
+
+        <div class="performance-info">
+
+            <strong>
+
+                {{ performance.employee.employee_id }}
+
+                —
+
+                {{ performance.employee.full_name }}
+
+            </strong>
+
+            <span>
+
+                Review Period:
+                {{ performance.period }}
+
+                &nbsp; • &nbsp;
+
+                Overall Score:
+                {{ performance.overall_score }}
+
+                &nbsp; • &nbsp;
+
+
+            </span>
+
+        </div>
+
+
+
+        <!-- WARNING -->
+
+        <div class="delete-warning">
+
+            <h3>
+                ⚠ Delete this performance record?
+            </h3>
+
+            <p>
+                This will permanently remove this performance
+                review from the system.
+            </p>
+
+            <p>
+                This action cannot be undone.
+            </p>
+
+        </div>
+
+
+
+        <!-- DELETE FORM -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                    style="background:#dc3d3d;"
+                >
+                    🗑 Yes, Delete
+                </button>
+
+
+                <a
+                    href="{% url 'performance_detail' performance.id %}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+
+                <a
+                    href="{% url 'performance_list' %}"
+                    class="cancel-btn"
+                >
+                    ← Back to Performance
+                </a>
+
+            </div>
+
+        </form>
+
+
+    </section>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="form-footer">
+
+        WORKPULSE • Employee Management System
+
+    </footer>
+
+
+</main>
+
+
+<script
+    src="{% static 'core/js/app.js' %}"
+></script>
+
+
+</body>
+
+</html>

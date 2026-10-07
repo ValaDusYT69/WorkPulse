@@ -1,0 +1,864 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WORKPULSE — Add Employee</title>
+
+    <link rel="stylesheet"
+          href="{% static 'core/css/style.css' %}">
+
+    <style>
+        /* =========================================================
+           ADMIN RED THEME
+        ========================================================= */
+
+        body.admin-red-theme {
+            background:
+                radial-gradient(circle at 8% 8%,
+                    rgba(239, 68, 68, 0.16),
+                    transparent 28%),
+                radial-gradient(circle at 92% 18%,
+                    rgba(248, 113, 113, 0.10),
+                    transparent 25%),
+                linear-gradient(135deg,
+                    #fff5f5 0%,
+                    #fffafa 45%,
+                    #fff1f2 100%);
+            min-height: 100vh;
+        }
+
+        .admin-red-theme .form-background {
+            background:
+                radial-gradient(circle at 12% 12%,
+                    rgba(239, 68, 68, 0.12),
+                    transparent 24%),
+                radial-gradient(circle at 88% 75%,
+                    rgba(248, 113, 113, 0.08),
+                    transparent 25%);
+        }
+
+        .admin-red-theme .form-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ---------- TOP BAR ---------- */
+
+        .admin-red-theme .form-top {
+            margin-bottom: 18px;
+        }
+
+        .admin-red-theme .back-link {
+            color: #991b1b;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .admin-red-theme .back-link:hover {
+            color: #dc2626;
+        }
+
+        .admin-red-theme .form-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-red-theme .brand-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                #ef4444,
+                #b91c1c
+            );
+
+            color: #fff;
+            font-size: 22px;
+            font-weight: 800;
+
+            box-shadow:
+                0 10px 24px rgba(220, 38, 38, 0.25);
+        }
+
+        .admin-red-theme .form-brand strong {
+            color: #1f2937;
+        }
+
+        .admin-red-theme .form-brand span {
+            color: #9ca3af;
+        }
+
+        /* ---------- NAVIGATION ---------- */
+
+        .admin-red-theme .main-navigation {
+            margin: 14px 0 22px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .admin-red-theme .main-navigation a {
+            color: #374151;
+            background: rgba(255, 255, 255, 0.86);
+
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+
+            padding: 10px 16px;
+
+            text-decoration: none;
+            font-weight: 600;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .admin-red-theme .main-navigation a:hover {
+            color: #b91c1c;
+            background: #fff1f2;
+            transform: translateY(-1px);
+        }
+
+        .admin-red-theme .main-navigation a.active {
+            color: #fff;
+
+            background: linear-gradient(
+                135deg,
+                #ef4444,
+                #dc2626
+            );
+
+            border-color: #dc2626;
+
+            box-shadow:
+                0 8px 18px rgba(220, 38, 38, 0.22);
+        }
+
+        /* ---------- MAIN CARD ---------- */
+
+        .admin-red-theme .form-card {
+            background: rgba(255, 255, 255, 0.94);
+
+            border: 1px solid #fecaca;
+            border-radius: 26px;
+
+            box-shadow:
+                0 20px 55px rgba(127, 29, 29, 0.08);
+
+            backdrop-filter: blur(12px);
+
+            padding: 36px;
+        }
+
+        /* ---------- HEADING ---------- */
+
+        .admin-red-theme .form-heading {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+
+            padding-bottom: 26px;
+            margin-bottom: 28px;
+
+            border-bottom: 1px solid #fee2e2;
+        }
+
+        .admin-red-theme .form-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background: #fff1f2;
+
+            box-shadow:
+                inset 0 0 0 1px #fecaca;
+
+            font-size: 27px;
+        }
+
+        .admin-red-theme .section-label {
+            color: #dc2626;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .admin-red-theme h1 {
+            color: #1f2937;
+            margin: 4px 0 5px;
+        }
+
+        .admin-red-theme .form-heading p {
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        /* ---------- INPUTS ---------- */
+
+        .admin-red-theme .input-group {
+            margin-bottom: 20px;
+        }
+
+        .admin-red-theme .input-group label {
+            color: #374151;
+            font-weight: 700;
+        }
+
+        .admin-red-theme .input-group input,
+        .admin-red-theme .input-group select,
+        .admin-red-theme .input-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+
+            background: #fff;
+
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+
+            color: #1f2937;
+
+            padding: 13px 14px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .admin-red-theme .input-group input:focus,
+        .admin-red-theme .input-group select:focus,
+        .admin-red-theme .input-group textarea:focus {
+            border-color: #ef4444;
+
+            box-shadow:
+                0 0 0 4px rgba(239, 68, 68, 0.10);
+
+            background: #fffafa;
+        }
+
+        .admin-red-theme .input-group input::placeholder,
+        .admin-red-theme .input-group textarea::placeholder {
+            color: #c4a1a1;
+        }
+
+        .admin-red-theme .input-group small {
+            color: #9ca3af;
+        }
+
+        /* ---------- TWO COLUMN ---------- */
+
+        .admin-red-theme .form-row {
+            gap: 20px;
+        }
+
+        /* ---------- ERROR ---------- */
+
+        .admin-red-theme .form-error {
+            background: #fff1f2;
+            border: 1px solid #fecaca;
+
+            color: #991b1b;
+
+            border-radius: 14px;
+            padding: 15px 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .admin-red-theme .form-error strong {
+            color: #b91c1c;
+        }
+
+        /* ---------- ACTIVE BOX ---------- */
+
+        .admin-red-theme .active-box {
+            background: #fff7f7;
+
+            border: 1px solid #fecaca;
+            border-radius: 16px;
+
+            padding: 17px 18px;
+
+            margin-top: 8px;
+            margin-bottom: 26px;
+        }
+
+        .admin-red-theme .active-toggle strong {
+            color: #374151;
+        }
+
+        .admin-red-theme .active-toggle small {
+            color: #9ca3af;
+        }
+
+        /* ---------- BUTTONS ---------- */
+
+        .admin-red-theme .save-btn {
+            border: none;
+
+            background: linear-gradient(
+                135deg,
+                #ef4444,
+                #dc2626
+            );
+
+            color: #fff;
+
+            border-radius: 12px;
+
+            padding: 13px 22px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 22px rgba(220, 38, 38, 0.22);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .admin-red-theme .save-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 14px 28px rgba(220, 38, 38, 0.28);
+        }
+
+        .admin-red-theme .cancel-btn {
+            background: #fff;
+
+            border: 1px solid #fecaca;
+
+            color: #991b1b;
+
+            border-radius: 12px;
+
+            padding: 13px 22px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+        .admin-red-theme .cancel-btn:hover {
+            background: #fff1f2;
+            border-color: #fca5a5;
+        }
+
+        /* ---------- FOOTER ---------- */
+
+        .admin-red-theme .form-footer {
+            color: #9ca3af;
+
+            border-top: 1px solid #fecaca;
+
+            margin-top: 28px;
+            padding-top: 20px;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+
+        @media (max-width: 700px) {
+
+            .admin-red-theme .form-card {
+                padding: 22px;
+                border-radius: 20px;
+            }
+
+            .admin-red-theme .form-heading {
+                align-items: flex-start;
+            }
+
+            .admin-red-theme .form-row {
+                display: block;
+            }
+
+            .admin-red-theme .main-navigation {
+                gap: 7px;
+            }
+
+            .admin-red-theme .main-navigation a {
+                padding: 9px 12px;
+                font-size: 13px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body class="form-page admin-red-theme">
+
+<div class="form-background"></div>
+
+<main class="form-wrapper">
+
+    <!-- =====================================================
+         TOP
+    ====================================================== -->
+
+    <div class="form-top">
+
+        <a
+            href="{% url 'employee_list' %}"
+            class="back-link"
+        >
+            ← Back to Employees
+        </a>
+
+
+        <div class="form-brand">
+
+            <div class="brand-icon">
+                W
+            </div>
+
+            <div>
+                <strong>
+                    WORKPULSE
+                </strong>
+
+                <span>
+                    Employee Management
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- ADMIN LOGOUT -->
+
+        <a
+            href="{% url 'logout' %}"
+            class="back-link"
+        >
+            ↪ Log out
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    {% include 'core/navigation.html' %}
+
+
+    <!-- =====================================================
+         FORM CARD
+    ====================================================== -->
+
+    <section class="form-card">
+
+
+        <!-- =================================================
+             HEADING
+        ================================================== -->
+
+        <div class="form-heading">
+
+            <div class="form-icon">
+                👨‍💼
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    NEW TEAM MEMBER
+                </span>
+
+                <h1>
+                    Add Employee
+                </h1>
+
+                <p>
+                    Add a new member to your workforce.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR FROM VIEW
+        ================================================== -->
+
+        {% if error %}
+
+        <div class="form-error">
+
+            <span>⚠</span>
+
+            <div>
+
+                <strong>
+                    Unable to add employee
+                </strong>
+
+                <p>
+                    {{ error }}
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             DJANGO FORM ERRORS
+        ================================================== -->
+
+        {% if form.errors %}
+
+        <div class="form-error">
+
+            <span>⚠</span>
+
+            <div>
+
+                <strong>
+                    Please fix the following errors
+                </strong>
+
+                {% for field in form %}
+
+                    {% for error in field.errors %}
+
+                    <p>
+                        <strong>
+                            {{ field.label }}:
+                        </strong>
+
+                        {{ error }}
+                    </p>
+
+                    {% endfor %}
+
+                {% endfor %}
+
+
+                {% for error in form.non_field_errors %}
+
+                <p>
+                    {{ error }}
+                </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             FORM
+        ================================================== -->
+
+        <form
+            method="POST"
+            novalidate
+        >
+
+            {% csrf_token %}
+
+
+            <!-- EMPLOYEE ID -->
+
+            <div class="input-group">
+
+                <label for="employee_id">
+                    Employee ID
+                </label>
+
+                <input
+                    type="text"
+                    id="employee_id"
+                    name="employee_id"
+                    placeholder="e.g. EMP005"
+                    value="{{ form.employee_id.value|default:'' }}"
+                    required
+                >
+
+                <small>
+                    Employee ID must be unique.
+                    This will also be used as the employee login username.
+                </small>
+
+            </div>
+
+
+            <!-- FULL NAME -->
+
+            <div class="input-group">
+
+                <label for="full_name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="full_name"
+                    name="full_name"
+                    placeholder="Enter employee name"
+                    value="{{ form.full_name.value|default:'' }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- LOGIN PASSWORD -->
+
+            <div class="input-group">
+
+                <label for="account_password">
+                    Employee Login Password
+                </label>
+
+                <input
+                    type="password"
+                    id="account_password"
+                    name="account_password"
+                    placeholder="Set employee login password"
+                    required
+                >
+
+                <small>
+                    Employee can log in using Employee ID or Email
+                    with this password.
+                </small>
+
+            </div>
+
+
+            <!-- EMAIL + PHONE -->
+
+            <div class="form-row">
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="employee@example.com"
+                        value="{{ form.email.value|default:'' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        placeholder="017XXXXXXXX"
+                        value="{{ form.phone.value|default:'' }}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- DEPARTMENT + DESIGNATION -->
+
+            <div class="form-row">
+
+                <div class="input-group">
+
+                    <label for="department">
+                        Department
+                    </label>
+
+                    <input
+                        type="text"
+                        id="department"
+                        name="department"
+                        placeholder="e.g. Software Development"
+                        value="{{ form.department.value|default:'' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="designation">
+                        Designation
+                    </label>
+
+                    <input
+                        type="text"
+                        id="designation"
+                        name="designation"
+                        placeholder="e.g. Software Engineer"
+                        value="{{ form.designation.value|default:'' }}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- JOINING DATE -->
+
+            <div class="input-group">
+
+                <label for="joining_date">
+                    Joining Date
+                </label>
+
+                <input
+                    type="date"
+                    id="joining_date"
+                    name="joining_date"
+                    value="{{ form.joining_date.value|default:'' }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- MONTHLY SALARY -->
+
+            <div class="input-group">
+
+                <label for="monthly_salary">
+                    Monthly Salary
+                </label>
+
+                <input
+                    type="number"
+                    id="monthly_salary"
+                    name="monthly_salary"
+                    placeholder="Enter monthly salary"
+                    value="{{ form.monthly_salary.value|default:'' }}"
+                    min="0"
+                    step="0.01"
+                >
+
+            </div>
+
+
+            <!-- ACTIVE EMPLOYEE -->
+
+            <div class="active-box">
+
+                <label class="active-toggle">
+
+                    <input
+                        type="checkbox"
+                        name="is_active"
+                        checked
+                    >
+
+                    <span class="toggle"></span>
+
+                    <span>
+
+                        <strong>
+                            Active Employee
+                        </strong>
+
+                        <small>
+                            Employee is currently working
+                        </small>
+
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'employee_list' %}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    <span>＋</span>
+                    Add Employee
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="form-footer">
+        WORKPULSE • Employee Management System
+    </footer>
+
+</main>
+
+
+<script src="{% static 'core/js/app.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,2482 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WORKPULSE — Employees</title>
+
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+
+    <style>
+        /* =========================================================
+           ADMIN EMPLOYEES — RED THEME
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: #202538;
+
+            background:
+                radial-gradient(
+                    circle at 8% 8%,
+                    rgba(239, 68, 68, .18),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 92% 85%,
+                    rgba(248, 113, 113, .13),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #fff1f2 0%,
+                    #fff7f7 48%,
+                    #fffafa 100%
+                );
+
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           BACKGROUND ORBS
+        ========================================================= */
+
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-one {
+            width: 300px;
+            height: 300px;
+            top: -110px;
+            left: -80px;
+            background: rgba(239, 68, 68, .15);
+        }
+
+        .orb-two {
+            width: 340px;
+            height: 340px;
+            right: -130px;
+            bottom: -120px;
+            background: rgba(248, 113, 113, .12);
+        }
+
+        .orb-three {
+            width: 220px;
+            height: 220px;
+            top: 38%;
+            left: 46%;
+            background: rgba(254, 202, 202, .08);
+        }
+
+
+        /* =========================================================
+           MAIN CONTAINER
+        ========================================================= */
+
+        .dashboard {
+            position: relative;
+            z-index: 1;
+
+            width: min(1180px, calc(100% - 48px));
+
+            margin: 0 auto;
+
+            padding: 32px 0 50px;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 18px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            color: white;
+
+            font-size: 25px;
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 30px
+                rgba(220, 38, 38, .28);
+        }
+
+        .brand h2 {
+            margin: 0;
+
+            font-size: 18px;
+
+            letter-spacing: .02em;
+        }
+
+        .brand span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #9a7d83;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           TOP ACTIONS
+        ========================================================= */
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 40px;
+
+            padding: 0 16px;
+
+            border-radius: 11px;
+
+            background: rgba(255,255,255,.82);
+
+            border: 1px solid #fecaca;
+
+            color: #b4232b;
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 750;
+
+            transition: .22s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+
+            color: #991b1b;
+
+            border-color: #fca5a5;
+
+            background: #fff;
+
+            box-shadow:
+                0 9px 22px
+                rgba(185, 28, 28, .10);
+        }
+
+        .live-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #9a6870;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .live-status span {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow:
+                0 0 0 4px rgba(34,197,94,.10);
+        }
+
+
+        /* =========================================================
+           BACK TO DASHBOARD
+        ========================================================= */
+
+        .back-dashboard {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 14px;
+
+            color: #8b6970;
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 650;
+
+            transition: .22s ease;
+        }
+
+        .back-dashboard:hover {
+            color: #dc2626;
+            transform: translateX(-3px);
+        }
+
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        .main-navigation {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin: 18px 0 28px;
+
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            min-height: 42px;
+
+            padding: 0 15px;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            color: #5f5962;
+
+            background:
+                rgba(255,255,255,.76);
+
+            border:
+                1px solid #f4d9dc;
+
+            font-size: 13px;
+            font-weight: 650;
+
+            box-shadow:
+                0 4px 14px
+                rgba(120,50,60,.035);
+
+            transition: .22s ease;
+
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
+
+            color: #dc2626;
+
+            background: #fff;
+
+            border-color: #fecaca;
+
+            box-shadow:
+                0 9px 22px
+                rgba(185,28,28,.09);
+        }
+
+        .nav-link.active {
+            color: #fff;
+
+            border-color: transparent;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            box-shadow:
+                0 9px 24px
+                rgba(220,38,38,.25);
+        }
+
+        .nav-icon {
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           NAV ACTIONS
+        ========================================================= */
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .nav-icon-button {
+            width: 42px;
+            height: 42px;
+
+            border: 1px solid #f4d9dc;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.78);
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+
+            position: relative;
+
+            transition: .22s ease;
+
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-icon-button:hover {
+            transform: translateY(-2px) scale(1.03);
+
+            background: #fff;
+
+            border-color: #fecaca;
+
+            box-shadow:
+                0 8px 20px
+                rgba(185,28,28,.12);
+        }
+
+        .notification-dot {
+            position: absolute;
+
+            top: 8px;
+            right: 8px;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #ef4444;
+
+            border: 2px solid white;
+        }
+
+
+        /* =========================================================
+           DROPDOWN WRAPPERS
+        ========================================================= */
+
+        .notification-wrapper,
+        .admin-wrapper {
+            position: relative;
+        }
+
+
+        /* =========================================================
+           NOTIFICATION PANEL
+        ========================================================= */
+
+        .notification-panel {
+            position: absolute;
+
+            top: 52px;
+            right: 0;
+
+            width: 310px;
+
+            background:
+                rgba(255,255,255,.98);
+
+            border:
+                1px solid #fee2e2;
+
+            border-radius: 18px;
+
+            padding: 16px;
+
+            box-shadow:
+                0 18px 45px
+                rgba(120,35,45,.18);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transform:
+                translateY(-8px)
+                scale(.98);
+
+            transition: .25s ease;
+
+            z-index: 999;
+        }
+
+        .notification-panel.show {
+            opacity: 1;
+            visibility: visible;
+
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding-bottom: 12px;
+
+            border-bottom:
+                1px solid #f9e5e7;
+        }
+
+        .notification-header strong {
+            color: #252333;
+            font-size: 14px;
+        }
+
+        .notification-header span {
+            color: #a1848a;
+            font-size: 11px;
+        }
+
+        .notification-item {
+            display: flex;
+
+            gap: 11px;
+
+            padding: 13px 0;
+
+            border-bottom:
+                1px solid #f7eaeb;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item-icon {
+            width: 34px;
+            height: 34px;
+
+            min-width: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #fff0f1;
+        }
+
+        .notification-item strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #30303d;
+
+            font-size: 12px;
+        }
+
+        .notification-item p {
+            margin: 0;
+
+            color: #9a858a;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           ADMIN MENU
+        ========================================================= */
+
+        .admin-menu {
+            position: absolute;
+
+            top: 55px;
+            right: 0;
+
+            width: 220px;
+
+            background:
+                rgba(255,255,255,.98);
+
+            border:
+                1px solid #fee2e2;
+
+            border-radius: 16px;
+
+            padding: 8px;
+
+            box-shadow:
+                0 18px 45px
+                rgba(120,35,45,.18);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transform: translateY(-8px);
+
+            transition: .25s ease;
+
+            z-index: 999;
+        }
+
+        .admin-menu.show {
+            opacity: 1;
+            visibility: visible;
+
+            transform: translateY(0);
+        }
+
+        .admin-menu a {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 11px 12px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: #5c5055;
+
+            font-size: 13px;
+            font-weight: 650;
+
+            transition: .2s ease;
+        }
+
+        .admin-menu a:hover {
+            background: #fff1f2;
+
+            color: #dc2626;
+
+            transform: translateX(3px);
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            overflow: hidden;
+
+            padding: 38px;
+
+            margin-bottom: 22px;
+
+            border-radius: 25px;
+
+            background:
+                rgba(255,255,255,.88);
+
+            border:
+                1px solid #fee2e2;
+
+            box-shadow:
+                0 20px 55px
+                rgba(110,45,55,.10);
+
+            backdrop-filter: blur(14px);
+
+            animation:
+                pageFadeIn .65s ease both;
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 240px;
+            height: 240px;
+
+            right: -75px;
+            top: -85px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(239,68,68,.14),
+                    rgba(248,113,113,.07)
+                );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .eyebrow,
+        .section-label {
+            display: inline-block;
+
+            color: #dc2626;
+
+            font-size: 10px;
+            font-weight: 850;
+
+            letter-spacing: .16em;
+        }
+
+        .hero h1 {
+            margin: 8px 0 0;
+
+            font-size:
+                clamp(28px, 4vw, 42px);
+
+            line-height: 1.1;
+
+            letter-spacing: -.04em;
+        }
+
+        .hero h1 span {
+            color: #dc2626;
+        }
+
+        .hero p {
+            margin: 10px 0 0;
+
+            max-width: 580px;
+
+            color: #927e84;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        .primary-btn,
+        .secondary-btn,
+        .small-add-btn,
+        .view-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-family: inherit;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            transition: .22s ease;
+        }
+
+        .primary-btn {
+            min-height: 43px;
+
+            padding: 0 18px;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            border: 0;
+
+            box-shadow:
+                0 9px 22px
+                rgba(220,38,38,.22);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 13px 27px
+                rgba(220,38,38,.28);
+        }
+
+        .secondary-btn {
+            min-height: 43px;
+
+            padding: 0 18px;
+
+            color: #6f6267;
+
+            background: rgba(255,255,255,.8);
+
+            border: 1px solid #f3d7da;
+        }
+
+        .secondary-btn:hover {
+            transform: translateY(-2px);
+
+            color: #dc2626;
+
+            border-color: #fecaca;
+        }
+
+
+        /* =========================================================
+           ANIMATED EMPLOYEE
+        ========================================================= */
+
+        .hero-character {
+            position: relative;
+
+            width: 190px;
+            height: 160px;
+
+            flex: 0 0 190px;
+
+            display: grid;
+
+            place-items: center;
+        }
+
+        .character-glow {
+            position: absolute;
+
+            width: 145px;
+            height: 145px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(239,68,68,.18),
+                    transparent 68%
+                );
+        }
+
+        .employee-animation {
+            position: relative;
+
+            width: 100px;
+            height: 130px;
+
+            animation:
+                employeeFloat 3s ease-in-out infinite;
+        }
+
+        .employee-head {
+            position: absolute;
+
+            width: 43px;
+            height: 43px;
+
+            top: 5px;
+            left: 28px;
+
+            border-radius: 50%;
+
+            background: #ffd2c1;
+
+            box-shadow:
+                inset -6px -4px 0 rgba(210,80,60,.08);
+        }
+
+        .employee-head::before {
+            content: "";
+
+            position: absolute;
+
+            width: 48px;
+            height: 22px;
+
+            top: -5px;
+            left: -2px;
+
+            border-radius: 50% 50% 35% 35%;
+
+            background: #4b2930;
+        }
+
+        .employee-body {
+            position: absolute;
+
+            width: 62px;
+            height: 62px;
+
+            top: 45px;
+            left: 18px;
+
+            border-radius: 18px 18px 12px 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #b91c1c
+                );
+        }
+
+        .employee-arm {
+            position: absolute;
+
+            width: 45px;
+            height: 13px;
+
+            right: -28px;
+            top: 15px;
+
+            border-radius: 20px;
+
+            background: #ffd2c1;
+
+            transform:
+                rotate(-25deg);
+        }
+
+        .briefcase {
+            position: absolute;
+
+            right: -8px;
+            top: 73px;
+
+            font-size: 25px;
+
+            transform:
+                rotate(4deg);
+        }
+
+        .employee-leg {
+            position: absolute;
+
+            width: 16px;
+            height: 45px;
+
+            top: 103px;
+
+            border-radius: 12px;
+
+            background: #34313b;
+        }
+
+        .leg-one {
+            left: 29px;
+
+            transform:
+                rotate(6deg);
+        }
+
+        .leg-two {
+            left: 53px;
+
+            transform:
+                rotate(-6deg);
+        }
+
+        .character-shadow {
+            position: absolute;
+
+            width: 110px;
+            height: 18px;
+
+            bottom: 3px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(130,40,50,.10);
+
+            filter: blur(4px);
+        }
+
+        @keyframes employeeFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+
+
+        /* =========================================================
+           STATS
+        ========================================================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+
+            margin-bottom: 24px;
+
+            animation:
+                pageFadeIn .8s ease both;
+        }
+
+        .stat-card {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            min-height: 105px;
+
+            padding: 20px;
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,.86);
+
+            border:
+                1px solid #fee2e2;
+
+            box-shadow:
+                0 10px 30px
+                rgba(110,45,55,.055);
+
+            transition: .25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(110,45,55,.12);
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+
+            display: grid;
+            place-items: center;
+
+            flex: 0 0 44px;
+
+            border-radius: 13px;
+
+            font-size: 20px;
+        }
+
+        .stat-icon.purple {
+            background: #fff0f1;
+        }
+
+        .stat-icon.green {
+            background: #ecfdf3;
+        }
+
+        .stat-icon.orange {
+            background: #fff7ed;
+        }
+
+        .stat-card span {
+            display: block;
+
+            color: #97858a;
+
+            font-size: 11px;
+        }
+
+        .stat-card strong {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #252938;
+
+            font-size: 26px;
+
+            line-height: 1;
+        }
+
+        .stat-arrow {
+            margin-left: auto;
+
+            color: #dc2626;
+
+            font-size: 18px;
+        }
+
+
+        /* =========================================================
+           EMPLOYEE SECTION
+        ========================================================= */
+
+        .employees-section {
+            padding: 28px;
+
+            border-radius: 23px;
+
+            background:
+                rgba(255,255,255,.88);
+
+            border:
+                1px solid #fee2e2;
+
+            box-shadow:
+                0 14px 40px
+                rgba(110,45,55,.075);
+
+            animation:
+                pageFadeIn .95s ease both;
+        }
+
+        .section-heading {
+            display: flex;
+
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            margin: 7px 0 0;
+
+            font-size: 23px;
+
+            letter-spacing: -.025em;
+        }
+
+        .section-heading p {
+            margin: 5px 0 0;
+
+            color: #98868b;
+
+            font-size: 12px;
+        }
+
+        .employee-tools {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+
+            min-height: 42px;
+
+            padding-left: 12px;
+
+            border-radius: 11px;
+
+            background: #fff;
+
+            border: 1px solid #f1dadd;
+        }
+
+        .search-box > span {
+            color: #a28c91;
+
+            font-size: 18px;
+        }
+
+        .search-box input {
+            width: 180px;
+
+            border: 0;
+            outline: 0;
+
+            padding: 0 9px;
+
+            background: transparent;
+
+            color: #3c3740;
+
+            font-family: inherit;
+
+            font-size: 12px;
+        }
+
+        .small-add-btn {
+            min-height: 42px;
+
+            padding: 0 15px;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            border: 0;
+
+            font-size: 12px;
+
+            box-shadow:
+                0 7px 18px
+                rgba(220,38,38,.18);
+        }
+
+        .small-add-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 11px 24px
+                rgba(220,38,38,.25);
+        }
+
+
+        /* =========================================================
+           EMPLOYEE GRID
+        ========================================================= */
+
+        .employee-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 17px;
+        }
+
+        .employee-card {
+            padding: 21px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,.92);
+
+            border:
+                1px solid #f4d9dc;
+
+            box-shadow:
+                0 8px 25px
+                rgba(110,45,55,.045);
+
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease,
+                border-color .3s ease;
+        }
+
+        .employee-card:hover {
+            transform: translateY(-7px);
+
+            border-color: #fecaca;
+
+            box-shadow:
+                0 20px 45px
+                rgba(110,45,55,.13);
+        }
+
+        .card-top {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 17px;
+        }
+
+        .employee-avatar {
+            width: 52px;
+            height: 52px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fee2e2,
+                    #fecaca
+                );
+
+            color: #b91c1c;
+
+            font-size: 20px;
+            font-weight: 850;
+        }
+
+        .status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            min-height: 27px;
+
+            padding: 0 9px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .status i {
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+        }
+
+        .status.active {
+            color: #16845a;
+            background: #eafaf2;
+        }
+
+        .status.active i {
+            background: #22c55e;
+        }
+
+        .status.inactive {
+            color: #b85c62;
+            background: #fff0f1;
+        }
+
+        .status.inactive i {
+            background: #ef4444;
+        }
+
+        .employee-id {
+            display: inline-block;
+
+            margin-bottom: 6px;
+
+            color: #dc2626;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: .05em;
+        }
+
+        .employee-info h3 {
+            margin: 0;
+
+            color: #292d3c;
+
+            font-size: 17px;
+        }
+
+        .employee-info p {
+            margin: 5px 0;
+
+            color: #88777c;
+
+            font-size: 12px;
+        }
+
+        .department {
+            display: inline-block;
+
+            margin-top: 5px;
+
+            padding: 5px 8px;
+
+            border-radius: 7px;
+
+            color: #9a6870;
+
+            background: #fff4f4;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .card-footer {
+            margin-top: 18px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid #f6e5e7;
+        }
+
+        .view-btn {
+            color: #dc2626;
+
+            font-size: 11px;
+        }
+
+        .view-btn:hover {
+            transform: translateX(3px);
+
+            color: #b91c1c;
+        }
+
+
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
+        .empty-state {
+            grid-column: 1 / -1;
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: #9b8b90;
+        }
+
+        .empty-icon {
+            width: 62px;
+            height: 62px;
+
+            display: grid;
+            place-items: center;
+
+            margin: 0 auto 15px;
+
+            border-radius: 18px;
+
+            background: #fff0f1;
+
+            font-size: 25px;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 6px;
+
+            color: #45404a;
+
+            font-size: 15px;
+        }
+
+        .empty-state p {
+            margin: 0 0 18px;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            padding: 28px 0 0;
+
+            text-align: center;
+
+            color: #a18e93;
+
+            font-size: 11px;
+        }
+
+        footer span {
+            color: #dc2626;
+        }
+
+
+        /* =========================================================
+           ANIMATION
+        ========================================================= */
+
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .employee-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .hero-character {
+                display: none;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .dashboard {
+                width: min(
+                    100% - 28px,
+                    1180px
+                );
+
+                padding-top: 20px;
+            }
+
+            .main-navigation {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .nav-actions {
+                justify-content: flex-end;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .employee-tools {
+                width: 100%;
+            }
+
+            .search-box {
+                flex: 1;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 620px) {
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .top-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .employee-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .employees-section {
+                padding: 20px;
+                border-radius: 19px;
+            }
+
+            .hero {
+                padding: 28px 22px;
+                border-radius: 20px;
+            }
+
+            .employee-tools {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .small-add-btn {
+                width: 100%;
+            }
+
+            .nav-links {
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                width: 100%;
+            }
+
+            .nav-link {
+                justify-content: center;
+
+                padding: 9px 7px;
+
+                font-size: 11px;
+            }
+
+            .notification-panel,
+            .admin-menu {
+                right: -5px;
+            }
+
+            .notification-panel {
+                width:
+                    min(
+                        310px,
+                        calc(100vw - 35px)
+                    );
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================================================
+         BACKGROUND
+    ========================================================== -->
+
+    <div class="bg-orb orb-one"></div>
+    <div class="bg-orb orb-two"></div>
+    <div class="bg-orb orb-three"></div>
+
+
+    <main class="dashboard">
+
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    W
+                </div>
+
+                <div>
+                    <h2>WORKPULSE</h2>
+                    <span>Employee Management System</span>
+                </div>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <div class="live-status">
+                    <span></span>
+                    System Online
+                </div>
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="logout-btn"
+                >
+                    ↪ Log out
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             BACK TO DASHBOARD
+        ====================================================== -->
+
+        <a
+            href="{% url 'dashboard_page' %}"
+            class="back-dashboard"
+        >
+            ← Back to Dashboard
+        </a>
+
+
+        <!-- =====================================================
+             NAVIGATION
+        ====================================================== -->
+
+        <nav class="main-navigation">
+
+            <div class="nav-links">
+
+                <a
+                    href="{% url 'dashboard_page' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">🏠</span>
+                    Dashboard
+                </a>
+
+
+                <a
+                    href="{% url 'employee_list' %}"
+                    class="nav-link active"
+                >
+                    <span class="nav-icon">👥</span>
+                    Employees
+                </a>
+
+
+                <a
+                    href="{% url 'attendance_list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">🕐</span>
+                    Attendance
+                </a>
+
+
+                <a
+                    href="{% url 'leave_list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">📅</span>
+                    Leave
+                </a>
+
+
+                <a
+                    href="{% url 'task_list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">✅</span>
+                    Tasks
+                </a>
+
+
+                <a
+                    href="{% url 'performance_list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⭐</span>
+                    Performance
+                </a>
+
+
+                <a
+                    href="{% url 'payroll_list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">💰</span>
+                    Payroll
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 NAV ACTIONS
+            ================================================== -->
+
+            <div class="nav-actions">
+
+
+                <!-- NOTIFICATIONS -->
+
+                <div class="notification-wrapper">
+
+                    <button
+                        type="button"
+                        class="nav-icon-button"
+                        id="notificationButton"
+                        title="Notifications"
+                        aria-label="Open notifications"
+                    >
+                        🔔
+
+                        <span class="notification-dot"></span>
+                    </button>
+
+
+                    <div
+                        class="notification-panel"
+                        id="notificationPanel"
+                    >
+
+                        <div class="notification-header">
+
+                            <strong>
+                                Notifications
+                            </strong>
+
+                            <span>
+                                Recent
+                            </span>
+
+                        </div>
+
+
+                        <div class="notification-item">
+
+                            <div class="notification-item-icon">
+                                👥
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Employee Management
+                                </strong>
+
+                                <p>
+                                    Manage employees, attendance,
+                                    leave and payroll from here.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="notification-item">
+
+                            <div class="notification-item-icon">
+                                🔔
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    System Online
+                                </strong>
+
+                                <p>
+                                    WORKPULSE is currently running normally.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="notification-item">
+
+                            <div class="notification-item-icon">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Employee Workspace
+                                </strong>
+
+                                <p>
+                                    Your employee management tools
+                                    are ready to use.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ADMIN MENU -->
+
+                <div class="admin-wrapper">
+
+                    <button
+                        type="button"
+                        class="nav-icon-button"
+                        id="adminButton"
+                        title="Administrator"
+                        aria-label="Open administrator menu"
+                    >
+                        👤
+                    </button>
+
+
+                    <div
+                        class="admin-menu"
+                        id="adminMenu"
+                    >
+
+                        <a
+                            href="{% url 'admin:index' %}"
+                            target="_blank"
+                        >
+                            ⚙️
+                            Django Administration
+                        </a>
+
+                        <a
+                            href="{% url 'dashboard_page' %}"
+                        >
+                            🏠
+                            Back to Dashboard
+                        </a>
+
+                        <a
+                            href="{% url 'logout' %}"
+                        >
+                            ↪
+                            Log out
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+        <!-- =====================================================
+             HERO
+        ====================================================== -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <span class="eyebrow">
+                    EMPLOYEE WORKSPACE
+                </span>
+
+
+                <h1>
+                    Manage your team.
+                    <span>Beautifully.</span>
+                </h1>
+
+
+                <p>
+                    Keep your workforce organized, productive,
+                    and always within reach.
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="{% url 'employee_add' %}"
+                        class="primary-btn"
+                    >
+                        <span>＋</span>
+                        Add New Employee
+                    </a>
+
+
+                    <button
+                        type="button"
+                        class="secondary-btn"
+                        onclick="scrollToEmployees()"
+                    >
+                        View Employees
+                        <span>↓</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ANIMATED EMPLOYEE -->
+
+            <div class="hero-character">
+
+                <div class="character-glow"></div>
+
+                <div class="employee-animation">
+
+                    <div class="employee-head"></div>
+
+                    <div class="employee-body">
+                        <div class="employee-arm"></div>
+                    </div>
+
+                    <div class="briefcase">
+                        💼
+                    </div>
+
+                    <div class="employee-leg leg-one"></div>
+
+                    <div class="employee-leg leg-two"></div>
+
+                </div>
+
+                <div class="character-shadow"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             STATISTICS
+        ====================================================== -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    👥
+                </div>
+
+                <div>
+                    <span>Total Employees</span>
+
+                    <strong id="totalEmployees">
+                        {{ total_employees|default:"0" }}
+                    </strong>
+                </div>
+
+                <div class="stat-arrow">
+                    ↗
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    ✓
+                </div>
+
+                <div>
+                    <span>Active Employees</span>
+
+                    <strong id="activeEmployees">
+                        {{ active_employees|default:"0" }}
+                    </strong>
+                </div>
+
+                <div class="stat-arrow">
+                    ↗
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    ◷
+                </div>
+
+                <div>
+                    <span>Inactive</span>
+
+                    <strong id="inactiveEmployees">
+                        {{ inactive_employees|default:"0" }}
+                    </strong>
+                </div>
+
+                <div class="stat-arrow">
+                    ↗
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             EMPLOYEES
+        ====================================================== -->
+
+        <section
+            class="employees-section"
+            id="employees"
+        >
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        YOUR WORKFORCE
+                    </span>
+
+                    <h2>
+                        Employees
+                    </h2>
+
+                    <p>
+                        Manage and monitor your team members.
+                    </p>
+
+                </div>
+
+
+                <div class="employee-tools">
+
+                    <form
+                        class="search-box"
+                        method="get"
+                    >
+
+                        <span>⌕</span>
+
+                        <input
+                            type="text"
+                            id="employeeSearch"
+                            name="q"
+                            value="{{ query }}"
+                            placeholder="Search employee..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="submit"
+                            class="small-add-btn"
+                        >
+                            Search
+                        </button>
+
+                    </form>
+
+
+                    <a
+                        href="{% url 'employee_add' %}"
+                        class="small-add-btn"
+                    >
+                        + Add
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPLOYEE GRID -->
+
+            <div class="employee-grid">
+
+                {% for employee in employees %}
+
+                <article
+                    class="employee-card"
+                    data-name="{{ employee.full_name }}"
+                    data-id="{{ employee.employee_id }}"
+                    data-active="{{ employee.is_active|yesno:'true,false' }}"
+                >
+
+                    <div class="card-top">
+
+                        <div class="employee-avatar">
+                            {{ employee.full_name|first|upper }}
+                        </div>
+
+
+                        {% if employee.is_active %}
+
+                        <span class="status active">
+                            <i></i>
+                            Active
+                        </span>
+
+                        {% else %}
+
+                        <span class="status inactive">
+                            <i></i>
+                            Inactive
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="employee-info">
+
+                        <span class="employee-id">
+                            {{ employee.employee_id }}
+                        </span>
+
+
+                        <h3>
+                            {{ employee.full_name }}
+                        </h3>
+
+
+                        <p>
+                            {{ employee.designation }}
+                        </p>
+
+
+                        <span class="department">
+                            {{ employee.department }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="card-footer">
+
+                        <a
+                            href="{% url 'employee_detail' employee.employee_id %}"
+                            class="view-btn"
+                        >
+                            View Profile
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+                {% empty %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        👥
+                    </div>
+
+                    <h3>
+                        No employees yet
+                    </h3>
+
+                    <p>
+                        Start building your workforce by adding
+                        your first employee.
+                    </p>
+
+                    <a
+                        href="{% url 'employee_add' %}"
+                        class="primary-btn"
+                    >
+                        + Add First Employee
+                    </a>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer>
+
+            <span>
+                WORKPULSE
+            </span>
+
+            <p>
+                Employee Management System
+                <span>•</span>
+                Built with Django
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <script src="{% static 'core/js/app.js' %}"></script>
+
+
+    <script>
+
+        /* =====================================================
+           VIEW EMPLOYEES
+        ====================================================== */
+
+        function scrollToEmployees() {
+
+            const section =
+                document.getElementById("employees");
+
+            if (section) {
+
+                section.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            }
+
+        }
+
+
+        /* =====================================================
+           NOTIFICATION DROPDOWN
+        ====================================================== */
+
+        const notificationButton =
+            document.getElementById("notificationButton");
+
+        const notificationPanel =
+            document.getElementById("notificationPanel");
+
+        const adminButton =
+            document.getElementById("adminButton");
+
+        const adminMenu =
+            document.getElementById("adminMenu");
+
+
+        if (notificationButton && notificationPanel) {
+
+            notificationButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    notificationPanel.classList.toggle("show");
+
+                    if (adminMenu) {
+                        adminMenu.classList.remove("show");
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ADMIN DROPDOWN
+        ====================================================== */
+
+        if (adminButton && adminMenu) {
+
+            adminButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    adminMenu.classList.toggle("show");
+
+                    if (notificationPanel) {
+                        notificationPanel.classList.remove("show");
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CLOSE DROPDOWNS
+        ====================================================== */
+
+        document.addEventListener(
+            "click",
+            function() {
+
+                if (notificationPanel) {
+                    notificationPanel.classList.remove("show");
+                }
+
+                if (adminMenu) {
+                    adminMenu.classList.remove("show");
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           KEEP DROPDOWN OPEN WHEN CLICKING INSIDE
+        ====================================================== */
+
+        if (notificationPanel) {
+
+            notificationPanel.addEventListener(
+                "click",
+                function(event) {
+                    event.stopPropagation();
+                }
+            );
+
+        }
+
+
+        if (adminMenu) {
+
+            adminMenu.addEventListener(
+                "click",
+                function(event) {
+                    event.stopPropagation();
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           EMPLOYEE CARD ANIMATION
+        ====================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const cards =
+                    document.querySelectorAll(
+                        ".employee-card"
+                    );
+
+                cards.forEach(
+                    function(card, index) {
+
+                        card.style.opacity = "0";
+                        card.style.transform =
+                            "translateY(15px)";
+
+                        setTimeout(
+                            function() {
+
+                                card.style.transition =
+                                    "opacity .45s ease, transform .45s ease";
+
+                                card.style.opacity = "1";
+
+                                card.style.transform =
+                                    "translateY(0)";
+
+                            },
+                            80 * index
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

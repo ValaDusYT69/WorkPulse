@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>WORKPULSE — The Future of Work</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --bg:#05060d;--text:#f7f8ff;--muted:#8d93ad;--purple:#7655ff;
+ --purple2:#a78cff;--blue:#54a0ff;--green:#35e1a0;
+}
+html,body{min-height:100%;background:var(--bg)}
+body{
+ font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+ color:var(--text);overflow-x:hidden;
+}
+.page{
+ min-height:100vh;position:relative;overflow:hidden;
+ background:
+ radial-gradient(circle at 72% 42%,rgba(112,76,255,.14),transparent 28%),
+ radial-gradient(circle at 15% 85%,rgba(52,116,255,.11),transparent 28%),
+ linear-gradient(135deg,#04050b,#090b16 50%,#05060d);
+}
+.noise{
+ position:absolute;inset:0;opacity:.025;pointer-events:none;
+ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+}
+.grid{
+ position:absolute;inset:-10%;opacity:.12;pointer-events:none;
+ background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+ background-size:58px 58px;transform:perspective(700px) rotateX(58deg) translateY(35%);
+ transform-origin:center bottom;
+ mask-image:linear-gradient(to top,#000,transparent 80%);
+}
+.glow{
+ position:absolute;border-radius:50%;filter:blur(35px);pointer-events:none;
+}
+.g1{width:500px;height:500px;right:-180px;top:-150px;background:rgba(104,74,255,.13);animation:g 10s ease-in-out infinite}
+.g2{width:400px;height:400px;left:-190px;bottom:-180px;background:rgba(58,112,255,.09);animation:g 13s ease-in-out infinite reverse}
+@keyframes g{50%{transform:translate(30px,-25px) scale(1.1)}}
+
+/* header */
+.header{
+ position:relative;z-index:10;max-width:1400px;margin:auto;padding:28px 42px;
+ display:flex;align-items:center;justify-content:space-between;
+}
+.brand{display:flex;align-items:center;gap:13px}
+.mark{
+ width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+ font-size:18px;font-weight:950;
+ background:linear-gradient(135deg,#6746ef,#987eff);
+ box-shadow:0 14px 40px rgba(104,72,245,.28),inset 0 1px rgba(255,255,255,.22);
+}
+.brand strong{display:block;font-size:15px;letter-spacing:1.6px}
+.brand small{display:block;color:#656c88;font-size:8px;letter-spacing:1px;margin-top:3px}
+.header-right{display:flex;align-items:center;gap:10px}
+.secure{
+ padding:8px 12px;border-radius:30px;border:1px solid rgba(255,255,255,.08);
+ color:#747b96;background:rgba(255,255,255,.025);font-size:8px;letter-spacing:.8px;
+}
+.secure i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(53,225,160,.8);margin-right:6px}
+
+/* hero */
+.hero{
+ position:relative;z-index:5;max-width:1400px;margin:auto;
+ min-height:calc(100vh - 98px);padding:30px 42px 72px;
+ display:grid;grid-template-columns:.93fr 1.07fr;align-items:center;gap:45px;
+}
+.copy{animation:in .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:none}}
+.eyebrow{
+ display:inline-flex;align-items:center;gap:8px;padding:8px 12px;margin-bottom:23px;
+ border:1px solid rgba(127,96,255,.26);border-radius:30px;
+ background:rgba(118,85,255,.06);color:#a999ff;font-size:8px;font-weight:900;letter-spacing:1.8px;
+}
+.eyebrow b{width:5px;height:5px;border-radius:50%;background:#a18aff;box-shadow:0 0 13px #9177ff}
+h1{
+ font-size:clamp(55px,7vw,94px);line-height:.88;letter-spacing:-5px;font-weight:950;
+ max-width:680px;margin-bottom:27px;
+}
+.grad{
+ background:linear-gradient(100deg,#fff 8%,#d0c6ff 38%,#8a6bff 67%,#64a5ff);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sub{
+ max-width:570px;color:#8d94ae;font-size:13px;line-height:1.9;margin-bottom:31px;
+}
+.actions{display:flex;gap:11px;flex-wrap:wrap}
+.btn{
+ min-width:170px;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+ padding:14px 19px;border-radius:12px;text-decoration:none;font-size:9px;font-weight:900;
+ transition:.28s;position:relative;overflow:hidden;
+}
+.btn:after{
+ content:"";position:absolute;top:0;bottom:0;width:55px;left:-75px;
+ background:rgba(255,255,255,.18);transform:skewX(-18deg);transition:.55s;
+}
+.btn:hover:after{left:125%}.btn:hover{transform:translateY(-4px)}
+.emp{
+ color:#fff;background:linear-gradient(135deg,#6747ef,#876aff 55%,#5994ff);
+ box-shadow:0 16px 38px rgba(104,72,245,.25);
+}
+.emp:hover{box-shadow:0 22px 55px rgba(104,72,245,.42)}
+.adm{
+ color:#d9dced;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);
+ backdrop-filter:blur(16px)
+}
+.adm:hover{border-color:rgba(148,124,255,.35);background:rgba(118,85,255,.07)}
+.features{display:flex;gap:20px;flex-wrap:wrap;margin-top:34px}
+.feat{display:flex;align-items:center;gap:7px;color:#636b87;font-size:8px}
+.check{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:#a18cff;background:rgba(118,85,255,.08);border:1px solid rgba(118,85,255,.09)}
+
+/* stage */
+.stage{position:relative;min-height:570px;display:flex;align-items:center;justify-content:center;animation:stage 1.15s .1s both}
+@keyframes stage{from{opacity:0;transform:translateX(45px) scale(.94)}to{opacity:1;transform:none}}
+.ring{
+ position:absolute;width:570px;height:570px;border-radius:50%;
+ border:1px solid rgba(130,103,255,.07);animation:spin 24s linear infinite;
+}
+.ring:before,.ring:after{
+ content:"";position:absolute;border-radius:50%;border:1px solid rgba(96,151,255,.08);
+}
+.ring:before{inset:42px}.ring:after{inset:94px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.core-glow{
+ position:absolute;width:470px;height:470px;border-radius:50%;
+ background:radial-gradient(circle,rgba(115,82,255,.16),rgba(68,117,255,.05) 48%,transparent 70%);
+ filter:blur(10px);animation:core 5s ease-in-out infinite;
+}
+@keyframes core{50%{transform:scale(1.08);opacity:.75}}
+
+/* product panel */
+.panel{
+ width:min(590px,100%);position:relative;z-index:4;padding:18px;
+ border:1px solid rgba(255,255,255,.11);border-radius:27px;
+ background:linear-gradient(145deg,rgba(24,28,55,.91),rgba(8,11,25,.95));
+ box-shadow:0 45px 110px rgba(0,0,0,.55),0 0 100px rgba(111,79,255,.11),inset 0 1px rgba(255,255,255,.055);
+ backdrop-filter:blur(28px);
+ transform-style:preserve-3d;
+ animation:panelFloat 7s ease-in-out infinite;
+}
+@keyframes panelFloat{
+ 0%,100%{transform:translateY(0) rotateX(1deg) rotateY(-1deg)}
+ 50%{transform:translateY(-12px) rotateX(-1deg) rotateY(1deg)}
+}
+.panel-top{
+ height:38px;display:flex;align-items:center;justify-content:space-between;
+ padding:0 5px 10px;border-bottom:1px solid rgba(255,255,255,.055);
+}
+.panel-brand{display:flex;align-items:center;gap:8px;font-size:9px;font-weight:900;letter-spacing:.4px}
+.panel-icon{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,#6747ef,#9076ff);font-size:9px}
+.pills{display:flex;gap:5px}.pills span{width:5px;height:5px;border-radius:50%;background:#4e5672}
+
+.panel-main{padding:17px 5px 4px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:13px}
+.panel-head small{display:block;color:#6f7692;font-size:7px;letter-spacing:1px;margin-bottom:4px}
+.panel-head strong{font-size:18px;letter-spacing:-.4px}
+.live{color:#40dda0;font-size:7px;padding:5px 8px;border-radius:20px;background:rgba(53,225,160,.07);border:1px solid rgba(53,225,160,.12)}
+
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.kpi{
+ min-height:83px;padding:11px;border-radius:13px;border:1px solid rgba(255,255,255,.06);
+ background:rgba(255,255,255,.025);transition:.3s;
+}
+.kpi:hover{transform:translateY(-4px);border-color:rgba(143,119,255,.25);background:rgba(118,85,255,.055)}
+.kpi-top{display:flex;justify-content:space-between;margin-bottom:9px}.kpi-icon{font-size:12px}.up{font-size:6px;color:#3edb9e}
+.kpi strong{display:block;font-size:18px;margin-bottom:3px}.kpi span{color:#707792;font-size:7px}
+
+/* chart */
+.chartbox{
+ margin-top:8px;padding:13px;border-radius:14px;border:1px solid rgba(255,255,255,.06);
+ background:rgba(255,255,255,.025);
+}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.chart-head strong{font-size:8px}.chart-head span{font-size:7px;color:#6e7590}
+.chart{
+ height:104px;position:relative;overflow:hidden;border-radius:9px;
+ background:linear-gradient(to bottom,transparent 24%,rgba(255,255,255,.035) 25%,transparent 26%,transparent 49%,rgba(255,255,255,.035) 50%,transparent 51%,transparent 74%,rgba(255,255,255,.035) 75%,transparent 76%);
+}
+.svgline{position:absolute;inset:8px 0 0;width:100%;height:90px;overflow:visible}
+.path{fill:none;stroke:url(#lineGradient);stroke-width:2.3;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 3s 1s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.area{fill:url(#areaGradient);opacity:.32}
+.point{fill:#fff;filter:drop-shadow(0 0 5px #a18cff);animation:blink 2s ease-in-out infinite}
+@keyframes blink{50%{opacity:.4}}
+
+/* lower cards */
+.lower{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.lower-card{padding:12px;border-radius:13px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}
+.lower-card small{color:#6e7590;font-size:7px}.lower-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}.lower-row strong{font-size:9px}.percent{color:#a08cff;font-size:8px}
+.bar{height:4px;margin-top:8px;background:rgba(255,255,255,.06);border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;width:82%;background:linear-gradient(90deg,#6747ef,#9a80ff);border-radius:20px;animation:bar 1.8s ease both}
+@keyframes bar{from{width:0}}
+.system-row{display:flex;align-items:center;gap:7px;margin-top:9px}.system-row i{width:6px;height:6px;border-radius:50%;background:#35dfa0;box-shadow:0 0 9px rgba(53,223,160,.8)}.system-row strong{font-size:9px}
+
+/* floating cards */
+.float{
+ position:absolute;z-index:7;min-width:142px;padding:13px 15px;border-radius:14px;
+ border:1px solid rgba(255,255,255,.11);background:rgba(10,13,29,.88);
+ backdrop-filter:blur(20px);box-shadow:0 22px 55px rgba(0,0,0,.36);animation:fc 4.5s ease-in-out infinite;
+}
+.f1{left:-18px;top:105px}.f2{right:-12px;bottom:90px;animation-delay:-2s}
+.float small{display:block;color:#69718d;font-size:7px;letter-spacing:.8px;margin-bottom:5px}.float strong{font-size:14px}.green{color:#40dda0}
+@keyframes fc{50%{transform:translateY(-10px)}}
+
+/* side vertical label */
+.side-label{
+ position:absolute;right:7px;top:50%;transform:translateY(-50%) rotate(90deg);
+ color:#4d5570;font-size:7px;letter-spacing:3px;font-weight:800;
+}
+
+/* footer */
+.footer{position:absolute;z-index:20;left:0;right:0;bottom:16px;text-align:center;color:#434a65;font-size:7px;letter-spacing:1px}
+.footer strong{color:#626b89}
+
+/* responsive */
+@media(max-width:1050px){
+ .hero{grid-template-columns:1fr;gap:20px;padding-top:25px}
+ .copy{text-align:center}.sub{margin-left:auto;margin-right:auto}
+ .actions,.features{justify-content:center}
+ .stage{min-height:500px}
+}
+@media(max-width:650px){
+ .header{padding:20px 18px}.secure{display:none}
+ .hero{padding:20px 17px 55px}
+ h1{font-size:49px;letter-spacing:-3px}
+ .sub{font-size:11px}.actions{flex-direction:column}.btn{width:100%}
+ .features{gap:12px}.stage{min-height:370px}
+ .panel{padding:12px;border-radius:20px}
+ .cards{grid-template-columns:repeat(2,1fr)}
+ .ring{width:380px;height:380px}.core-glow{width:330px;height:330px}
+ .float{display:none}.side-label{display:none}
+ .chart{height:85px}.svgline{height:75px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="noise"></div>
+<div class="grid"></div>
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="mark">W</div>
+
+        <div class="brand-text">
+            <strong>WORKPULSE</strong>
+            <small>INTELLIGENT WORKFORCE PLATFORM</small>
+        </div>
+
+    </div>
+
+
+    <div class="header-right">
+
+        <div class="secure">
+            <i></i>
+            SECURE WORKSPACE
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- HERO -->
+
+<main class="hero">
+
+
+<section class="copy">
+
+    <div class="eyebrow">
+        <b></b>
+        THE FUTURE OF WORKFORCE MANAGEMENT
+    </div>
+
+
+    <h1>
+        Work
+        <br>
+        smarter.
+        <br>
+        <span class="grad">Move faster.</span>
+    </h1>
+
+
+    <p class="sub">
+        WORKPULSE brings your people, attendance, applications,
+        performance, tasks and payroll into one intelligent
+        command center — designed for modern teams.
+    </p>
+
+
+    <div class="actions">
+
+        <a
+            href="{% url 'employee_login' %}"
+            class="btn emp"
+        >
+            👤
+            Employee Login
+            <span>→</span>
+        </a>
+
+
+        <a
+            href="{% url 'admin_login' %}"
+            class="btn adm"
+        >
+            🔐
+            Admin Login
+            <span>→</span>
+        </a>
+
+    </div>
+
+
+    <div class="features">
+
+        <div class="feat">
+            <span class="check">✓</span>
+            Attendance
+        </div>
+
+        <div class="feat">
+            <span class="check">✓</span>
+            Applications
+        </div>
+
+        <div class="feat">
+            <span class="check">✓</span>
+            Performance
+        </div>
+
+        <div class="feat">
+            <span class="check">✓</span>
+            Payroll
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- VISUAL -->
+
+<section class="stage">
+
+    <div class="ring"></div>
+    <div class="core-glow"></div>
+
+
+    <div class="float f1">
+
+        <small>ATTENDANCE RATE</small>
+
+        <strong class="green">
+            96.8% ↑
+        </strong>
+
+    </div>
+
+
+    <div class="panel">
+
+
+        <div class="panel-top">
+
+            <div class="panel-brand">
+
+                <div class="panel-icon">
+                    W
+                </div>
+
+                WORKPULSE COMMAND CENTER
+
+            </div>
+
+
+            <div class="pills">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+
+
+        <div class="panel-main">
+
+
+            <div class="panel-head">
+
+                <div>
+
+                    <small>
+                        LIVE WORKFORCE INTELLIGENCE
+                    </small>
+
+                    <strong>
+                        Good morning, Admin.
+                    </strong>
+
+                </div>
+
+
+                <div class="live">
+                    ● LIVE
+                </div>
+
+            </div>
+
+
+            <!-- KPI -->
+
+            <div class="cards">
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <span class="kpi-icon">👥</span>
+                        <span class="up">+8.4%</span>
+                    </div>
+
+                    <strong>128</strong>
+
+                    <span>
+                        Employees
+                    </span>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <span class="kpi-icon">✓</span>
+                        <span class="up">+2.1%</span>
+                    </div>
+
+                    <strong>94%</strong>
+
+                    <span>
+                        Attendance
+                    </span>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <span class="kpi-icon">◈</span>
+                        <span class="up">Active</span>
+                    </div>
+
+                    <strong>32</strong>
+
+                    <span>
+                        Tasks
+                    </span>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <span class="kpi-icon">★</span>
+                        <span class="up">+0.3</span>
+                    </div>
+
+                    <strong>4.8</strong>
+
+                    <span>
+                        Performance
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHART -->
+
+            <div class="chartbox">
+
+                <div class="chart-head">
+
+                    <strong>
+                        Workforce Activity
+                    </strong>
+
+                    <span>
+                        Last 7 days
+                    </span>
+
+                </div>
+
+
+                <div class="chart">
+
+                    <svg
+                        class="svgline"
+                        viewBox="0 0 600 90"
+                        preserveAspectRatio="none"
+                    >
+
+                        <defs>
+
+                            <linearGradient
+                                id="lineGradient"
+                                x1="0"
+                                y1="0"
+                                x2="1"
+                                y2="0"
+                            >
+
+                                <stop
+                                    offset="0%"
+                                    stop-color="#6747ef"
+                                />
+
+                                <stop
+                                    offset="55%"
+                                    stop-color="#a08aff"
+                                />
+
+                                <stop
+                                    offset="100%"
+                                    stop-color="#5b9aff"
+                                />
+
+                            </linearGradient>
+
+
+                            <linearGradient
+                                id="areaGradient"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                            >
+
+                                <stop
+                                    offset="0%"
+                                    stop-color="#8064ff"
+                                    stop-opacity=".32"
+                                />
+
+                                <stop
+                                    offset="100%"
+                                    stop-color="#8064ff"
+                                    stop-opacity="0"
+                                />
+
+                            </linearGradient>
+
+                        </defs>
+
+
+                        <path
+                            class="area"
+                            d="M0,72 C55,65 72,48 118,54 S176,75 218,44 S278,28 315,46 S367,67 407,36 S470,20 510,31 S558,44 600,10 L600,90 L0,90 Z"
+                        />
+
+
+                        <path
+                            class="path"
+                            d="M0,72 C55,65 72,48 118,54 S176,75 218,44 S278,28 315,46 S367,67 407,36 S470,20 510,31 S558,44 600,10"
+                        />
+
+
+                        <circle
+                            class="point"
+                            cx="600"
+                            cy="10"
+                            r="4"
+                        />
+
+                    </svg>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOWER -->
+
+            <div class="lower">
+
+
+                <div class="lower-card">
+
+                    <small>
+                        TASK COMPLETION
+                    </small>
+
+                    <div class="lower-row">
+
+                        <strong>
+                            Weekly Progress
+                        </strong>
+
+                        <span class="percent">
+                            82%
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+                        <i></i>
+                    </div>
+
+                </div>
+
+
+                <div class="lower-card">
+
+                    <small>
+                        PLATFORM STATUS
+                    </small>
+
+                    <div class="system-row">
+
+                        <i></i>
+
+                        <strong>
+                            All Systems Operational
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="float f2">
+
+        <small>PAYROLL STATUS</small>
+
+        <strong>
+            Ready ✓
+        </strong>
+
+    </div>
+
+
+    <div class="side-label">
+        WORKPULSE • INTELLIGENCE • PEOPLE
+    </div>
+
+</section>
+
+</main>
+
+
+<footer class="footer">
+
+    <strong>WORKPULSE</strong>
+    &nbsp;•&nbsp;
+    INTELLIGENT WORKFORCE MANAGEMENT
+    &nbsp;•&nbsp;
+    SECURE
+
+</footer>
+
+</div>
+
+</body>
+</html>

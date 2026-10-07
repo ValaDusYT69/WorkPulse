@@ -1,0 +1,814 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>My Profile - WORKPULSE</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+
+        /* =========================================
+           PROFILE PAGE
+           ========================================= */
+
+        .profile-page .form-card {
+            margin-bottom: 22px;
+        }
+
+        .profile-page .form-card:last-of-type {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================
+           PROFILE HERO
+           ========================================= */
+
+        .profile-hero {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding-bottom: 22px;
+
+            border-bottom: 1px solid rgba(80, 90, 120, 0.08);
+        }
+
+        .profile-avatar {
+            width: 76px;
+            height: 76px;
+
+            min-width: 76px;
+
+            border-radius: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7652f5,
+                    #6840e8
+                );
+
+            color: white;
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 10px 25px rgba(104, 72, 245, 0.22);
+        }
+
+        .profile-hero-info {
+            flex: 1;
+        }
+
+        .profile-hero-info .section-label {
+            display: block;
+
+            margin-bottom: 6px;
+        }
+
+        .profile-hero-info h1 {
+            margin: 0 0 7px;
+
+            font-size: 28px;
+
+            line-height: 1.15;
+        }
+
+        .profile-id {
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 6px 10px;
+
+            border-radius: 8px;
+
+            background: rgba(104, 72, 245, 0.08);
+
+            color: #6848f5;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        /* =========================================
+           ACCOUNT INFORMATION
+           ========================================= */
+
+        .profile-section-header {
+            margin-bottom: 20px;
+        }
+
+        .profile-section-header h2 {
+            margin: 4px 0 5px;
+
+            font-size: 20px;
+
+            color: #20263a;
+        }
+
+        .profile-section-header p {
+            margin: 0;
+
+            color: #8b94a9;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           FORM
+           ========================================= */
+
+        .profile-form {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 4px;
+        }
+
+        .profile-form p {
+            margin: 0 0 12px;
+        }
+
+        .profile-form label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #626c83;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .profile-form input,
+        .profile-form select,
+        .profile-form textarea {
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 12px 13px;
+
+            border-radius: 11px;
+
+            border: 1px solid rgba(100, 110, 140, 0.14);
+
+            background: rgba(255, 255, 255, 0.65);
+
+            color: #273047;
+
+            font-size: 11px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .profile-form input:focus,
+        .profile-form select:focus,
+        .profile-form textarea:focus {
+            border-color: rgba(104, 72, 245, 0.45);
+
+            box-shadow:
+                0 0 0 3px rgba(104, 72, 245, 0.08);
+        }
+
+        .profile-form textarea {
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+        .profile-form .helptext {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #9aa2b4;
+
+            font-size: 9px;
+        }
+
+        .profile-form ul.errorlist {
+            margin: 5px 0;
+
+            padding: 0;
+
+            list-style: none;
+
+            color: #d94b4b;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================================
+           EMPLOYEE DETAILS
+           ========================================= */
+
+        .profile-details-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 22px;
+        }
+
+        .profile-detail-box {
+            padding: 17px;
+
+            border-radius: 14px;
+
+            background: rgba(255, 255, 255, 0.52);
+
+            border: 1px solid rgba(100, 110, 140, 0.09);
+
+            min-height: 66px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            gap: 7px;
+        }
+
+        .profile-detail-box small {
+            color: #929bae;
+
+            font-size: 9px;
+
+            font-weight: 600;
+        }
+
+        .profile-detail-box strong {
+            color: #273047;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .status-active {
+            color: #16834a !important;
+        }
+
+        .status-inactive {
+            color: #d64d4d !important;
+        }
+
+
+        /* =========================================
+           SECURITY CARD
+           ========================================= */
+
+        .security-card {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(104, 72, 245, 0.07),
+                    rgba(124, 58, 237, 0.025)
+                );
+
+            border: 1px solid rgba(104, 72, 245, 0.10);
+        }
+
+        .security-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+        }
+
+        .security-icon {
+            width: 45px;
+            height: 45px;
+
+            min-width: 45px;
+
+            border-radius: 13px;
+
+            background: rgba(104, 72, 245, 0.10);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .security-title {
+            color: #20263a;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            margin-bottom: 4px;
+        }
+
+        .security-text {
+            color: #8b94a9;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+        }
+
+        .password-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 10px 15px;
+
+            border-radius: 10px;
+
+            background: #6848f5;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 7px 16px rgba(104, 72, 245, 0.18);
+
+            white-space: nowrap;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .password-btn:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 20px rgba(104, 72, 245, 0.23);
+        }
+
+
+        /* =========================================
+           MESSAGES
+           ========================================= */
+
+        .profile-message {
+            margin: 0 0 18px;
+
+            padding: 12px 14px;
+
+            border-radius: 11px;
+
+            font-size: 10px;
+
+            background: rgba(104, 72, 245, 0.07);
+
+            border: 1px solid rgba(104, 72, 245, 0.10);
+
+            color: #5d45c5;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+
+        @media (max-width: 700px) {
+
+            .profile-hero {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .profile-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .security-card {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .password-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="form-page profile-page">
+
+
+<main class="form-wrapper">
+
+
+    <!-- =========================================
+         TOP BAR
+         ========================================= -->
+
+    <div class="form-top">
+
+        <a
+            href="{% url 'employee_dashboard' %}"
+            class="back-link"
+        >
+            &larr; Dashboard
+        </a>
+
+
+        <div class="form-brand">
+
+            <div class="brand-icon">
+                W
+            </div>
+
+            <div>
+
+                <strong>
+                    WORKPULSE
+                </strong>
+
+                <span>
+                    Employee Portal
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'logout' %}"
+            class="back-link"
+        >
+            Log out
+        </a>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NAVIGATION
+         ========================================= -->
+
+    <nav class="main-navigation">
+
+        <a href="{% url 'employee_dashboard' %}">
+            🏠 My Dashboard
+        </a>
+
+        <a href="{% url 'employee_attendance' %}">
+            🕘 Attendance
+        </a>
+
+        <a href="{% url 'employee_tasks' %}">
+            📋 Tasks
+        </a>
+
+        <a href="{% url 'employee_leave' %}">
+            📅 Leave
+        </a>
+
+        <a href="{% url 'employee_performance' %}">
+            ⭐ Performance
+        </a>
+
+        <a href="{% url 'employee_payroll' %}">
+            💰 Payroll
+        </a>
+
+        <a
+            class="active"
+            href="{% url 'employee_profile' %}"
+        >
+            👤 Profile
+        </a>
+
+    </nav>
+
+
+
+    <!-- =========================================
+         PROFILE HEADER
+         ========================================= -->
+
+    <section class="form-card">
+
+        <div class="profile-hero">
+
+            <div class="profile-avatar">
+
+                {{ employee.full_name|first|upper }}
+
+            </div>
+
+
+            <div class="profile-hero-info">
+
+                <span class="section-label">
+                    EMPLOYEE PROFILE
+                </span>
+
+                <h1>
+                    {{ employee.full_name }}
+                </h1>
+
+                <span class="profile-id">
+                    Employee ID: {{ employee.employee_id }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         PROFILE INFORMATION
+         ========================================= -->
+
+    <section class="form-card">
+
+        <div class="profile-section-header">
+
+            <span class="section-label">
+                ACCOUNT INFORMATION
+            </span>
+
+            <h2>
+                Personal Information
+            </h2>
+
+            <p>
+                Update the personal information associated
+                with your employee profile.
+            </p>
+
+        </div>
+
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="profile-message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <form
+            method="post"
+            class="profile-form"
+        >
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+
+            <div class="form-actions">
+
+                <button
+                    class="save-btn"
+                    type="submit"
+                >
+                    Save profile
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =========================================
+         EMPLOYEE DETAILS
+         ========================================= -->
+
+    <section class="form-card">
+
+        <div class="profile-section-header">
+
+            <span class="section-label">
+                EMPLOYMENT DETAILS
+            </span>
+
+            <h2>
+                Work Information
+            </h2>
+
+            <p>
+                Your employment information managed by
+                the administrator.
+            </p>
+
+        </div>
+
+
+        <div class="profile-details-grid">
+
+
+            <div class="profile-detail-box">
+
+                <small>
+                    Department
+                </small>
+
+                <strong>
+                    {{ employee.department|default:"—" }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-detail-box">
+
+                <small>
+                    Designation
+                </small>
+
+                <strong>
+                    {{ employee.designation|default:"—" }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-detail-box">
+
+                <small>
+                    Joining Date
+                </small>
+
+                <strong>
+                    {{ employee.joining_date|default:"—" }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-detail-box">
+
+                <small>
+                    Employment Status
+                </small>
+
+                {% if employee.is_active %}
+
+                    <strong class="status-active">
+                        ● Active
+                    </strong>
+
+                {% else %}
+
+                    <strong class="status-inactive">
+                        ● Inactive
+                    </strong>
+
+                {% endif %}
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         SECURITY
+         ========================================= -->
+
+    <section class="form-card">
+
+        <div class="security-card">
+
+            <div class="security-left">
+
+                <div class="security-icon">
+                    🔐
+                </div>
+
+                <div>
+
+                    <div class="security-title">
+                        Account Security
+                    </div>
+
+                    <div class="security-text">
+                        Keep your account secure by
+                        regularly updating your password.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <a
+                class="password-btn"
+                href="{% url 'employee_password_change' %}"
+            >
+                🔑 Change Password
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
+    <footer class="form-footer">
+
+        WORKPULSE • Employee Management System
+
+    </footer>
+
+
+</main>
+
+
+<script src="{% static 'core/js/app.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,859 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>My Performance - WORKPULSE</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+
+        /* =========================================
+           PERFORMANCE PAGE SPACING
+           ========================================= */
+
+        .performance-page .form-card {
+            margin-bottom: 20px;
+        }
+
+        .performance-page .form-card:last-of-type {
+            margin-bottom: 0;
+        }
+
+        /* Performance overview cards */
+
+        .performance-overview-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 16px;
+            margin-top: 20px;
+            margin-bottom: 16px;
+        }
+
+        .performance-score-card,
+        .performance-grade-card {
+            border: 1px solid rgba(105, 78, 245, 0.12);
+            border-radius: 16px;
+            padding: 22px;
+            background: rgba(255, 255, 255, 0.65);
+        }
+
+        .performance-score-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .score-circle {
+            width: 64px;
+            height: 64px;
+            min-width: 64px;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                #6848f5,
+                #7c3aed
+            );
+
+            color: white;
+            font-size: 17px;
+            font-weight: 800;
+
+            box-shadow:
+                0 8px 20px rgba(104, 72, 245, 0.22);
+        }
+
+        .score-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #6b5af5;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #20263a;
+        }
+
+        .score-description {
+            margin-top: 4px;
+            font-size: 11px;
+            color: #8c96ad;
+        }
+
+        .performance-grade-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .grade-value {
+            margin-top: 5px;
+            font-size: 30px;
+            line-height: 1;
+            font-weight: 900;
+            color: #6848f5;
+        }
+
+        .grade-label {
+            margin-top: 7px;
+            font-size: 11px;
+            color: #8c96ad;
+        }
+
+
+        /* Small performance metrics */
+
+        .performance-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .performance-mini-card {
+            min-height: 78px;
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            border: 1px solid rgba(105, 78, 245, 0.10);
+
+            background: rgba(255, 255, 255, 0.55);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .performance-mini-card:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 22px rgba(60, 70, 120, 0.08);
+        }
+
+        .mini-value {
+            font-size: 17px;
+            font-weight: 800;
+            color: #20263a;
+        }
+
+        .mini-label {
+            margin-top: 4px;
+            font-size: 10px;
+            color: #8b95aa;
+        }
+
+
+        /* Task statistics */
+
+        .task-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+        .task-stat-card {
+            min-height: 76px;
+
+            padding: 14px 10px;
+
+            border-radius: 13px;
+
+            border: 1px solid rgba(105, 78, 245, 0.10);
+
+            background: rgba(255, 255, 255, 0.55);
+
+            text-align: center;
+        }
+
+        .task-stat-value {
+            display: block;
+
+            font-size: 17px;
+            font-weight: 800;
+
+            color: #20263a;
+        }
+
+        .task-stat-label {
+            display: block;
+
+            margin-top: 5px;
+
+            font-size: 9px;
+
+            color: #8c96ad;
+        }
+
+
+        /* Current standing */
+
+        .standing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+
+            margin-top: 18px;
+        }
+
+        .standing-card {
+            min-height: 90px;
+
+            padding: 18px;
+
+            border-radius: 14px;
+
+            background: rgba(255, 255, 255, 0.58);
+
+            border: 1px solid rgba(105, 78, 245, 0.10);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .standing-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #20263a;
+        }
+
+        .standing-label {
+            margin-top: 5px;
+            font-size: 10px;
+            color: #8c96ad;
+        }
+
+
+        /* Automatic evaluation */
+
+        .automatic-evaluation {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            padding: 20px;
+
+            margin-top: 0;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(104, 72, 245, 0.07),
+                    rgba(124, 58, 237, 0.03)
+                );
+
+            border: 1px solid rgba(104, 72, 245, 0.10);
+        }
+
+        .automatic-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(104, 72, 245, 0.10);
+
+            font-size: 21px;
+        }
+
+        .automatic-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #20263a;
+        }
+
+        .automatic-text {
+            margin-top: 4px;
+            font-size: 10px;
+            line-height: 1.6;
+            color: #8c96ad;
+        }
+
+
+        /* Better spacing between every section */
+
+        .performance-page > .form-card {
+            margin-bottom: 20px;
+        }
+
+        .performance-page > .form-card + .form-card {
+            margin-top: 20px;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .performance-overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .performance-mini-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .task-stat-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .standing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .performance-mini-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .task-stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .standing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .performance-score-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="form-page performance-page">
+
+
+<main class="form-wrapper">
+
+
+    <!-- =========================================
+         TOP BAR
+         ========================================= -->
+
+    <div class="form-top">
+
+        <a
+            href="{% url 'employee_dashboard' %}"
+            class="back-link"
+        >
+            &larr; Dashboard
+        </a>
+
+
+        <div class="form-brand">
+
+            <div class="brand-icon">
+                W
+            </div>
+
+            <div>
+
+                <strong>
+                    WORKPULSE
+                </strong>
+
+                <span>
+                    Employee Portal
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'logout' %}"
+            class="back-link"
+        >
+            Log out
+        </a>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NAVIGATION
+         ========================================= -->
+
+    <nav class="main-navigation">
+
+        <a href="{% url 'employee_dashboard' %}">
+            🏠 My Dashboard
+        </a>
+
+        <a href="{% url 'employee_attendance' %}">
+            🕘 Attendance
+        </a>
+
+        <a href="{% url 'employee_tasks' %}">
+            📋 Tasks
+        </a>
+
+        <a href="{% url 'employee_leave' %}">
+            📅 Leave
+        </a>
+
+        <a
+            class="active"
+            href="{% url 'employee_performance' %}"
+        >
+            ⭐ Performance
+        </a>
+
+        <a href="{% url 'employee_payroll' %}">
+            💰 Payroll
+        </a>
+
+        <a href="{% url 'employee_profile' %}">
+            👤 Profile
+        </a>
+
+    </nav>
+
+
+
+    <!-- =========================================
+         PAGE HEADER
+         ========================================= -->
+
+    <section class="form-card">
+
+        <div class="form-heading">
+
+            <div class="form-icon">
+                ⭐
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    PERFORMANCE MANAGEMENT
+                </span>
+
+                <h1>
+                    My Performance
+                </h1>
+
+                <p>
+                    Track your productivity, attendance,
+                    task completion, and overall performance.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         OVERALL PERFORMANCE
+         ========================================= -->
+
+    <section class="form-card">
+
+        <span class="section-label">
+            OVERALL PERFORMANCE
+        </span>
+
+        <h2>
+            Performance Overview
+        </h2>
+
+        <p>
+            Your score is calculated automatically
+            from your work activity.
+        </p>
+
+
+        <div class="performance-overview-grid">
+
+
+            <!-- SCORE -->
+
+            <div class="performance-score-card">
+
+                <div class="score-circle">
+                    {{ metrics.overall_score }}
+                </div>
+
+                <div>
+
+                    <div class="score-label">
+                        Overall Score
+                    </div>
+
+                    <div class="score-value">
+                        {{ metrics.overall_score }}/100
+                    </div>
+
+                    <div class="score-description">
+                        Automatically calculated performance score
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- GRADE -->
+
+            <div class="performance-grade-card">
+
+                <div class="score-label">
+                    Performance Grade
+                </div>
+
+                <div class="grade-value">
+                    {{ metrics.grade }}
+                </div>
+
+                <div class="grade-label">
+                    {{ metrics.grade_label }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- THREE METRICS -->
+
+        <div class="performance-mini-grid">
+
+            <div class="performance-mini-card">
+
+                <span class="mini-value">
+                    {{ metrics.completion_rate }}%
+                </span>
+
+                <span class="mini-label">
+                    Task Completion
+                </span>
+
+            </div>
+
+
+            <div class="performance-mini-card">
+
+                <span class="mini-value">
+                    {{ metrics.on_time_rate }}%
+                </span>
+
+                <span class="mini-label">
+                    On-Time Rate
+                </span>
+
+            </div>
+
+
+            <div class="performance-mini-card">
+
+                <span class="mini-value">
+                    {{ metrics.attendance_rate }}%
+                </span>
+
+                <span class="mini-label">
+                    Attendance Rate
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         TASK STATISTICS
+         ========================================= -->
+
+    <section class="form-card">
+
+        <span class="section-label">
+            TASK PERFORMANCE
+        </span>
+
+        <h2>
+            Task Statistics
+        </h2>
+
+        <p>
+            A breakdown of your assigned tasks,
+            completion, and deadline performance.
+        </p>
+
+
+        <div class="task-stat-grid">
+
+
+            <div class="task-stat-card">
+
+                <span class="task-stat-value">
+                    {{ metrics.total_tasks }}
+                </span>
+
+                <span class="task-stat-label">
+                    Total Tasks
+                </span>
+
+            </div>
+
+
+            <div class="task-stat-card">
+
+                <span class="task-stat-value">
+                    {{ metrics.completed_tasks }}
+                </span>
+
+                <span class="task-stat-label">
+                    Completed
+                </span>
+
+            </div>
+
+
+            <div class="task-stat-card">
+
+                <span class="task-stat-value">
+                    {{ metrics.pending_tasks }}
+                </span>
+
+                <span class="task-stat-label">
+                    Pending
+                </span>
+
+            </div>
+
+
+            <div class="task-stat-card">
+
+                <span class="task-stat-value">
+                    {{ metrics.overdue_tasks }}
+                </span>
+
+                <span class="task-stat-label">
+                    Overdue
+                </span>
+
+            </div>
+
+
+            <div class="task-stat-card">
+
+                <span class="task-stat-value">
+                    {{ metrics.on_time_tasks }}
+                </span>
+
+                <span class="task-stat-label">
+                    On Time
+                </span>
+
+            </div>
+
+
+            <div class="task-stat-card">
+
+                <span class="task-stat-value">
+                    {{ metrics.late_tasks }}
+                </span>
+
+                <span class="task-stat-label">
+                    Late
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         CURRENT STANDING
+         ========================================= -->
+
+    <section class="form-card">
+
+        <span class="section-label">
+            PERFORMANCE BREAKDOWN
+        </span>
+
+        <h2>
+            Your Current Standing
+        </h2>
+
+        <p>
+            Key indicators used to calculate your
+            overall performance.
+        </p>
+
+
+        <div class="standing-grid">
+
+
+            <div class="standing-card">
+
+                <span class="standing-value">
+                    {{ metrics.completed_tasks }}
+                </span>
+
+                <span class="standing-label">
+                    Tasks Completed
+                </span>
+
+            </div>
+
+
+            <div class="standing-card">
+
+                <span class="standing-value">
+                    {{ metrics.on_time_tasks }}
+                </span>
+
+                <span class="standing-label">
+                    Submitted On Time
+                </span>
+
+            </div>
+
+
+            <div class="standing-card">
+
+                <span class="standing-value">
+                    {{ metrics.late_tasks }}
+                </span>
+
+                <span class="standing-label">
+                    Submitted Late
+                </span>
+
+            </div>
+
+
+            <div class="standing-card">
+
+                <span class="standing-value">
+                    {{ metrics.overdue_tasks }}
+                </span>
+
+                <span class="standing-label">
+                    Overdue Tasks
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         AUTOMATIC EVALUATION
+         ========================================= -->
+
+    <section class="form-card">
+
+        <div class="automatic-evaluation">
+
+            <div class="automatic-icon">
+                📊
+            </div>
+
+            <div>
+
+                <div class="automatic-title">
+                    How Your Score Works
+                </div>
+
+                <div class="automatic-text">
+
+                    Your performance is generated automatically
+                    from attendance, task completion, deadlines,
+                    and work activity. Employees do not manually
+                    enter or edit their performance score.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
+    <footer class="form-footer">
+
+        WORKPULSE • Employee Management System
+
+    </footer>
+
+
+</main>
+
+
+<script src="{% static 'core/js/app.js' %}"></script>
+
+</body>
+
+</html>

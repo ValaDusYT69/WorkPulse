@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Employee</title>
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+<body>
+
+{% include 'core/navigation.html' %}
+
+    <h1>Edit Employee</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <p>
+            <label>Employee ID:</label><br>
+            <input type="text" value="{{ employee.employee_id }}" disabled>
+        </p>
+
+        <p>
+            <label>Full Name:</label><br>
+            <input type="text" name="full_name" value="{{ employee.full_name }}" required>
+        </p>
+
+        <p>
+            <label>Email:</label><br>
+            <input type="email" name="email" value="{{ employee.email }}" required>
+        </p>
+
+        <p>
+            <label>Phone:</label><br>
+            <input type="text" name="phone" value="{{ employee.phone }}" required>
+        </p>
+
+        <p>
+            <label>Department:</label><br>
+            <input type="text" name="department" value="{{ employee.department }}" required>
+        </p>
+
+        <p>
+            <label>Designation:</label><br>
+            <input type="text" name="designation" value="{{ employee.designation }}" required>
+        </p>
+
+        <p>
+            <label>Monthly Salary:</label><br>
+            <input type="number" name="monthly_salary" value="{{ employee.monthly_salary }}" min="0" step="0.01" required>
+        </p>
+
+        <p>
+            <label>Joining Date:</label><br>
+            <input type="date" name="joining_date" value="{{ employee.joining_date|date:'Y-m-d' }}" required>
+        </p>
+
+        <p>
+            <label>
+                <input type="checkbox" name="is_active" {% if employee.is_active %}checked{% endif %}>
+                Active
+            </label>
+        </p>
+
+        <button type="submit">Update Employee</button>
+    </form>
+
+    <br>
+
+    <a href="{% url 'employee_detail' employee.employee_id %}">Cancel</a>
+
+</body>
+</html>

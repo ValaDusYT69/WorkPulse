@@ -1,0 +1,834 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>WORKPULSE — Applications</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+
+        .application-page {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #e9e5ff,
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #f6f3ff,
+                    #eef4ff
+                );
+            padding: 30px 15px;
+        }
+
+        .application-wrapper {
+            width: min(1100px, 100%);
+            margin: auto;
+        }
+
+        .application-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .back-link {
+            color: #6254d9;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .application-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: linear-gradient(
+                135deg,
+                #7054ff,
+                #5437e8
+            );
+            color: white;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .application-brand strong {
+            display: block;
+            color: #25283a;
+            font-size: 16px;
+        }
+
+        .application-brand span {
+            display: block;
+            color: #8a8da0;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        .application-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .application-nav a {
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 10px;
+            background: rgba(255,255,255,.85);
+            color: #34374a;
+            border: 1px solid #dedff0;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .application-nav a:hover {
+            background: #6848f5;
+            color: white;
+        }
+
+        .application-card {
+            background: rgba(255,255,255,.94);
+            border: 1px solid #e7e4f7;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow:
+                0 18px 50px
+                rgba(70, 60, 130, .08);
+        }
+
+        .application-heading {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .application-icon {
+            width: 56px;
+            height: 56px;
+            display: grid;
+            place-items: center;
+            border-radius: 16px;
+            background: #efecff;
+            font-size: 25px;
+        }
+
+        .section-label {
+            color: #6848f5;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .14em;
+        }
+
+        .application-heading h1 {
+            margin: 5px 0;
+            color: #25283a;
+            font-size: 29px;
+        }
+
+        .application-heading p {
+            margin: 0;
+            color: #85899b;
+            font-size: 12px;
+        }
+
+        .message-box {
+            padding: 13px 15px;
+            border-radius: 11px;
+            background: #f1efff;
+            border: 1px solid #ddd8ff;
+            color: #5144b4;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .error-box {
+            padding: 13px 15px;
+            border-radius: 11px;
+            background: #fff1f1;
+            border: 1px solid #ffd1d1;
+            color: #c53535;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .application-form {
+            padding: 22px;
+            border-radius: 17px;
+            background: #fafaff;
+            border: 1px solid #e7e6f1;
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            margin: 0 0 18px;
+            color: #303449;
+            font-size: 17px;
+        }
+
+        .input-group {
+            margin-bottom: 17px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #34374a;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 13px;
+            border: 1px solid #dedfea;
+            border-radius: 10px;
+            background: white;
+            color: #303449;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            border-color: #6848f5;
+        }
+
+        .input-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .file-help {
+            display: block;
+            margin-top: 6px;
+            color: #9295a7;
+            font-size: 10px;
+        }
+
+        .submit-btn {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            background: linear-gradient(
+                135deg,
+                #6848f5,
+                #5537dc
+            );
+            color: white;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 750;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            opacity: .92;
+        }
+
+        .section-title {
+            margin: 0 0 15px;
+            color: #303449;
+            font-size: 18px;
+        }
+
+        .application-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .application-item {
+            padding: 17px;
+            border-radius: 14px;
+            border: 1px solid #e7e6f0;
+            background: white;
+        }
+
+        .application-item-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .application-item strong {
+            color: #303449;
+            font-size: 14px;
+        }
+
+        .application-meta {
+            margin-top: 5px;
+            color: #85899b;
+            font-size: 11px;
+        }
+
+        .application-reason {
+            margin: 12px 0;
+            color: #555a6d;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .status-pending {
+            background: #fff5d9;
+            color: #a26b00;
+        }
+
+        .status-approved {
+            background: #e7f8ed;
+            color: #238344;
+        }
+
+        .status-rejected {
+            background: #ffe9e9;
+            color: #c53535;
+        }
+
+        .attachment-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: #6848f5;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .attachment-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            padding: 35px 20px;
+            text-align: center;
+            border: 1px dashed #ddd9ef;
+            border-radius: 14px;
+            color: #9295a7;
+            font-size: 12px;
+        }
+
+        .empty-state strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #303449;
+            font-size: 15px;
+        }
+
+        .footer {
+            padding: 25px 0 0;
+            text-align: center;
+            color: #9699aa;
+            font-size: 11px;
+        }
+
+        @media (max-width: 650px) {
+
+            .application-card {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .application-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .application-item-top {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="application-page">
+
+    <main class="application-wrapper">
+
+
+        <!-- TOP -->
+
+        <div class="application-top">
+
+            <a
+                href="{% url 'employee_dashboard' %}"
+                class="back-link"
+            >
+                ← Back to Dashboard
+            </a>
+
+            <div class="application-brand">
+
+                <div class="brand-icon">
+                    W
+                </div>
+
+                <div>
+
+                    <strong>
+                        WORKPULSE
+                    </strong>
+
+                    <span>
+                        Employee Portal
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="application-nav">
+
+            <a href="{% url 'employee_dashboard' %}">
+                🏠 Dashboard
+            </a>
+
+            <a href="{% url 'employee_attendance' %}">
+                🕘 Attendance
+            </a>
+
+            <a href="{% url 'employee_tasks' %}">
+                📋 Tasks
+            </a>
+
+            <a href="{% url 'employee_leave' %}">
+                📅 Leave
+            </a>
+
+            <a href="{% url 'employee_performance' %}">
+                ⭐ Performance
+            </a>
+
+            <a href="{% url 'employee_payroll' %}">
+                💰 Payroll
+            </a>
+
+            <a href="{% url 'employee_profile' %}">
+                👤 Profile
+            </a>
+
+        </nav>
+
+
+        <!-- MAIN CARD -->
+
+        <section class="application-card">
+
+
+            <div class="application-heading">
+
+                <div class="application-icon">
+                    📄
+                </div>
+
+                <div>
+
+                    <span class="section-label">
+                        EMPLOYEE APPLICATIONS
+                    </span>
+
+                    <h1>
+                        My Applications
+                    </h1>
+
+                    <p>
+                        Submit an application and attach
+                        supporting documents for admin review.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- MESSAGES -->
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="message-box">
+                        ✓ {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <!-- FORM -->
+
+            <div class="application-form">
+
+                <h2 class="form-title">
+                    Submit New Application
+                </h2>
+
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+
+                    {% csrf_token %}
+
+
+                    <div class="input-group">
+
+                        <label for="title">
+                            Application Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            placeholder="Example: Attendance adjustment request"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-row">
+
+
+                        <div class="input-group">
+
+                            <label for="application_type">
+                                Application Type
+                            </label>
+
+                            <select
+                                id="application_type"
+                                name="application_type"
+                                required
+                            >
+
+                                {% for value, label in application_types %}
+
+                                    <option value="{{ value }}">
+                                        {{ label }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="application_date">
+                                Application Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="application_date"
+                                name="application_date"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-row">
+
+
+                        <div class="input-group">
+
+                            <label for="start_date">
+                                Start Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="start_date"
+                                name="start_date"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="end_date">
+                                End Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="end_date"
+                                name="end_date"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="reason">
+                            Reason / Application Details
+                        </label>
+
+                        <textarea
+                            id="reason"
+                            name="reason"
+                            placeholder="Write your application details here..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="attachment">
+                            Supporting File
+                        </label>
+
+                        <input
+                            type="file"
+                            id="attachment"
+                            name="attachment"
+                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                        >
+
+                        <small class="file-help">
+                            Upload your application letter or supporting document.
+                            PDF, JPG, PNG, DOC or DOCX.
+                        </small>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+                        ＋ Submit Application
+                    </button>
+
+
+                </form>
+
+            </div>
+
+
+            <!-- APPLICATION HISTORY -->
+
+            <h2 class="section-title">
+                My Application History
+            </h2>
+
+
+            <div class="application-list">
+
+
+                {% for application in applications %}
+
+                    <div class="application-item">
+
+                        <div class="application-item-top">
+
+                            <div>
+
+                                <strong>
+                                    {{ application.title }}
+                                </strong>
+
+                                <div class="application-meta">
+
+                                    {{ application.get_application_type_display }}
+
+                                    •
+
+                                    {{ application.application_date }}
+
+                                </div>
+
+                            </div>
+
+
+                            {% if application.status == 'pending' %}
+
+                                <span class="status status-pending">
+                                    Pending
+                                </span>
+
+                            {% elif application.status == 'approved' %}
+
+                                <span class="status status-approved">
+                                    Approved
+                                </span>
+
+                            {% else %}
+
+                                <span class="status status-rejected">
+                                    Rejected
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="application-reason">
+
+                            {{ application.reason }}
+
+                        </div>
+
+
+                        {% if application.start_date or application.end_date %}
+
+                            <div class="application-meta">
+
+                                Date:
+
+                                {{ application.start_date|default:"-" }}
+
+                                →
+
+                                {{ application.end_date|default:"-" }}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        {% if application.attachment %}
+
+                            <a
+                                href="{{ application.attachment.url }}"
+                                target="_blank"
+                                class="attachment-link"
+                            >
+                                📎 View Uploaded File
+                            </a>
+
+                        {% endif %}
+
+
+                        {% if application.admin_note %}
+
+                            <div class="application-meta"
+                                 style="margin-top:10px;">
+
+                                <strong>
+                                    Admin Note:
+                                </strong>
+
+                                {{ application.admin_note }}
+
+                            </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                {% empty %}
+
+                    <div class="empty-state">
+
+                        <strong>
+                            No Applications Yet
+                        </strong>
+
+                        You haven't submitted any applications.
+
+                    </div>
+
+                {% endfor %}
+
+
+            </div>
+
+
+        </section>
+
+
+        <footer class="footer">
+
+            WORKPULSE • Employee Management System
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

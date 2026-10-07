@@ -1,0 +1,30 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WORKPULSE - Admin Profile</title>
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+<body class="form-page">
+<main class="form-wrapper">
+    <div class="form-top">
+        <a href="{% url 'dashboard_page' %}" class="back-link">&larr; Dashboard</a>
+        <div class="form-brand"><div class="brand-icon">W</div><div><strong>WORKPULSE</strong><span>Administrator Portal</span></div></div>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="cancel-btn" type="submit">Log out</button></form>
+    </div>
+    {% include 'core/navigation.html' %}
+    <section class="form-card">
+        <div class="form-heading"><div class="form-icon">&#128100;</div><div><span class="section-label">ADMINISTRATION</span><h1>Administrator Profile</h1><p>Manage your authenticated administrator session.</p></div></div>
+        <div class="detail-grid">
+            <div class="detail-box"><small>Username</small><strong>{{ admin_user.username }}</strong></div>
+            <div class="detail-box"><small>Email</small><strong>{{ admin_user.email|default:'Not set' }}</strong></div>
+            <div class="detail-box"><small>Access</small><strong>{% if admin_user.is_superuser %}Superuser{% else %}Staff administrator{% endif %}</strong></div>
+            <div class="detail-box"><small>Last login</small><strong>{{ admin_user.last_login|default:'Not available' }}</strong></div>
+        </div>
+        <div class="form-actions"><a class="save-btn" href="{% url 'password_change' %}">Change password</a><a class="cancel-btn" href="{% url 'admin:index' %}">Django Admin</a></div>
+    </section>
+</main>
+</body>
+</html>

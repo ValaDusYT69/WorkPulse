@@ -1,0 +1,299 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WORKPULSE — Add Payroll</title>
+
+    <link rel="stylesheet"
+          href="{% static 'core/css/style.css' %}">
+
+</head>
+
+<body class="form-page">
+
+<div class="form-background"></div>
+
+<main class="form-wrapper">
+
+    <div class="form-top">
+
+        <a href="{% url 'payroll_list' %}"
+           class="back-link">
+            ← Back to Payroll
+        </a>
+
+        <div class="form-brand">
+
+            <div class="brand-icon">W</div>
+
+            <div>
+                <strong>WORKPULSE</strong>
+                <span>Employee Management</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% include 'core/navigation.html' %}
+
+    <section class="form-card">
+
+        <div class="form-heading">
+
+            <div class="form-icon">
+                💰
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    PAYROLL MANAGEMENT
+                </span>
+
+                <h1>Add Payroll</h1>
+
+                <p>
+                    Generate a monthly payroll record for an employee.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="form-error">
+
+                    <span>⚠</span>
+
+                    <div>
+                        <strong>{{ message }}</strong>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- EMPLOYEE -->
+
+            <div class="input-group">
+
+                <label for="employee">
+                    Employee
+                </label>
+
+                <select
+                    id="employee"
+                    name="employee"
+                    required
+                >
+
+                    <option value="">
+                        Select Employee
+                    </option>
+
+                    {% for employee in employees %}
+
+                        <option value="{{ employee.id }}">
+
+                            {{ employee.employee_id }}
+                            -
+                            {{ employee.full_name }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- MONTH -->
+
+            <div class="input-group">
+
+                <label for="month">
+                    Payroll Month
+                </label>
+
+                <input
+                    type="date"
+                    id="month"
+                    name="month"
+                    required
+                >
+
+                <small>
+                    Select the first day of the payroll month.
+                </small>
+
+            </div>
+
+
+            <!-- BASIC SALARY -->
+
+            <div class="input-group">
+
+                <label for="basic_salary">
+                    Basic Salary
+                </label>
+
+                <input
+                    type="number"
+                    id="basic_salary"
+                    name="basic_salary"
+                    step="0.01"
+                    min="0"
+                    placeholder="e.g. 30000"
+                    required
+                >
+
+            </div>
+
+
+            <!-- WORKING + PRESENT -->
+
+            <div class="form-row">
+
+                <div class="input-group">
+
+                    <label for="working_days">
+                        Working Days
+                    </label>
+
+                    <input
+                        type="number"
+                        id="working_days"
+                        name="working_days"
+                        min="0"
+                        placeholder="e.g. 30"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="present_days">
+                        Present Days
+                    </label>
+
+                    <input
+                        type="number"
+                        id="present_days"
+                        name="present_days"
+                        min="0"
+                        step="0.01"
+                        placeholder="e.g. 27"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- LEAVE + DEDUCTIONS -->
+
+            <div class="form-row">
+
+                <div class="input-group">
+
+                    <label for="leave_days">
+                        Leave Days
+                    </label>
+
+                    <input
+                        type="number"
+                        id="leave_days"
+                        name="leave_days"
+                        min="0"
+                        step="0.01"
+                        placeholder="e.g. 3"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="deductions">
+                        Deductions
+                    </label>
+
+                    <input
+                        type="number"
+                        id="deductions"
+                        name="deductions"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                        placeholder="e.g. 500"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'payroll_list' %}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    ＋ Generate Payroll
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <footer class="form-footer">
+
+        WORKPULSE • Employee Management System
+
+    </footer>
+
+</main>
+
+
+<script src="{% static 'core/js/app.js' %}"></script>
+
+</body>
+</html>

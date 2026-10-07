@@ -1,0 +1,423 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>WORKPULSE — Performance Details</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+
+        .page-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .page-nav a {
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 10px;
+            background: #f3f4ff;
+            color: #25283a;
+            border: 1px solid #e4e5f1;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .page-nav a:hover {
+            background: #6848f5;
+            color: white;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .detail-box {
+            padding: 18px;
+            border-radius: 14px;
+            background: #fafaff;
+            border: 1px solid #e6e7f0;
+        }
+
+        .detail-box small {
+            display: block;
+            color: #85899b;
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        .detail-box strong {
+            color: #25283a;
+            font-size: 15px;
+        }
+
+        .score-box {
+            text-align: center;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 16px;
+            background: #f5f3ff;
+            border: 1px solid #e5e1ff;
+        }
+
+        .score-box .score {
+            font-size: 42px;
+            font-weight: 800;
+            color: #6848f5;
+        }
+
+        .score-box small {
+            display: block;
+            color: #777c90;
+            margin-top: 4px;
+        }
+
+        .comments-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 14px;
+            background: #fafaff;
+            border: 1px solid #e6e7f0;
+        }
+
+        .comments-box small {
+            display: block;
+            color: #85899b;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .comments-box p {
+            margin: 0;
+            color: #303449;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 700px) {
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="form-page">
+
+
+<div class="form-background"></div>
+
+
+<main class="form-wrapper">
+
+
+    <!-- TOP BAR -->
+
+    <div class="form-top">
+
+        <a
+            href="{% url 'performance_list' %}"
+            class="back-link"
+        >
+            ← Back to Performance
+        </a>
+
+
+        <div class="form-brand">
+
+            <div class="brand-icon">
+                W
+            </div>
+
+            <div>
+
+                <strong>
+                    WORKPULSE
+                </strong>
+
+                <span>
+                    Employee Management
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="page-nav">
+
+        <a href="{% url 'dashboard_page' %}">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'employee_list' %}">
+            👥 Employees
+        </a>
+
+        <a href="{% url 'attendance_list' %}">
+            🕘 Attendance
+        </a>
+
+        <a href="{% url 'leave_list' %}">
+            📅 Leave
+        </a>
+
+        <a href="{% url 'task_list' %}">
+            📋 Tasks
+        </a>
+
+        <a href="{% url 'performance_list' %}">
+            ⭐ Performance
+        </a>
+
+        <a href="{% url 'payroll_list' %}">
+            💰 Payroll
+        </a>
+
+    </nav>
+
+
+
+    <!-- PERFORMANCE CARD -->
+
+    <section class="form-card">
+
+
+        <div class="form-heading">
+
+            <div class="form-icon">
+                ⭐
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    PERFORMANCE DETAILS
+                </span>
+
+                <h1>
+                    Performance Review
+                </h1>
+
+                <p>
+                    Complete performance information for this employee.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- EMPLOYEE / PERIOD -->
+
+        <div class="detail-grid">
+
+
+            <div class="detail-box">
+
+                <small>
+                    Employee
+                </small>
+
+                <strong>
+
+                    {{ performance.employee.employee_id }}
+
+                    —
+
+                    {{ performance.employee.full_name }}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <small>
+                    Review Period
+                </small>
+
+                <strong>
+                    {{ performance.period }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <small>
+                    Productivity Score
+                </small>
+
+                <strong>
+                    {{ performance.productivity_score }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <small>
+                    Quality Score
+                </small>
+
+                <strong>
+                    {{ performance.quality_score }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <small>
+                    Teamwork Score
+                </small>
+
+                <strong>
+                    {{ performance.attendance_score }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <small>
+                    Task Completion
+                </small>
+
+                <strong>
+                    {{ performance.task_completion_score }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- OVERALL SCORE -->
+
+        <div class="score-box">
+
+            <div class="score">
+                {{ performance.overall_score }}
+            </div>
+
+            <small>
+                Overall Performance Score
+            </small>
+
+        </div>
+
+
+
+        <!-- COMMENTS -->
+
+        {% if performance.comments %}
+
+        <div class="comments-box">
+
+            <small>
+                Reviewer Comments
+            </small>
+
+            <p>
+                {{ performance.comments }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'performance_edit' performance.id %}"
+                class="save-btn"
+            >
+                ✎ Edit Performance
+            </a>
+
+
+            <a
+                href="{% url 'performance_delete' performance.id %}"
+                class="cancel-btn"
+            >
+                🗑 Delete
+            </a>
+
+
+            <a
+                href="{% url 'performance_list' %}"
+                class="cancel-btn"
+            >
+                ← Back to Performance
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="form-footer">
+
+        WORKPULSE • Employee Management System
+
+    </footer>
+
+
+</main>
+
+
+<script
+    src="{% static 'core/js/app.js' %}"
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+<nav class="main-navigation" aria-label="Primary navigation">
+    {% if user.is_staff %}
+        <a class="{% if request.path == '/' or request.path == '/dashboard/' %}active{% endif %}" href="{% url 'dashboard_page' %}">&#127968; Dashboard</a>
+        <a class="{% if '/employees/' in request.path %}active{% endif %}" href="{% url 'employee_list' %}">&#128101; Employees</a>
+        <a class="{% if '/attendance/' in request.path %}active{% endif %}" href="{% url 'attendance_list' %}">&#128338; Attendance</a>
+        <a class="{% if '/leaves/' in request.path %}active{% endif %}" href="{% url 'leave_list' %}">&#128197; Leave</a>
+        <a class="{% if '/tasks/' in request.path %}active{% endif %}" href="{% url 'task_list' %}">&#128203; Tasks</a>
+        <a class="{% if '/performance/' in request.path %}active{% endif %}" href="{% url 'performance_list' %}">&#11088; Performance</a>
+        <a class="{% if '/payrolls/' in request.path %}active{% endif %}" href="{% url 'payroll_list' %}">&#128176; Payroll</a>
+        <a href="{% url 'admin_profile' %}">&#128100; Profile</a>
+            <a href="{% url 'notification_list' %}">&#128276; Notifications{% if unread_notification_count %} ({{ unread_notification_count }}){% endif %}</a>
+            <a href="{% url 'notification_list' %}">&#128276; Notifications{% if unread_notification_count %} ({{ unread_notification_count }}){% endif %}</a>
+        <a href="{% url 'admin:index' %}">Admin</a>
+        <form class="nav-logout" method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Log out</button></form>
+    {% elif user.is_authenticated and user.employee_profile %}
+        <a class="{% if request.path == '/employee/dashboard/' %}active{% endif %}" href="{% url 'employee_dashboard' %}">Dashboard</a>
+        <a class="{% if '/employee/attendance/' in request.path %}active{% endif %}" href="{% url 'employee_attendance' %}">Attendance</a>
+        <a class="{% if '/employee/tasks/' in request.path %}active{% endif %}" href="{% url 'employee_tasks' %}">Tasks</a>
+        <a class="{% if '/employee/leave/' in request.path %}active{% endif %}" href="{% url 'employee_leave' %}">Leave</a>
+        <a class="{% if '/employee/performance/' in request.path %}active{% endif %}" href="{% url 'employee_performance' %}">Performance</a>
+        <a class="{% if '/employee/payroll/' in request.path %}active{% endif %}" href="{% url 'employee_payroll' %}">Payroll</a>
+        <a class="{% if '/employee/profile/' in request.path %}active{% endif %}" href="{% url 'employee_profile' %}">Profile</a>
+        <form class="nav-logout" method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Log out</button></form>
+    {% endif %}
+</nav>

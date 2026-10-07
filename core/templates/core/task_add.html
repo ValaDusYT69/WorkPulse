@@ -1,0 +1,1167 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WORKPULSE — Add Task</title>
+
+    <link rel="stylesheet"
+          href="{% static 'core/css/style.css' %}">
+
+    <style>
+        /* =========================================================
+           WORKPULSE — TASK ADD PAGE
+           Premium UI Layer
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body.form-page {
+            min-height: 100vh;
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", sans-serif;
+        }
+
+        .form-wrapper {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 42px 0 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* =========================================================
+           TOP AREA
+        ========================================================= */
+
+        .form-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 13px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #667085;
+            font-size: 13px;
+            font-weight: 600;
+            transition: .25s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,.75);
+            color: #6848f5;
+            transform: translateX(-3px);
+        }
+
+        .form-brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .form-brand .brand-icon {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            color: white;
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7657ff, #6848f5);
+            box-shadow: 0 12px 25px rgba(104,72,245,.25);
+        }
+
+        .form-brand strong {
+            display: block;
+            font-size: 14px;
+            color: #1c2538;
+            letter-spacing: .3px;
+        }
+
+        .form-brand span {
+            display: block;
+            margin-top: 2px;
+            font-size: 10px;
+            color: #98a2b3;
+        }
+
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        .workpulse-nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .workpulse-nav a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+
+            min-height: 38px;
+            padding: 8px 14px;
+
+            border: 1px solid rgba(221,224,239,.95);
+            border-radius: 11px;
+
+            background: rgba(255,255,255,.72);
+            backdrop-filter: blur(12px);
+
+            color: #30364a;
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 650;
+
+            box-shadow: 0 5px 15px rgba(30,40,80,.035);
+
+            transition:
+                transform .25s ease,
+                background .25s ease,
+                color .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .workpulse-nav a:hover {
+            transform: translateY(-2px);
+            color: #6848f5;
+            background: #fff;
+            border-color: rgba(104,72,245,.22);
+            box-shadow: 0 9px 20px rgba(104,72,245,.10);
+        }
+
+        .workpulse-nav a.active {
+            color: #fff;
+            background: linear-gradient(135deg, #7355ff, #6848f5);
+            border-color: #6848f5;
+            box-shadow: 0 10px 22px rgba(104,72,245,.25);
+        }
+
+
+        /* =========================================================
+           MAIN CARD
+        ========================================================= */
+
+        .task-form-card {
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.94),
+                    rgba(250,251,255,.91)
+                );
+
+            border: 1px solid rgba(255,255,255,.85);
+            border-radius: 28px;
+
+            padding: 38px 42px 40px;
+
+            box-shadow:
+                0 30px 80px rgba(49,54,95,.10),
+                inset 0 1px 0 rgba(255,255,255,.8);
+
+            backdrop-filter: blur(18px);
+
+            animation: cardEnter .55s ease both;
+        }
+
+        .task-form-card::before {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            top: -120px;
+            right: -80px;
+
+            background: rgba(120,91,255,.10);
+            border-radius: 50%;
+            filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .task-form-card::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            bottom: -100px;
+            left: -60px;
+
+            background: rgba(76,201,240,.08);
+            border-radius: 50%;
+            filter: blur(15px);
+            pointer-events: none;
+        }
+
+        @keyframes cardEnter {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =========================================================
+           HEADING
+        ========================================================= */
+
+        .task-heading {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+            gap: 18px;
+
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+
+            border-bottom: 1px solid #edf0f6;
+        }
+
+        .task-heading-icon {
+            width: 62px;
+            height: 62px;
+
+            flex: 0 0 62px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 19px;
+
+            font-size: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #f0edff,
+                    #e9e5ff
+                );
+
+            box-shadow:
+                inset 0 1px 1px rgba(255,255,255,.9),
+                0 10px 25px rgba(104,72,245,.10);
+
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .task-heading .section-label {
+            display: block;
+            margin-bottom: 6px;
+
+            color: #6c50ef;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.7px;
+        }
+
+        .task-heading h1 {
+            margin: 0;
+
+            color: #182238;
+            font-size: clamp(28px, 3vw, 40px);
+            line-height: 1.05;
+            letter-spacing: -.8px;
+        }
+
+        .task-heading p {
+            margin: 8px 0 0;
+
+            color: #8b95aa;
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .task-form {
+            position: relative;
+            z-index: 2;
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px 24px;
+        }
+
+        .task-field {
+            min-width: 0;
+        }
+
+        .task-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .task-field label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            margin-bottom: 8px;
+
+            color: #344054;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .task-field label::after {
+            content: "";
+        }
+
+
+        /* =========================================================
+           DJANGO WIDGET STYLING
+        ========================================================= */
+
+        .task-field input,
+        .task-field select,
+        .task-field textarea {
+
+            width: 100%;
+
+            border: 1px solid #dfe3ed;
+            border-radius: 13px;
+
+            background: rgba(255,255,255,.88);
+
+            color: #20283b;
+
+            font-family: inherit;
+            font-size: 13px;
+
+            outline: none;
+
+            box-shadow:
+                inset 0 1px 2px rgba(20,30,60,.025),
+                0 2px 8px rgba(30,40,70,.025);
+
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease,
+                transform .2s ease,
+                background .2s ease;
+        }
+
+        .task-field input,
+        .task-field select {
+            min-height: 48px;
+            padding: 0 14px;
+        }
+
+        .task-field textarea {
+            min-height: 145px;
+            padding: 14px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .task-field input:hover,
+        .task-field select:hover,
+        .task-field textarea:hover {
+            border-color: #c9c3ff;
+            background: #fff;
+        }
+
+        .task-field input:focus,
+        .task-field select:focus,
+        .task-field textarea:focus {
+            border-color: #7657ff;
+
+            background: #fff;
+
+            box-shadow:
+                0 0 0 4px rgba(118,87,255,.10),
+                0 10px 25px rgba(104,72,245,.06);
+
+            transform: translateY(-1px);
+        }
+
+        .task-field select {
+            cursor: pointer;
+        }
+
+        .task-field input[type="date"] {
+            cursor: pointer;
+        }
+
+        .task-field input[type="number"] {
+            appearance: textfield;
+        }
+
+        .task-field input[type="number"]::-webkit-inner-spin-button,
+        .task-field input[type="number"]::-webkit-outer-spin-button {
+            opacity: .7;
+        }
+
+
+        /* =========================================================
+           SPECIAL FIELD GROUPS
+        ========================================================= */
+
+        .field-hint {
+            display: block;
+            margin-top: 6px;
+
+            color: #98a2b3;
+            font-size: 10px;
+        }
+
+        .progress-wrap {
+            position: relative;
+        }
+
+        .progress-value {
+            position: absolute;
+            right: 12px;
+            top: 35px;
+
+            color: #6848f5;
+            font-size: 11px;
+            font-weight: 800;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================================
+           ERROR
+        ========================================================= */
+
+        .task-error-box {
+            margin-bottom: 22px;
+            padding: 14px 16px;
+
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+
+            border: 1px solid #ffd4d4;
+            border-radius: 13px;
+
+            background: #fff5f5;
+            color: #b42318;
+
+            font-size: 12px;
+
+            animation: shake .35s ease;
+        }
+
+        @keyframes shake {
+            0%,100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-4px);
+            }
+
+            75% {
+                transform: translateX(4px);
+            }
+        }
+
+        .task-field .error {
+            display: block;
+            margin-top: 6px;
+            color: #d92d20;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           BUTTONS
+        ========================================================= */
+
+        .task-actions {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+
+            margin-top: 34px;
+            padding-top: 25px;
+
+            border-top: 1px solid #edf0f6;
+        }
+
+        .task-create-btn,
+        .task-cancel-btn {
+            min-height: 48px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 0 22px;
+
+            border-radius: 13px;
+
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 750;
+
+            text-decoration: none;
+            cursor: pointer;
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                background .25s ease;
+        }
+
+        .task-create-btn {
+            border: 0;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7657ff,
+                    #6848f5
+                );
+
+            box-shadow:
+                0 12px 25px rgba(104,72,245,.25);
+        }
+
+        .task-create-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 17px 32px rgba(104,72,245,.32);
+        }
+
+        .task-create-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .task-cancel-btn {
+            border: 1px solid #e1e5ee;
+            color: #667085;
+            background: #fff;
+        }
+
+        .task-cancel-btn:hover {
+            transform: translateY(-2px);
+            color: #344054;
+            background: #f8f9fc;
+            border-color: #cfd4df;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .form-footer {
+            padding: 22px 4px 5px;
+
+            color: #98a2b3;
+            font-size: 10px;
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 800px) {
+
+            .form-wrapper {
+                width: min(100% - 24px, 680px);
+                padding-top: 22px;
+            }
+
+            .form-top {
+                align-items: flex-start;
+            }
+
+            .task-form-card {
+                padding: 27px 22px 30px;
+                border-radius: 22px;
+            }
+
+            .task-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .task-field.full {
+                grid-column: auto;
+            }
+
+            .task-heading {
+                align-items: flex-start;
+            }
+
+            .task-heading-icon {
+                width: 52px;
+                height: 52px;
+                flex-basis: 52px;
+                font-size: 23px;
+            }
+
+            .workpulse-nav {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 5px;
+                scrollbar-width: thin;
+            }
+
+            .workpulse-nav a {
+                flex: 0 0 auto;
+            }
+        }
+
+
+        @media (max-width: 520px) {
+
+            .form-top {
+                flex-direction: column-reverse;
+                gap: 12px;
+            }
+
+            .form-brand {
+                width: 100%;
+            }
+
+            .task-heading {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .task-heading h1 {
+                font-size: 29px;
+            }
+
+            .task-actions {
+                flex-direction: column-reverse;
+            }
+
+            .task-create-btn,
+            .task-cancel-btn {
+                width: 100%;
+            }
+        }
+
+
+        /* =========================================================
+           REDUCED MOTION
+        ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body class="form-page">
+
+<div class="form-background"></div>
+
+
+<main class="form-wrapper">
+
+
+    <!-- =========================================================
+         TOP BAR
+    ========================================================= -->
+
+    <div class="form-top">
+
+        <a
+            href="{% url 'task_list' %}"
+            class="back-link"
+        >
+            ← Back to Tasks
+        </a>
+
+
+        <div class="form-brand">
+
+            <div class="brand-icon">
+                W
+            </div>
+
+            <div>
+                <strong>WORKPULSE</strong>
+                <span>Employee Management</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         MAIN NAVIGATION
+    ========================================================= -->
+
+    <nav class="workpulse-nav">
+
+        <a href="{% url 'dashboard_page' %}">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'employee_list' %}">
+            👥 Employees
+        </a>
+
+        <a href="{% url 'attendance_list' %}">
+            🕘 Attendance
+        </a>
+
+        <a href="{% url 'leave_list' %}">
+            📅 Leave
+        </a>
+
+        <a
+            href="{% url 'task_list' %}"
+            class="active"
+        >
+            📋 Tasks
+        </a>
+
+        <a href="{% url 'performance_list' %}">
+            ⭐ Performance
+        </a>
+
+        <a href="{% url 'payroll_list' %}">
+            💰 Payroll
+        </a>
+
+    </nav>
+
+
+    <!-- =========================================================
+         FORM CARD
+    ========================================================= -->
+
+    <section class="task-form-card">
+
+
+        <!-- HEADING -->
+
+        <div class="task-heading">
+
+            <div class="task-heading-icon">
+                📋
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    TASK MANAGEMENT
+                </span>
+
+                <h1>
+                    Add New Task
+                </h1>
+
+                <p>
+                    Create, assign and track a new task for your team.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             FORM
+        ===================================================== -->
+
+        <form
+            method="POST"
+            class="task-form"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- NON FIELD ERRORS -->
+
+            {% if form.non_field_errors %}
+
+                <div class="task-error-box">
+
+                    <span>⚠️</span>
+
+                    <div>
+                        {{ form.non_field_errors }}
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="task-grid">
+
+
+                <!-- TITLE -->
+
+                <div class="task-field full">
+
+                    <label for="{{ form.title.id_for_label }}">
+                        Task Title
+                    </label>
+
+                    {{ form.title }}
+
+                    {% if form.title.errors %}
+                        <small class="error">
+                            {{ form.title.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="task-field full">
+
+                    <label for="{{ form.description.id_for_label }}">
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                    <span class="field-hint">
+                        Add a clear description so the assigned employee understands the task.
+                    </span>
+
+                    {% if form.description.errors %}
+                        <small class="error">
+                            {{ form.description.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ASSIGNED TO -->
+
+                <div class="task-field">
+
+                    <label for="{{ form.assigned_to.id_for_label }}">
+                        👤 Assign To
+                    </label>
+
+                    {{ form.assigned_to }}
+
+                    {% if form.assigned_to.errors %}
+                        <small class="error">
+                            {{ form.assigned_to.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PRIORITY -->
+
+                <div class="task-field">
+
+                    <label for="{{ form.priority.id_for_label }}">
+                        ⚡ Priority
+                    </label>
+
+                    {{ form.priority }}
+
+                    {% if form.priority.errors %}
+                        <small class="error">
+                            {{ form.priority.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="task-field">
+
+                    <label for="{{ form.status.id_for_label }}">
+                        📌 Status
+                    </label>
+
+                    {{ form.status }}
+
+                    {% if form.status.errors %}
+                        <small class="error">
+                            {{ form.status.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PROGRESS -->
+
+                <div class="task-field progress-wrap">
+
+                    <label for="{{ form.progress.id_for_label }}">
+                        📊 Progress (%)
+                    </label>
+
+                    {{ form.progress }}
+
+                    <span
+                        class="progress-value"
+                        id="progressValue"
+                    >
+                        0%
+                    </span>
+
+                    {% if form.progress.errors %}
+                        <small class="error">
+                            {{ form.progress.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DUE DATE -->
+
+                <div class="task-field">
+
+                    <label for="{{ form.due_date.id_for_label }}">
+                        📅 Due Date
+                    </label>
+
+                    {{ form.due_date }}
+
+                    {% if form.due_date.errors %}
+                        <small class="error">
+                            {{ form.due_date.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ESTIMATED HOURS -->
+
+                <div class="task-field">
+
+                    <label for="{{ form.estimated_hours.id_for_label }}">
+                        ⏱️ Estimated Hours
+                    </label>
+
+                    {{ form.estimated_hours }}
+
+                    {% if form.estimated_hours.errors %}
+                        <small class="error">
+                            {{ form.estimated_hours.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ACTUAL HOURS -->
+
+                <div class="task-field">
+
+                    <label for="{{ form.actual_hours.id_for_label }}">
+                        ⏱️ Actual Hours
+                    </label>
+
+                    {{ form.actual_hours }}
+
+                    {% if form.actual_hours.errors %}
+                        <small class="error">
+                            {{ form.actual_hours.errors }}
+                        </small>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACTIONS
+            ================================================= -->
+
+            <div class="task-actions">
+
+                <a
+                    href="{% url 'task_list' %}"
+                    class="task-cancel-btn"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="task-create-btn"
+                >
+                    ✓
+                    <span>Create Task</span>
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="form-footer">
+        WORKPULSE • Employee Management System
+    </footer>
+
+
+</main>
+
+
+<script src="{% static 'core/js/app.js' %}"></script>
+
+
+<script>
+
+    /* =========================================================
+       Progress Indicator
+    ========================================================= */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const progressInput =
+            document.getElementById(
+                "{{ form.progress.id_for_label }}"
+            );
+
+        const progressValue =
+            document.getElementById("progressValue");
+
+
+        if (progressInput && progressValue) {
+
+            function updateProgress() {
+
+                let value = parseInt(progressInput.value);
+
+                if (isNaN(value)) {
+                    value = 0;
+                }
+
+                value = Math.max(0, Math.min(100, value));
+
+                progressValue.textContent =
+                    value + "%";
+            }
+
+
+            progressInput.addEventListener(
+                "input",
+                updateProgress
+            );
+
+            updateProgress();
+        }
+
+
+        /* =====================================================
+           Button Loading State
+        ===================================================== */
+
+        const taskForm =
+            document.querySelector(".task-form");
+
+        const createButton =
+            document.querySelector(".task-create-btn");
+
+
+        if (taskForm && createButton) {
+
+            taskForm.addEventListener(
+                "submit",
+                function () {
+
+                    createButton.style.pointerEvents =
+                        "none";
+
+                    createButton.style.opacity =
+                        ".75";
+
+                    createButton.querySelector("span")
+                        .textContent =
+                        "Creating Task...";
+
+                }
+            );
+
+        }
+
+    });
+
+</script>
+
+
+</body>
+</html>

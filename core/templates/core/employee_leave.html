@@ -1,0 +1,801 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>My Leave - WORKPULSE</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+
+        /* =========================================
+           LEAVE PAGE
+           ========================================= */
+
+        .leave-page .form-card {
+            margin-bottom: 22px;
+        }
+
+        .leave-page .form-card:last-of-type {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================
+           LEAVE SUMMARY
+           ========================================= */
+
+        .leave-summary {
+            margin-top: 22px;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 14px;
+        }
+
+        .leave-summary-card {
+            min-height: 82px;
+
+            padding: 17px 18px;
+
+            border-radius: 15px;
+
+            background: rgba(255, 255, 255, 0.58);
+
+            border: 1px solid rgba(105, 78, 245, 0.10);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .leave-summary-label {
+            font-size: 10px;
+            color: #8c96ad;
+            margin-bottom: 5px;
+        }
+
+        .leave-summary-value {
+            font-size: 16px;
+            font-weight: 800;
+            color: #20263a;
+        }
+
+
+        /* =========================================
+           APPLY LEAVE FORM
+           ========================================= */
+
+        .leave-form {
+            margin-top: 24px;
+        }
+
+        .leave-form .input-group {
+            margin-bottom: 18px;
+        }
+
+        .leave-form .form-row {
+            gap: 18px;
+            margin-bottom: 2px;
+        }
+
+        .leave-form textarea {
+            min-height: 115px;
+            resize: vertical;
+        }
+
+
+        /* =========================================
+           FORM ACTION
+           ========================================= */
+
+        .leave-submit-area {
+            margin-top: 24px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid rgba(80, 90, 120, 0.10);
+
+            display: flex;
+            justify-content: flex-end;
+        }
+
+
+        /* =========================================
+           LEAVE HISTORY
+           ========================================= */
+
+        .leave-history-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+        }
+
+        .leave-count {
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            background: rgba(104, 72, 245, 0.08);
+
+            color: #6848f5;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .leave-table-wrapper {
+            overflow-x: auto;
+
+            border: 1px solid rgba(105, 78, 245, 0.10);
+
+            border-radius: 14px;
+
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .leave-table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 650px;
+        }
+
+        .leave-table th {
+            padding: 13px 15px;
+
+            text-align: left;
+
+            background: rgba(104, 72, 245, 0.035);
+
+            color: #7f899f;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.4px;
+
+            border-bottom: 1px solid rgba(80, 90, 120, 0.08);
+        }
+
+        .leave-table td {
+            padding: 15px;
+
+            color: #4d566d;
+
+            font-size: 11px;
+
+            border-bottom: 1px solid rgba(80, 90, 120, 0.07);
+        }
+
+        .leave-table tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =========================================
+           STATUS BADGES
+           ========================================= */
+
+        .leave-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+        .leave-status.pending {
+            background: #fff5d9;
+            color: #a56b00;
+        }
+
+        .leave-status.approved {
+            background: #e7f9ef;
+            color: #16834a;
+        }
+
+        .leave-status.rejected {
+            background: #ffe9e9;
+            color: #c44545;
+        }
+
+
+        /* =========================================
+           EMPTY STATE
+           ========================================= */
+
+        .leave-empty {
+            text-align: center;
+
+            padding: 45px 20px;
+        }
+
+        .leave-empty-icon {
+            width: 48px;
+            height: 48px;
+
+            margin: 0 auto 12px;
+
+            border-radius: 13px;
+
+            background: rgba(104, 72, 245, 0.08);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .leave-empty strong {
+            display: block;
+
+            font-size: 13px;
+
+            color: #20263a;
+
+            margin-bottom: 5px;
+        }
+
+        .leave-empty span {
+            font-size: 10px;
+
+            color: #8c96ad;
+        }
+
+
+        /* =========================================
+           ERROR MESSAGE
+           ========================================= */
+
+        .leave-error {
+            margin-top: 18px;
+            margin-bottom: 18px;
+
+            padding: 12px 15px;
+
+            border-radius: 12px;
+
+            background: #fff0f0;
+
+            border: 1px solid #ffd6d6;
+
+            color: #b84242;
+
+            font-size: 11px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+
+        @media (max-width: 800px) {
+
+            .leave-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .leave-history-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="form-page leave-page">
+
+
+<main class="form-wrapper">
+
+
+    <!-- =========================================
+         TOP BAR
+         ========================================= -->
+
+    <div class="form-top">
+
+        <a
+            href="{% url 'employee_dashboard' %}"
+            class="back-link"
+        >
+            &larr; Dashboard
+        </a>
+
+
+        <div class="form-brand">
+
+            <div class="brand-icon">
+                W
+            </div>
+
+            <div>
+
+                <strong>
+                    WORKPULSE
+                </strong>
+
+                <span>
+                    Employee Portal
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'logout' %}"
+            class="back-link"
+        >
+            Log out
+        </a>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NAVIGATION
+         ========================================= -->
+
+    <nav class="main-navigation">
+
+        <a href="{% url 'employee_dashboard' %}">
+            🏠 My Dashboard
+        </a>
+
+        <a href="{% url 'employee_attendance' %}">
+            🕘 Attendance
+        </a>
+
+        <a href="{% url 'employee_tasks' %}">
+            📋 Tasks
+        </a>
+
+        <a
+            class="active"
+            href="{% url 'employee_leave' %}"
+        >
+            📅 Leave
+        </a>
+
+        <a href="{% url 'employee_performance' %}">
+            ⭐ Performance
+        </a>
+
+        <a href="{% url 'employee_payroll' %}">
+            💰 Payroll
+        </a>
+
+        <a href="{% url 'employee_profile' %}">
+            👤 Profile
+        </a>
+
+    </nav>
+
+
+
+    <!-- =========================================
+         LEAVE HEADER
+         ========================================= -->
+
+    <section class="form-card">
+
+        <div class="form-heading">
+
+            <div class="form-icon">
+                📅
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    LEAVE MANAGEMENT
+                </span>
+
+                <h1>
+                    My Leave
+                </h1>
+
+                <p>
+                    Apply for leave and track your previous
+                    leave requests.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <div class="leave-summary">
+
+
+            <div class="leave-summary-card">
+
+                <span class="leave-summary-label">
+                    Total Requests
+                </span>
+
+                <span class="leave-summary-value">
+                    {{ leaves|length }}
+                </span>
+
+            </div>
+
+
+            <div class="leave-summary-card">
+
+                <span class="leave-summary-label">
+                    Latest Status
+                </span>
+
+                <span class="leave-summary-value">
+
+                    {% if leaves %}
+                        {{ leaves.0.get_status_display }}
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="leave-summary-card">
+
+                <span class="leave-summary-label">
+                    Employee ID
+                </span>
+
+                <span class="leave-summary-value">
+                    {{ employee.employee_id }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         APPLY FOR LEAVE
+         ========================================= -->
+
+    <section class="form-card">
+
+        <span class="section-label">
+            NEW REQUEST
+        </span>
+
+        <h2>
+            Apply for Leave
+        </h2>
+
+        <p>
+            Submit a leave request to your administrator.
+        </p>
+
+
+        {% if form.non_field_errors %}
+
+            <div class="leave-error">
+                {{ form.non_field_errors }}
+            </div>
+
+        {% endif %}
+
+
+        <form
+            method="post"
+            class="leave-form"
+        >
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="employee"
+                value="{{ employee.id }}"
+            >
+
+
+            <!-- LEAVE TYPE -->
+
+            <div class="input-group">
+
+                <label>
+                    Leave Type
+                </label>
+
+                {{ form.leave_type }}
+
+            </div>
+
+
+            <!-- DATES -->
+
+            <div class="form-row">
+
+                <div class="input-group">
+
+                    <label>
+                        Start Date
+                    </label>
+
+                    {{ form.start_date }}
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        End Date
+                    </label>
+
+                    {{ form.end_date }}
+
+                </div>
+
+            </div>
+
+
+            <!-- REASON -->
+
+            <div class="input-group">
+
+                <label>
+                    Reason
+                </label>
+
+                {{ form.reason }}
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <div class="leave-submit-area">
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    📅 Submit Leave Request
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =========================================
+         LEAVE HISTORY
+         ========================================= -->
+
+    <section class="form-card">
+
+        <div class="leave-history-header">
+
+            <div>
+
+                <span class="section-label">
+                    LEAVE HISTORY
+                </span>
+
+                <h2>
+                    Previous Requests
+                </h2>
+
+                <p>
+                    Review the status of your submitted
+                    leave requests.
+                </p>
+
+            </div>
+
+
+            <span class="leave-count">
+
+                {{ leaves|length }} Requests
+
+            </span>
+
+        </div>
+
+
+
+        <div class="leave-table-wrapper">
+
+            <table class="leave-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Leave Type
+                        </th>
+
+                        <th>
+                            Start Date
+                        </th>
+
+                        <th>
+                            End Date
+                        </th>
+
+                        <th>
+                            Days
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in leaves %}
+
+                    <tr>
+
+                        <td>
+                            {{ item.get_leave_type_display }}
+                        </td>
+
+                        <td>
+                            {{ item.start_date }}
+                        </td>
+
+                        <td>
+                            {{ item.end_date }}
+                        </td>
+
+                        <td>
+                            {{ item.days }}
+                        </td>
+
+                        <td>
+
+                            {% if item.status == 'pending' %}
+
+                                <span class="leave-status pending">
+                                    Pending
+                                </span>
+
+                            {% elif item.status == 'approved' %}
+
+                                <span class="leave-status approved">
+                                    Approved
+                                </span>
+
+                            {% elif item.status == 'rejected' %}
+
+                                <span class="leave-status rejected">
+                                    Rejected
+                                </span>
+
+                            {% else %}
+
+                                <span class="leave-status">
+                                    {{ item.get_status_display }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            <div class="leave-empty">
+
+                                <div class="leave-empty-icon">
+                                    📅
+                                </div>
+
+                                <strong>
+                                    No leave requests yet
+                                </strong>
+
+                                <span>
+                                    Your submitted leave requests
+                                    will appear here.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
+    <footer class="form-footer">
+
+        WORKPULSE • Employee Management System
+
+    </footer>
+
+
+</main>
+
+
+<script src="{% static 'core/js/app.js' %}"></script>
+
+</body>
+
+</html>

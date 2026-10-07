@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Details</title>
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+<body>
+
+{% include 'core/navigation.html' %}
+
+    <h1>Employee Details</h1>
+
+    <p><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
+    <p><strong>Full Name:</strong> {{ employee.full_name }}</p>
+    <p><strong>Email:</strong> {{ employee.email }}</p>
+    <p><strong>Phone:</strong> {{ employee.phone }}</p>
+    <p><strong>Department:</strong> {{ employee.department }}</p>
+    <p><strong>Designation:</strong> {{ employee.designation }}</p>
+    <p><strong>Joining Date:</strong> {{ employee.joining_date }}</p>
+    <p><strong>Active:</strong> {{ employee.is_active }}</p>
+
+    <br>
+
+    <br>
+
+<a href="{% url 'employee_edit' employee.employee_id %}">Edit Employee</a>
+
+<br><br>
+
+<a href="{% url 'employee_delete' employee.employee_id %}">Delete Employee</a>
+
+<br><br>
+
+<a href="{% url 'employee_list' %}">Back to Employee List</a>
+</body>
+</html>

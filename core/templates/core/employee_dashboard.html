@@ -1,0 +1,2058 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WORKPULSE — My Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{% static 'core/css/style.css' %}">
+
+    <style>
+
+        /* =====================================================
+           EMPLOYEE PORTAL DASHBOARD
+           ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body.employee-portal {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Inter, -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", sans-serif;
+            color: #1d2438;
+
+            background:
+                radial-gradient(
+                    circle at 8% 12%,
+                    rgba(105, 76, 245, .16),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 92% 82%,
+                    rgba(52, 211, 153, .13),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    #f1f3ff 0%,
+                    #eef4ff 48%,
+                    #effcfb 100%
+                );
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           BACKGROUND ORBS
+           ===================================================== */
+
+        .portal-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .portal-orb.one {
+            width: 260px;
+            height: 260px;
+            background: rgba(107, 76, 245, .12);
+            top: -100px;
+            left: -80px;
+        }
+
+        .portal-orb.two {
+            width: 300px;
+            height: 300px;
+            background: rgba(45, 212, 191, .10);
+            right: -100px;
+            bottom: -100px;
+        }
+
+
+        /* =====================================================
+           MAIN SHELL
+           ===================================================== */
+
+        .portal-shell {
+            position: relative;
+            z-index: 1;
+
+            width: min(1180px, calc(100% - 48px));
+
+            margin: 0 auto;
+
+            padding: 34px 0 50px;
+        }
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .portal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+
+            margin-bottom: 18px;
+        }
+
+        .portal-brand {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+        }
+
+        .portal-logo {
+            width: 52px;
+            height: 52px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6956f5,
+                    #7441e9
+                );
+
+            color: white;
+
+            font-size: 25px;
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 30px
+                rgba(105, 76, 245, .28);
+        }
+
+        .portal-brand strong {
+            display: block;
+
+            font-size: 18px;
+            letter-spacing: .02em;
+        }
+
+        .portal-brand span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #8b94a9;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           LOGOUT
+           ===================================================== */
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            padding: 10px 17px;
+
+            border-radius: 11px;
+
+            background: rgba(255,255,255,.78);
+
+            border: 1px solid #e2e5f1;
+
+            color: #596176;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition: .22s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+
+            color: #694cf5;
+
+            border-color: #cfc8ff;
+
+            box-shadow:
+                0 8px 20px
+                rgba(54, 61, 95, .08);
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+           ===================================================== */
+
+        .portal-nav {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-bottom: 24px;
+        }
+
+        .portal-nav a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            min-height: 42px;
+
+            padding: 0 17px;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,.76);
+
+            border: 1px solid #e1e4ef;
+
+            color: #343b51;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            box-shadow:
+                0 4px 14px
+                rgba(50, 55, 90, .035);
+
+            transition: .22s ease;
+        }
+
+        .portal-nav a:hover {
+            transform: translateY(-2px);
+
+            border-color: #cfc8ff;
+
+            color: #674cf4;
+
+            box-shadow:
+                0 9px 22px
+                rgba(69, 62, 130, .09);
+        }
+
+        .portal-nav a.active {
+            color: #fff;
+
+            border-color: transparent;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6955f5,
+                    #743ee8
+                );
+
+            box-shadow:
+                0 9px 24px
+                rgba(105, 76, 245, .25);
+        }
+
+
+        /* =====================================================
+           WELCOME HERO
+           ===================================================== */
+
+        .welcome-card {
+            position: relative;
+            overflow: hidden;
+
+            padding: 42px 45px;
+
+            border-radius: 26px;
+
+            background: rgba(255,255,255,.84);
+
+            border: 1px solid rgba(255,255,255,.9);
+
+            box-shadow:
+                0 20px 55px
+                rgba(49, 59, 100, .10);
+
+            backdrop-filter: blur(14px);
+
+            margin-bottom: 22px;
+        }
+
+        .welcome-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
+
+            right: -75px;
+            top: -85px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(105,76,245,.14),
+                    rgba(95,210,191,.08)
+                );
+        }
+
+        .eyebrow {
+            display: inline-block;
+
+            margin-bottom: 10px;
+
+            color: #6852ef;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: .16em;
+        }
+
+        .welcome-card h1 {
+            position: relative;
+            z-index: 1;
+
+            margin: 0;
+
+            max-width: 760px;
+
+            font-size: clamp(30px, 4vw, 42px);
+
+            line-height: 1.12;
+
+            letter-spacing: -.035em;
+        }
+
+        .welcome-card h1 span {
+            color: #6b50ef;
+        }
+
+        .welcome-meta {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 17px;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+
+            min-height: 32px;
+
+            padding: 0 12px;
+
+            border-radius: 9px;
+
+            background: #f4f3ff;
+
+            border: 1px solid #e8e5ff;
+
+            color: #626a7e;
+
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .welcome-actions {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .primary-action,
+        .secondary-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 43px;
+
+            padding: 0 18px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 750;
+
+            transition: .22s ease;
+        }
+
+        .primary-action {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6955f5,
+                    #743ee8
+                );
+
+            box-shadow:
+                0 9px 22px
+                rgba(105, 76, 245, .22);
+        }
+
+        .secondary-action {
+            color: #41495e;
+
+            background: #fff;
+
+            border: 1px solid #e1e4ef;
+        }
+
+        .primary-action:hover,
+        .secondary-action:hover {
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           STATISTICS
+           ===================================================== */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            min-height: 142px;
+
+            padding: 21px;
+
+            border-radius: 19px;
+
+            background: rgba(255,255,255,.86);
+
+            border:
+                1px solid
+                rgba(255,255,255,.95);
+
+            box-shadow:
+                0 13px 35px
+                rgba(52, 61, 99, .075);
+
+            transition: .24s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 19px 38px
+                rgba(52, 61, 99, .11);
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+            place-items: center;
+
+            margin-bottom: 13px;
+
+            border-radius: 11px;
+
+            font-size: 17px;
+        }
+
+        .stat-icon.purple {
+            background: #efedff;
+            color: #674cf4;
+        }
+
+        .stat-icon.green {
+            background: #e8fbf3;
+            color: #16a36e;
+        }
+
+        .stat-icon.orange {
+            background: #fff5df;
+            color: #d58a17;
+        }
+
+        .stat-icon.blue {
+            background: #eaf4ff;
+            color: #3784d7;
+        }
+
+        .stat-label {
+            color: #858da0;
+
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .stat-value {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #20283d;
+
+            font-size: 28px;
+            line-height: 1;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           CONTENT GRID
+           ===================================================== */
+
+        .content-grid {
+            display: grid;
+
+            /*
+                LEFT = larger
+                RIGHT = performance
+            */
+
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(330px, .85fr);
+
+            gap: 20px;
+
+            align-items: start;
+        }
+
+
+        /* =====================================================
+           PANELS
+           ===================================================== */
+
+        .panel {
+            padding: 27px;
+
+            border-radius: 22px;
+
+            background: rgba(255,255,255,.88);
+
+            border:
+                1px solid
+                rgba(255,255,255,.95);
+
+            box-shadow:
+                0 14px 40px
+                rgba(52, 61, 99, .075);
+        }
+
+        .panel + .panel {
+            margin-top: 20px;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .panel-heading h2 {
+            margin: 0;
+
+            font-size: 21px;
+
+            letter-spacing: -.02em;
+        }
+
+        .panel-heading p {
+            margin: 5px 0 0;
+
+            color: #8b94a8;
+
+            font-size: 12px;
+        }
+
+        .panel-link {
+            color: #6951ed;
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           TASKS
+           ===================================================== */
+
+        .task-list {
+            display: grid;
+
+            gap: 11px;
+        }
+
+        .task-item {
+            padding: 17px;
+
+            border:
+                1px solid
+                #e9ebf3;
+
+            border-radius: 15px;
+
+            background: #fcfcff;
+
+            transition: .2s ease;
+        }
+
+        .task-item:hover {
+            border-color: #d9d4ff;
+
+            transform: translateX(2px);
+        }
+
+        .task-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+        .task-title {
+            margin: 0;
+
+            font-size: 15px;
+
+            font-weight: 750;
+
+            color: #283047;
+        }
+
+        .task-description {
+            margin: 6px 0 12px;
+
+            color: #8a92a4;
+
+            font-size: 12px;
+
+            line-height: 1.55;
+        }
+
+        .task-badges {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 7px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+
+            min-height: 25px;
+
+            padding: 0 9px;
+
+            border-radius: 7px;
+
+            background: #f2f3f8;
+
+            color: #626b7e;
+
+            font-size: 10px;
+
+            font-weight: 750;
+        }
+
+        .badge.priority {
+            background: #f0edff;
+            color: #694df2;
+        }
+
+        .badge.completed {
+            background: #e9faf2;
+            color: #159968;
+        }
+
+        .badge.overdue {
+            background: #fff0f0;
+            color: #d34d4d;
+        }
+
+        .progress-wrap {
+            margin-top: 13px;
+        }
+
+        .progress-head {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 6px;
+
+            color: #8b93a5;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background: #eceef5;
+        }
+
+        .progress-fill {
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6955f5,
+                    #8b63f5
+                );
+        }
+
+        .empty-state {
+            padding: 32px 15px;
+
+            text-align: center;
+
+            color: #9299aa;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PERFORMANCE
+           ===================================================== */
+
+        .performance-score {
+            display: flex;
+            align-items: center;
+
+            gap: 17px;
+
+            padding: 19px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f3f1ff,
+                    #f9f8ff
+                );
+
+            margin-bottom: 16px;
+        }
+
+        .score-circle {
+            width: 78px;
+            height: 78px;
+
+            flex: 0 0 78px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6955f5,
+                    #7944e8
+                );
+
+            color: #fff;
+
+            font-size: 22px;
+            font-weight: 850;
+
+            box-shadow:
+                0 10px 25px
+                rgba(105,76,245,.23);
+        }
+
+        .score-info strong {
+            display: block;
+
+            font-size: 15px;
+        }
+
+        .score-info span {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #8a92a5;
+
+            font-size: 11px;
+        }
+
+        .metric-list {
+            display: grid;
+
+            gap: 10px;
+        }
+
+        .metric-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 11px 12px;
+
+            border-radius: 10px;
+
+            background: #fafaff;
+
+            border:
+                1px solid
+                #eef0f6;
+        }
+
+        .metric-row span {
+            color: #727b90;
+
+            font-size: 12px;
+        }
+
+        .metric-row strong {
+            color: #2d3448;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PROFILE
+           ===================================================== */
+
+        .profile-list {
+            display: grid;
+            gap: 0;
+        }
+
+        .profile-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 12px 0;
+
+            border-bottom:
+                1px solid
+                #eef0f5;
+        }
+
+        .profile-row:last-child {
+            border-bottom: 0;
+        }
+
+        .profile-row span {
+            color: #8a92a4;
+
+            font-size: 12px;
+        }
+
+        .profile-row strong {
+            text-align: right;
+
+            color: #30384c;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           ATTENDANCE
+           ===================================================== */
+
+        .attendance-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 17px;
+
+            border-radius: 15px;
+
+            background: #f8f8ff;
+
+            border:
+                1px solid
+                #ecebf9;
+        }
+
+        .attendance-status strong {
+            display: block;
+
+            font-size: 15px;
+        }
+
+        .attendance-status span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #8a92a4;
+
+            font-size: 11px;
+        }
+
+        .attendance-action {
+            padding: 9px 14px;
+
+            border-radius: 9px;
+
+            color: #fff;
+
+            background: #6955f5;
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .portal-footer {
+            padding: 28px 0 0;
+
+            text-align: center;
+
+            color: #9299aa;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .portal-shell {
+                width:
+                    min(
+                        100% - 24px,
+                        1180px
+                    );
+
+                padding-top: 18px;
+            }
+
+            .portal-header {
+                align-items: flex-start;
+            }
+
+            .portal-nav {
+                overflow-x: auto;
+
+                flex-wrap: nowrap;
+
+                padding-bottom: 5px;
+            }
+
+            .portal-nav a {
+                flex: 0 0 auto;
+            }
+
+            .welcome-card {
+                padding: 28px 23px;
+
+                border-radius: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .panel {
+                padding: 21px;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .portal-header {
+                flex-direction: column;
+            }
+
+            .logout-btn {
+                align-self: flex-end;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-card h1 {
+                font-size: 30px;
+            }
+
+            .welcome-actions {
+                flex-direction: column;
+            }
+
+            .primary-action,
+            .secondary-action {
+                width: 100%;
+            }
+
+            .attendance-box {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="employee-portal">
+
+
+    <!-- BACKGROUND -->
+
+    <div class="portal-orb one"></div>
+    <div class="portal-orb two"></div>
+
+
+
+    <main class="portal-shell">
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="portal-header">
+
+
+            <div class="portal-brand">
+
+                <div class="portal-logo">
+                    W
+                </div>
+
+                <div>
+
+                    <strong>
+                        WORKPULSE
+                    </strong>
+
+                    <span>
+                        Employee Portal
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{% url 'logout' %}"
+                class="logout-btn"
+            >
+                ↪ Log out
+            </a>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             NAVIGATION
+             ================================================= -->
+
+        <nav class="portal-nav">
+
+
+            <a
+                href="{% url 'employee_dashboard' %}"
+                class="active"
+            >
+                🏠 My Dashboard
+            </a>
+
+
+            <a href="{% url 'employee_attendance' %}">
+                🕘 Attendance
+            </a>
+
+
+            <a href="{% url 'employee_tasks' %}">
+                📋 Tasks
+            </a>
+
+
+            <a href="{% url 'employee_leave' %}">
+                📅 Leave
+            </a>
+
+
+            <a href="{% url 'employee_applications' %}">
+                📄 Applications
+            </a>
+
+
+            <a href="{% url 'employee_performance' %}">
+                ⭐ Performance
+            </a>
+
+
+            <a href="{% url 'employee_payroll' %}">
+                💰 Payroll
+            </a>
+
+
+            <a href="{% url 'employee_profile' %}">
+                👤 Profile
+            </a>
+
+
+        </nav>
+
+
+
+        <!-- =================================================
+             WELCOME
+             ================================================= -->
+
+        <section class="welcome-card">
+
+
+            <span class="eyebrow">
+                EMPLOYEE PORTAL
+            </span>
+
+
+            <h1>
+
+                Good morning,
+
+                <span>
+                    {{ employee.full_name }}
+                </span>
+
+            </h1>
+
+
+            <div class="welcome-meta">
+
+
+                <span class="meta-pill">
+                    📅 {{ today|date:"M d, Y" }}
+                </span>
+
+
+                <span class="meta-pill">
+                    ID: {{ employee.employee_id }}
+                </span>
+
+
+                <span class="meta-pill">
+                    {{ employee.designation }}
+                </span>
+
+
+            </div>
+
+
+            <div class="welcome-actions">
+
+
+                <a
+                    href="{% url 'employee_attendance' %}"
+                    class="primary-action"
+                >
+                    🕘 View Attendance
+                </a>
+
+
+                <a
+                    href="{% url 'employee_tasks' %}"
+                    class="secondary-action"
+                >
+                    📋 View My Tasks
+                </a>
+
+
+                <a
+                    href="{% url 'employee_applications' %}"
+                    class="secondary-action"
+                >
+                    📄 My Applications
+                </a>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             STATISTICS
+             ================================================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- Attendance -->
+
+            <div class="stat-card">
+
+
+                <div
+                    class="stat-icon
+                    {% if today_attendance %}
+                        green
+                    {% else %}
+                        orange
+                    {% endif %}"
+                >
+
+                    {% if today_attendance %}
+                        ✓
+                    {% else %}
+                        ◷
+                    {% endif %}
+
+                </div>
+
+
+                <span class="stat-label">
+                    Today's Attendance
+                </span>
+
+
+                <strong class="stat-value">
+
+                    {% if today_attendance %}
+
+                        {{ today_attendance.get_status_display }}
+
+                    {% else %}
+
+                        Not marked
+
+                    {% endif %}
+
+                </strong>
+
+
+            </div>
+
+
+
+            <!-- Total Tasks -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-icon purple">
+                    📋
+                </div>
+
+
+                <span class="stat-label">
+                    Total Tasks
+                </span>
+
+
+                <strong class="stat-value">
+                    {{ tasks|length }}
+                </strong>
+
+
+            </div>
+
+
+
+            <!-- Completed -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-icon green">
+                    ✓
+                </div>
+
+
+                <span class="stat-label">
+                    Completed Tasks
+                </span>
+
+
+                <strong class="stat-value">
+                    {{ completed_tasks }}
+                </strong>
+
+
+            </div>
+
+
+
+            <!-- Pending -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-icon blue">
+                    ◷
+                </div>
+
+
+                <span class="stat-label">
+                    Pending Tasks
+                </span>
+
+
+                <strong class="stat-value">
+                    {{ pending_tasks }}
+                </strong>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MAIN CONTENT
+
+             LEFT:
+                Tasks
+                Attendance
+                Profile
+
+             RIGHT:
+                Performance
+                Payroll
+             ================================================= -->
+
+        <div class="content-grid">
+
+
+            <!-- =================================================
+                 LEFT COLUMN
+                 ================================================= -->
+
+            <div>
+
+
+                <!-- =================================================
+                     MY TASKS
+                     ================================================= -->
+
+                <section class="panel">
+
+
+                    <div class="panel-heading">
+
+
+                        <div>
+
+                            <h2>
+                                My Tasks
+                            </h2>
+
+                            <p>
+                                Tasks assigned to you by the administrator.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'employee_tasks' %}"
+                            class="panel-link"
+                        >
+                            View all →
+                        </a>
+
+
+                    </div>
+
+
+
+                    <div class="task-list">
+
+
+                        {% for task in tasks|slice:":6" %}
+
+
+                        <article class="task-item">
+
+
+                            <div class="task-top">
+
+
+                                <div>
+
+
+                                    <h3 class="task-title">
+                                        {{ task.title }}
+                                    </h3>
+
+
+                                    {% if task.description %}
+
+                                    <p class="task-description">
+                                        {{ task.description|truncatechars:130 }}
+                                    </p>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="task-badges">
+
+
+                                <span class="badge priority">
+                                    {{ task.get_priority_display }}
+                                </span>
+
+
+                                <span class="badge">
+                                    {{ task.get_status_display }}
+                                </span>
+
+
+                                {% if task.deadline_status == 'on_time' %}
+
+                                    <span class="badge completed">
+                                        ✓ On time
+                                    </span>
+
+                                {% elif task.deadline_status == 'late' %}
+
+                                    <span class="badge overdue">
+                                        Late
+                                    </span>
+
+                                {% elif task.deadline_status == 'overdue' %}
+
+                                    <span class="badge overdue">
+                                        Overdue
+                                    </span>
+
+                                {% endif %}
+
+
+                                <span class="badge">
+                                    Due {{ task.due_date|date:"M d, Y" }}
+                                </span>
+
+
+                            </div>
+
+
+
+                            <div class="progress-wrap">
+
+
+                                <div class="progress-head">
+
+                                    <span>
+                                        Progress
+                                    </span>
+
+                                    <strong>
+                                        {{ task.progress }}%
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="progress-bar">
+
+                                    <div
+                                        class="progress-fill"
+                                        style="width:{{ task.progress }}%;"
+                                    ></div>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </article>
+
+
+                        {% empty %}
+
+
+                        <div class="empty-state">
+
+                            🎯
+
+                            <br>
+                            <br>
+
+                            No tasks have been assigned to you yet.
+
+                        </div>
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- =================================================
+                     TODAY'S ATTENDANCE
+                     ================================================= -->
+
+                <section class="panel">
+
+
+                    <div class="panel-heading">
+
+
+                        <div>
+
+                            <h2>
+                                Today's Attendance
+                            </h2>
+
+                            <p>
+                                Your attendance status for today.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="attendance-box">
+
+
+                        <div class="attendance-status">
+
+
+                            {% if today_attendance %}
+
+
+                                <strong>
+                                    ✓
+                                    {{ today_attendance.get_status_display }}
+                                </strong>
+
+
+                                <span>
+
+                                    Check-in:
+                                    {{ today_attendance.check_in|default:"Not recorded" }}
+
+                                    {% if today_attendance.check_out %}
+
+                                        · Check-out:
+                                        {{ today_attendance.check_out }}
+
+                                    {% endif %}
+
+                                </span>
+
+
+                            {% else %}
+
+
+                                <strong>
+                                    Attendance not marked
+                                </strong>
+
+
+                                <span>
+                                    Please mark your attendance.
+                                </span>
+
+
+                            {% endif %}
+
+
+                        </div>
+
+
+
+                        <a
+                            href="{% url 'employee_attendance' %}"
+                            class="attendance-action"
+                        >
+                            Open Attendance
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- =================================================
+                     MY PROFILE
+                     MOVED TO LEFT COLUMN
+                     ================================================= -->
+
+                <section class="panel">
+
+
+                    <div class="panel-heading">
+
+
+                        <div>
+
+                            <h2>
+                                My Profile
+                            </h2>
+
+                            <p>
+                                Your employee information.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'employee_profile' %}"
+                            class="panel-link"
+                        >
+                            Edit →
+                        </a>
+
+
+                    </div>
+
+
+
+                    <div class="profile-list">
+
+
+                        <div class="profile-row">
+
+                            <span>
+                                Employee ID
+                            </span>
+
+                            <strong>
+                                {{ employee.employee_id }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-row">
+
+                            <span>
+                                Full Name
+                            </span>
+
+                            <strong>
+                                {{ employee.full_name }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-row">
+
+                            <span>
+                                Department
+                            </span>
+
+                            <strong>
+                                {{ employee.department }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-row">
+
+                            <span>
+                                Designation
+                            </span>
+
+                            <strong>
+                                {{ employee.designation }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-row">
+
+                            <span>
+                                Email
+                            </span>
+
+                            <strong>
+                                {{ employee.email }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RIGHT COLUMN
+                 PERFORMANCE ONLY
+                 ================================================= -->
+
+            <div>
+
+
+                <!-- =================================================
+                     MY PERFORMANCE
+                     ================================================= -->
+
+                <section class="panel">
+
+
+                    <div class="panel-heading">
+
+
+                        <div>
+
+                            <h2>
+                                My Performance
+                            </h2>
+
+                            <p>
+                                Your latest performance overview.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'employee_performance' %}"
+                            class="panel-link"
+                        >
+                            Details →
+                        </a>
+
+
+                    </div>
+
+
+
+                    <div class="performance-score">
+
+
+                        <div class="score-circle">
+
+                            {{ metrics.overall_score|default:"0" }}
+
+                        </div>
+
+
+                        <div class="score-info">
+
+                            <strong>
+                                Overall Score
+                            </strong>
+
+                            <span>
+                                Automatically calculated from your
+                                performance data.
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="metric-list">
+
+
+                        <div class="metric-row">
+
+                            <span>
+                                Productivity
+                            </span>
+
+                            <strong>
+                                {{ metrics.productivity_score|default:"0" }}/10
+                            </strong>
+
+                        </div>
+
+
+                        <div class="metric-row">
+
+                            <span>
+                                Quality
+                            </span>
+
+                            <strong>
+                                {{ metrics.quality_score|default:"0" }}/10
+                            </strong>
+
+                        </div>
+
+
+                        <div class="metric-row">
+
+                            <span>
+                                Attendance
+                            </span>
+
+                            <strong>
+                                {{ metrics.attendance_score|default:"0" }}/10
+                            </strong>
+
+                        </div>
+
+
+                        <div class="metric-row">
+
+                            <span>
+                                Task Completion
+                            </span>
+
+                            <strong>
+                                {{ metrics.task_completion_score|default:"0" }}/10
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- =================================================
+                     LATEST PAYROLL
+                     MOVED TO LEFT COLUMN
+                     ================================================= -->
+
+                <section class="panel">
+
+
+                    <div class="panel-heading">
+
+
+                        <div>
+
+                            <h2>
+                                Latest Payroll
+                            </h2>
+
+                            <p>
+                                Your latest salary information.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'employee_payroll' %}"
+                            class="panel-link"
+                        >
+                            View →
+                        </a>
+
+
+                    </div>
+
+
+
+                    {% if payroll %}
+
+
+                        <div class="performance-score">
+
+
+                            <div class="score-circle">
+                                $
+                            </div>
+
+
+                            <div class="score-info">
+
+
+                                <strong>
+                                    {{ payroll.net_salary }}
+                                </strong>
+
+
+                                <span>
+                                    Net salary ·
+                                    {{ payroll.month|date:"F Y" }}
+                                </span>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <div class="empty-state">
+
+                            No payroll record available yet.
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </section>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer class="portal-footer">
+
+            WORKPULSE • Employee Management System
+
+        </footer>
+
+
+    </main>
+
+
+
+    <script src="{% static 'core/js/app.js' %}"></script>
+
+
+</body>
+
+</html>

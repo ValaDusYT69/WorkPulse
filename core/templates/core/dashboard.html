@@ -1,0 +1,1332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORKPULSE — Dashboard</title>
+
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+
+    <style>
+        /* =====================================================
+           ADMIN RED THEME
+        ===================================================== */
+
+        .form-page {
+            position: relative;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 8% 10%, rgba(239, 68, 68, 0.16), transparent 28%),
+                radial-gradient(circle at 92% 85%, rgba(248, 113, 113, 0.14), transparent 30%),
+                linear-gradient(135deg, #fff7f7 0%, #fef2f2 45%, #f8fafc 100%);
+        }
+
+        .form-background {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .form-background::before {
+            content: "";
+            position: absolute;
+            width: 430px;
+            height: 430px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.09);
+            top: -180px;
+            left: -140px;
+            filter: blur(2px);
+        }
+
+        .form-background::after {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(248, 113, 113, 0.08);
+            right: -200px;
+            bottom: -220px;
+        }
+
+        .form-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .form-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .form-top > .back-link:first-child {
+            color: #991b1b;
+            font-weight: 700;
+        }
+
+        .form-top > .back-link:first-child:hover {
+            color: #dc2626;
+        }
+
+        .dashboard-top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-logout {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s ease;
+            box-shadow: 0 5px 16px rgba(185, 28, 28, 0.06);
+        }
+
+        .admin-logout:hover {
+            background: #dc2626;
+            color: white;
+            border-color: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.20);
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand-icon {
+            background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.22);
+        }
+
+
+        /* =====================================================
+           ADMIN NAVIGATION
+        ===================================================== */
+
+        .dashboard-nav {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-nav a {
+            text-decoration: none;
+            text-align: center;
+            padding: 13px 8px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.82);
+            color: #24263a;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s ease;
+            border: 1px solid #fee2e2;
+            box-shadow: 0 3px 12px rgba(127, 29, 29, 0.04);
+        }
+
+        .dashboard-nav a:hover {
+            transform: translateY(-2px);
+            background: #dc2626;
+            color: white;
+            border-color: #dc2626;
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.20);
+        }
+
+        .dashboard-nav a.active {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            color: white;
+            border-color: #dc2626;
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.22);
+        }
+
+
+        /* =====================================================
+           NOTIFICATION
+        ===================================================== */
+
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .notification-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: 1px solid #fecaca;
+            cursor: pointer;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.88);
+            color: #991b1b;
+            font-size: 18px;
+            transition: 0.2s ease;
+        }
+
+        .notification-btn:hover {
+            background: #dc2626;
+            color: white;
+            border-color: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.20);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 4px;
+            border-radius: 20px;
+            background: #991b1b;
+            color: white;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid white;
+        }
+
+        .notification-panel {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 52px;
+            width: 280px;
+            background: white;
+            border: 1px solid #fee2e2;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 15px 40px rgba(127, 29, 29, 0.15);
+            z-index: 100;
+        }
+
+        .notification-panel.show {
+            display: block;
+        }
+
+        .notification-panel h3 {
+            margin: 0 0 10px;
+            font-size: 15px;
+            color: #7f1d1d;
+        }
+
+        .notification-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #fee2e2;
+            font-size: 13px;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item a {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           MAIN DASHBOARD CARD
+        ===================================================== */
+
+        .form-card {
+            border: 1px solid rgba(254, 202, 202, 0.80) !important;
+            box-shadow:
+                0 18px 45px rgba(127, 29, 29, 0.07),
+                0 2px 8px rgba(127, 29, 29, 0.03);
+        }
+
+
+        /* =====================================================
+           SECTION HEADINGS
+        ===================================================== */
+
+        .section-label {
+            color: #dc2626 !important;
+        }
+
+        .form-icon {
+            background: #fff1f2 !important;
+            color: #dc2626 !important;
+            box-shadow: 0 8px 22px rgba(220, 38, 38, 0.08);
+        }
+
+
+        /* =====================================================
+           STAT CARDS
+        ===================================================== */
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .dashboard-stat {
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid #fee2e2;
+            border-radius: 16px;
+            padding: 20px;
+            transition: 0.2s ease;
+        }
+
+        .dashboard-stat:hover {
+            transform: translateY(-3px);
+            border-color: #fecaca;
+            box-shadow: 0 10px 25px rgba(127, 29, 29, 0.08);
+        }
+
+        .dashboard-stat-icon {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-stat strong {
+            display: block;
+            font-size: 28px;
+            color: #20243a;
+        }
+
+        .dashboard-stat span {
+            color: #7c8198;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           CHARTS
+        ===================================================== */
+
+        .dashboard-chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0 30px;
+        }
+
+        .dashboard-chart {
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid #fee2e2;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(127, 29, 29, 0.04);
+        }
+
+        .dashboard-chart h3 {
+            margin-bottom: 16px;
+            color: #20243a;
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: 90px 28px 1fr;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0;
+            color: #697086;
+            font-size: 12px;
+        }
+
+        .chart-row strong {
+            color: #20243a;
+        }
+
+        .chart-bar {
+            height: 8px;
+            background: #fee2e2;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .chart-bar i {
+            display: block;
+            height: 100%;
+            min-width: 2px;
+            background: #ef4444;
+            border-radius: inherit;
+        }
+
+        .chart-bar.late i {
+            background: #f97316;
+        }
+
+        .chart-bar.absent i {
+            background: #b91c1c;
+        }
+
+        .chart-bar.complete i {
+            background: #22c55e;
+        }
+
+
+        /* =====================================================
+           MANAGEMENT CARDS
+        ===================================================== */
+
+        .management-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .management-card {
+            text-decoration: none;
+            color: inherit;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid #fee2e2;
+            border-radius: 16px;
+            padding: 20px;
+            transition: 0.2s ease;
+        }
+
+        .management-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(127, 29, 29, 0.10);
+            border-color: #ef4444;
+        }
+
+        .management-card .icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .management-card strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .management-card small {
+            color: #85899d;
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           QUICK ACTIONS
+        ===================================================== */
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quick-grid a {
+            text-decoration: none;
+            text-align: center;
+            padding: 13px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s ease;
+            box-shadow: 0 6px 18px rgba(220, 38, 38, 0.14);
+        }
+
+        .quick-grid a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 22px rgba(220, 38, 38, 0.25);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .form-footer {
+            color: #991b1b;
+            border-top-color: #fecaca !important;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .dashboard-nav {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .management-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .dashboard-chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-top {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .dashboard-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .management-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-logout {
+                padding: 0 12px;
+            }
+        }
+    </style>
+</head>
+
+
+<body class="form-page">
+
+    <div class="form-background"></div>
+
+    <main class="form-wrapper">
+
+
+        <!-- =====================================================
+             TOP BAR
+        ====================================================== -->
+
+        <div class="form-top">
+
+            <a
+                href="{% url 'dashboard_page' %}"
+                class="back-link"
+            >
+                WORKPULSE
+            </a>
+
+
+            <div class="form-brand">
+
+                <div class="brand-icon">
+                    W
+                </div>
+
+                <div>
+                    <strong>
+                        WORKPULSE
+                    </strong>
+
+                    <span>
+                        Employee Management
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-top-actions">
+
+                <!-- LOG OUT -->
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="admin-logout"
+                >
+                    ↪ Log out
+                </a>
+
+
+                <!-- NOTIFICATION -->
+
+                <div class="notification-wrapper">
+
+                    <a
+                        class="notification-btn"
+                        href="{% url 'notification_list' %}"
+                        aria-label="Open notifications"
+                    >
+                        🔔
+
+                        {% if pending_leaves %}
+                            <span class="notification-badge">
+                                {{ pending_leaves }}
+                            </span>
+                        {% endif %}
+
+                    </a>
+
+
+                    <div
+                        id="notificationPanel"
+                        class="notification-panel"
+                    >
+
+                        <h3>
+                            Notifications
+                        </h3>
+
+
+                        {% if pending_leaves %}
+
+                            <div class="notification-item">
+
+                                📅
+
+                                <strong>
+                                    {{ pending_leaves }}
+                                </strong>
+
+                                pending leave request(s).
+
+                                <br>
+
+                                <a
+                                    href="{% url 'leave_list' %}"
+                                >
+                                    View Leave Requests →
+                                </a>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="notification-item">
+                                ✓ No new notifications.
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             MAIN NAVIGATION
+        ====================================================== -->
+
+        <nav class="dashboard-nav">
+
+            <a
+                href="{% url 'dashboard_page' %}"
+                class="active"
+            >
+                🏠 Dashboard
+            </a>
+
+            <a
+                href="{% url 'employee_list' %}"
+            >
+                👥 Employees
+            </a>
+
+            <a
+                href="{% url 'attendance_list' %}"
+            >
+                🕘 Attendance
+            </a>
+
+            <a
+                href="{% url 'leave_list' %}"
+            >
+                📅 Leave
+            </a>
+
+            <a
+                href="{% url 'task_list' %}"
+            >
+                📋 Tasks
+            </a>
+
+            <a
+                href="{% url 'performance_list' %}"
+            >
+                ⭐ Performance
+            </a>
+
+            <a
+                href="{% url 'payroll_list' %}"
+            >
+                💰 Payroll
+            </a>
+
+        </nav>
+
+
+
+        <!-- =====================================================
+             DASHBOARD CARD
+        ====================================================== -->
+
+        <section class="form-card">
+
+
+            <!-- HEADER -->
+
+            <div class="form-heading">
+
+                <div class="form-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <span class="section-label">
+                        WORKFORCE OVERVIEW
+                    </span>
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                    <p>
+                        Monitor your workforce, attendance,
+                        leave, tasks and performance.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <div class="dashboard-stats">
+
+
+                <div class="dashboard-stat">
+
+                    <div class="dashboard-stat-icon">
+                        👥
+                    </div>
+
+                    <strong>
+                        {{ total_employees|default:"0" }}
+                    </strong>
+
+                    <span>
+                        Total Employees
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-stat">
+
+                    <div class="dashboard-stat-icon">
+                        ✅
+                    </div>
+
+                    <strong>
+                        {{ active_employees|default:"0" }}
+                    </strong>
+
+                    <span>
+                        Active Employees
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-stat">
+
+                    <div class="dashboard-stat-icon">
+                        ⏸️
+                    </div>
+
+                    <strong>
+                        {{ inactive_employees|default:"0" }}
+                    </strong>
+
+                    <span>
+                        Inactive Employees
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-stat">
+
+                    <div class="dashboard-stat-icon">
+                        🕘
+                    </div>
+
+                    <strong>
+                        {{ present_today|default:"0" }}
+                    </strong>
+
+                    <span>
+                        Present / Late Today
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-stat">
+
+                    <div class="dashboard-stat-icon">
+                        ❌
+                    </div>
+
+                    <strong>
+                        {{ absent_today|default:"0" }}
+                    </strong>
+
+                    <span>
+                        Absent Today
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-stat">
+
+                    <div class="dashboard-stat-icon">
+                        📅
+                    </div>
+
+                    <strong>
+                        {{ pending_leaves|default:"0" }}
+                    </strong>
+
+                    <span>
+                        Pending Leave Requests
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-stat">
+
+                    <div class="dashboard-stat-icon">
+                        📋
+                    </div>
+
+                    <strong>
+                        {{ total_tasks|default:"0" }}
+                    </strong>
+
+                    <span>
+                        Total Tasks
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-stat">
+
+                    <div class="dashboard-stat-icon">
+                        ⭐
+                    </div>
+
+                    <strong>
+                        {{ average_performance|default:"0" }}
+                    </strong>
+
+                    <span>
+                        Average Performance
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DASHBOARD CHARTS
+            ================================================== -->
+
+            <div class="dashboard-chart-grid">
+
+                <div class="dashboard-chart">
+
+                    <h3>
+                        Today's Attendance
+                    </h3>
+
+                    <div class="chart-row">
+
+                        <span>
+                            Present
+                        </span>
+
+                        <strong>
+                            {{ attendance_status_counts.present|default:"0" }}
+                        </strong>
+
+                        <div class="chart-bar">
+                            <i
+                                style="width: {% widthratio attendance_status_counts.present total_employees 100 %}%"
+                            ></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-row">
+
+                        <span>
+                            Late
+                        </span>
+
+                        <strong>
+                            {{ attendance_status_counts.late|default:"0" }}
+                        </strong>
+
+                        <div class="chart-bar late">
+                            <i
+                                style="width: {% widthratio attendance_status_counts.late total_employees 100 %}%"
+                            ></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-row">
+
+                        <span>
+                            Absent
+                        </span>
+
+                        <strong>
+                            {{ attendance_status_counts.absent|default:"0" }}
+                        </strong>
+
+                        <div class="chart-bar absent">
+                            <i
+                                style="width: {% widthratio attendance_status_counts.absent total_employees 100 %}%"
+                            ></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="dashboard-chart">
+
+                    <h3>
+                        Task Pipeline
+                    </h3>
+
+                    <div class="chart-row">
+
+                        <span>
+                            To Do
+                        </span>
+
+                        <strong>
+                            {{ task_status_counts.todo|default:"0" }}
+                        </strong>
+
+                        <div class="chart-bar">
+                            <i
+                                style="width: {% widthratio task_status_counts.todo total_tasks 100 %}%"
+                            ></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-row">
+
+                        <span>
+                            In Progress
+                        </span>
+
+                        <strong>
+                            {{ task_status_counts.in_progress|default:"0" }}
+                        </strong>
+
+                        <div class="chart-bar late">
+                            <i
+                                style="width: {% widthratio task_status_counts.in_progress total_tasks 100 %}%"
+                            ></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-row">
+
+                        <span>
+                            Completed
+                        </span>
+
+                        <strong>
+                            {{ completed_tasks|default:"0" }}
+                        </strong>
+
+                        <div class="chart-bar complete">
+                            <i
+                                style="width: {% widthratio completed_tasks total_tasks 100 %}%"
+                            ></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MANAGEMENT
+            ================================================== -->
+
+            <div class="form-heading">
+
+                <div class="form-icon">
+                    ⚡
+                </div>
+
+                <div>
+
+                    <span class="section-label">
+                        MANAGEMENT
+                    </span>
+
+                    <h2>
+                        System Modules
+                    </h2>
+
+                    <p>
+                        Access every section of WORKPULSE
+                        from one place.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="management-grid">
+
+
+                <a
+                    href="{% url 'employee_list' %}"
+                    class="management-card"
+                >
+
+                    <div class="icon">
+                        👥
+                    </div>
+
+                    <strong>
+                        Employees
+                    </strong>
+
+                    <small>
+                        Add, edit, view and manage employees.
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="{% url 'attendance_list' %}"
+                    class="management-card"
+                >
+
+                    <div class="icon">
+                        🕘
+                    </div>
+
+                    <strong>
+                        Attendance
+                    </strong>
+
+                    <small>
+                        Track daily attendance and working hours.
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="{% url 'leave_list' %}"
+                    class="management-card"
+                >
+
+                    <div class="icon">
+                        📅
+                    </div>
+
+                    <strong>
+                        Leave
+                    </strong>
+
+                    <small>
+                        Manage leave applications and approvals.
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="{% url 'task_list' %}"
+                    class="management-card"
+                >
+
+                    <div class="icon">
+                        📋
+                    </div>
+
+                    <strong>
+                        Tasks
+                    </strong>
+
+                    <small>
+                        Assign and monitor employee tasks.
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="{% url 'performance_list' %}"
+                    class="management-card"
+                >
+
+                    <div class="icon">
+                        ⭐
+                    </div>
+
+                    <strong>
+                        Performance
+                    </strong>
+
+                    <small>
+                        Review employee performance scores.
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="{% url 'payroll_list' %}"
+                    class="management-card"
+                >
+
+                    <div class="icon">
+                        💰
+                    </div>
+
+                    <strong>
+                        Payroll
+                    </strong>
+
+                    <small>
+                        Manage employee payroll records.
+                    </small>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUICK CREATE
+            ================================================== -->
+
+            <div
+                class="form-heading"
+                style="margin-top:35px;"
+            >
+
+                <div class="form-icon">
+                    ➕
+                </div>
+
+                <div>
+
+                    <span class="section-label">
+                        QUICK CREATE
+                    </span>
+
+                    <h2>
+                        Add New Records
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="quick-grid">
+
+
+                <a
+                    href="{% url 'employee_add' %}"
+                >
+                    ＋ Add Employee
+                </a>
+
+
+                <a
+                    href="{% url 'attendance_add' %}"
+                >
+                    ＋ Add Attendance
+                </a>
+
+
+                <a
+                    href="{% url 'leave_add' %}"
+                >
+                    ＋ Apply Leave
+                </a>
+
+
+                <a
+                    href="{% url 'task_add' %}"
+                >
+                    ＋ Add Task
+                </a>
+
+
+                <a
+                    href="{% url 'performance_add' %}"
+                >
+                    ＋ Add Performance
+                </a>
+
+
+                <a
+                    href="{% url 'payroll_add' %}"
+                >
+                    ＋ Add Payroll
+                </a>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer class="form-footer">
+
+            WORKPULSE • Employee Management System
+
+        </footer>
+
+
+    </main>
+
+
+
+    <script>
+
+        function toggleNotifications() {
+
+            const panel =
+                document.getElementById("notificationPanel");
+
+            if (panel) {
+                panel.classList.toggle("show");
+            }
+
+        }
+
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const wrapper =
+                    document.querySelector(".notification-wrapper");
+
+                const panel =
+                    document.getElementById("notificationPanel");
+
+                if (
+                    wrapper &&
+                    panel &&
+                    !wrapper.contains(event.target)
+                ) {
+
+                    panel.classList.remove("show");
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+    <script
+        src="{% static 'core/js/app.js' %}"
+    ></script>
+
+</body>
+
+</html>

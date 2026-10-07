@@ -1,0 +1,691 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>WORKPULSE - Administrator Login</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+
+        /* =========================================
+           ADMIN LOGIN - RED FADE THEME
+           ========================================= */
+
+        .admin-login-page {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(239, 68, 68, 0.13),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(248, 113, 113, 0.13),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #fff7f7 0%,
+                    #fffafb 45%,
+                    #fef2f2 100%
+                );
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Decorative faded circles */
+
+        .admin-login-page::before {
+            content: "";
+
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(239, 68, 68, 0.055);
+
+            top: -170px;
+            right: -120px;
+
+            pointer-events: none;
+        }
+
+
+        .admin-login-page::after {
+            content: "";
+
+            position: fixed;
+
+            width: 360px;
+            height: 360px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(248, 113, 113, 0.055);
+
+            bottom: -150px;
+            left: -120px;
+
+            pointer-events: none;
+        }
+
+
+        .admin-login-page .form-wrapper {
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+
+        /* =========================================
+           LOGIN CARD
+           ========================================= */
+
+        .admin-login-card {
+            width: min(440px, calc(100% - 32px));
+
+            margin: 0 auto;
+
+            padding: 38px 40px 32px;
+
+            box-sizing: border-box;
+
+            text-align: center;
+
+            background:
+                rgba(255, 255, 255, 0.92);
+
+            border: 1px solid rgba(239, 68, 68, 0.08);
+
+            box-shadow:
+                0 25px 60px rgba(185, 28, 28, 0.10);
+        }
+
+
+        /* =========================================
+           LOGO
+           ========================================= */
+
+        .admin-login-logo {
+            width: 66px;
+            height: 66px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 19px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            color: #ffffff;
+
+            font-size: 29px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 28px
+                rgba(220, 38, 38, 0.24);
+        }
+
+
+        /* =========================================
+           LABEL
+           ========================================= */
+
+        .admin-login-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #dc2626;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =========================================
+           HEADING
+           ========================================= */
+
+        .admin-login-card h1 {
+            margin: 0 0 8px;
+
+            color: #20263a;
+
+            font-size: 30px;
+
+            line-height: 1.15;
+
+            font-weight: 800;
+        }
+
+
+        .admin-login-subtitle {
+            margin: 0 0 28px;
+
+            color: #8a93a8;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           ERROR
+           ========================================= */
+
+        .admin-login-error {
+            margin-bottom: 20px;
+
+            padding: 12px 14px;
+
+            border-radius: 11px;
+
+            text-align: left;
+
+            background:
+                rgba(239, 68, 68, 0.07);
+
+            border:
+                1px solid rgba(239, 68, 68, 0.16);
+
+            color: #c62828;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================
+           FORM
+           ========================================= */
+
+        .admin-login-form {
+            text-align: left;
+        }
+
+
+        .admin-login-form .input-group {
+            margin-bottom: 17px;
+        }
+
+
+        .admin-login-form label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #596278;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           INPUTS
+           ========================================= */
+
+        .admin-login-input {
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 13px 14px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid rgba(120, 100, 110, 0.15);
+
+            background:
+                rgba(255, 250, 250, 0.90);
+
+            color: #252c40;
+
+            font-size: 11px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .admin-login-input::placeholder {
+            color: #a4abbb;
+        }
+
+
+        .admin-login-input:focus {
+            background: #ffffff;
+
+            border-color:
+                rgba(220, 38, 38, 0.45);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(239, 68, 68, 0.08);
+        }
+
+
+        /* =========================================
+           SIGN IN BUTTON
+           ========================================= */
+
+        .admin-login-submit {
+            width: 100%;
+
+            margin-top: 7px;
+
+            padding: 13px 18px;
+
+            border: 0;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 9px 20px
+                rgba(220, 38, 38, 0.20);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .admin-login-submit:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 12px 25px
+                rgba(220, 38, 38, 0.28);
+        }
+
+
+        .admin-login-submit:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================
+           DIVIDER
+           ========================================= */
+
+        .admin-login-divider {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 25px 0 18px;
+
+            color: #a2a9b9;
+
+            font-size: 9px;
+        }
+
+
+        .admin-login-divider::before,
+        .admin-login-divider::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background:
+                rgba(120, 100, 110, 0.10);
+        }
+
+
+        /* =========================================
+           EMPLOYEE LOGIN
+           ========================================= */
+
+        .employee-portal-link {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 11px 15px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid rgba(220, 38, 38, 0.12);
+
+            background:
+                rgba(255, 248, 248, 0.70);
+
+            color: #596278;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .employee-portal-link:hover {
+            background:
+                rgba(239, 68, 68, 0.06);
+
+            border-color:
+                rgba(220, 38, 38, 0.20);
+
+            color: #dc2626;
+        }
+
+
+        .back-to-welcome-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+            color: #a0a7b7;
+            font-size: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+
+        .back-to-welcome-link:hover {
+            color: #dc2626;
+        }
+
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+
+        .admin-login-footer {
+            margin-top: 24px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid rgba(120, 100, 110, 0.08);
+
+            color: #a0a7b7;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================
+           MOBILE
+           ========================================= */
+
+        @media (max-width: 520px) {
+
+            .admin-login-card {
+                padding: 30px 22px 26px;
+            }
+
+            .admin-login-card h1 {
+                font-size: 26px;
+            }
+
+            .admin-login-logo {
+                width: 58px;
+                height: 58px;
+
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="form-page admin-login-page">
+
+
+<main class="form-wrapper">
+
+
+    <!-- =========================================
+         ADMIN LOGIN CARD
+         ========================================= -->
+
+    <section class="form-card admin-login-card">
+
+
+        <!-- LOGO -->
+
+        <div class="admin-login-logo">
+            W
+        </div>
+
+
+        <!-- LABEL -->
+
+        <span class="admin-login-label">
+            WORKPULSE ADMINISTRATION
+        </span>
+
+
+        <!-- HEADING -->
+
+        <h1>
+            Welcome back
+        </h1>
+
+
+        <p class="admin-login-subtitle">
+            Sign in to manage your workforce
+        </p>
+
+
+
+        <!-- ERROR -->
+
+        {% if error %}
+
+            <div class="admin-login-error">
+                ⚠ {{ error }}
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- LOGIN FORM -->
+
+        <form
+            method="post"
+            class="admin-login-form"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- USERNAME -->
+
+            <div class="input-group">
+
+                <label for="username">
+                    Administrator Username
+                </label>
+
+                <input
+                    class="admin-login-input"
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Enter administrator username"
+                    autocomplete="username"
+                    required
+                    autofocus
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="input-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    class="admin-login-input"
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                class="admin-login-submit"
+                type="submit"
+            >
+                🔐 Sign in as Administrator
+            </button>
+
+        </form>
+
+
+
+        <!-- DIVIDER -->
+
+        <div class="admin-login-divider">
+
+            <span>
+                or
+            </span>
+
+        </div>
+
+
+
+        <!-- EMPLOYEE PORTAL -->
+
+        <a
+            class="employee-portal-link"
+            href="{% url 'employee_login' %}"
+        >
+            👤 Employee portal login
+        </a>
+
+
+        <a
+            class="back-to-welcome-link"
+            href="{% url 'welcome' %}"
+        >
+            ← Back to Welcome
+        </a>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="admin-login-footer">
+
+            WORKPULSE • Employee Management System
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<script src="{% static 'core/js/app.js' %}"></script>
+
+</body>
+
+</html>

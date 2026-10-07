@@ -1,0 +1,236 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WORKPULSE — Edit Attendance</title>
+
+    <link rel="stylesheet"
+          href="{% static 'core/css/style.css' %}">
+
+</head>
+
+<body class="form-page">
+
+<div class="form-background"></div>
+
+<main class="form-wrapper">
+
+    <div class="form-top">
+
+        <a href="{% url 'attendance_list' %}"
+           class="back-link">
+            ← Back to Attendance
+        </a>
+
+        <div class="form-brand">
+
+            <div class="brand-icon">W</div>
+
+            <div>
+                <strong>WORKPULSE</strong>
+                <span>Employee Management</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% include 'core/navigation.html' %}
+
+    <section class="form-card">
+
+        <div class="form-heading">
+
+            <div class="form-icon">
+                ✏️
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    ATTENDANCE MANAGEMENT
+                </span>
+
+                <h1>Edit Attendance</h1>
+
+                <p>
+                    Update this attendance record.
+                </p>
+
+            </div>
+
+        </div>
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="form-error">
+                    <span>⚠</span>
+
+                    <div>
+                        <strong>{{ message }}</strong>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="input-group">
+
+                <label for="employee">
+                    Employee
+                </label>
+
+                <select id="employee"
+                        name="employee"
+                        required>
+
+                    {% for employee in employees %}
+
+                        <option
+                            value="{{ employee.id }}"
+                            {% if employee.id == attendance.employee_id %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ employee.employee_id }} -
+                            {{ employee.full_name }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="input-group">
+
+                <label for="date">
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    value="{{ attendance.date|date:'Y-m-d' }}"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label for="status">
+                    Status
+                </label>
+
+                <select id="status"
+                        name="status"
+                        required>
+
+                    <option value="present"
+                        {% if attendance.status == 'present' %}selected{% endif %}>
+                        Present
+                    </option>
+
+                    <option value="absent"
+                        {% if attendance.status == 'absent' %}selected{% endif %}>
+                        Absent
+                    </option>
+
+                    <option value="late"
+                        {% if attendance.status == 'late' %}selected{% endif %}>
+                        Late
+                    </option>
+
+                    <option value="half_day"
+                        {% if attendance.status == 'half_day' %}selected{% endif %}>
+                        Half Day
+                    </option>
+
+                    <option value="leave"
+                        {% if attendance.status == 'leave' %}selected{% endif %}>
+                        Leave
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="input-group">
+
+                    <label for="check_in">
+                        Check In
+                    </label>
+
+                    <input
+                        type="time"
+                        id="check_in"
+                        name="check_in"
+                        value="{{ attendance.check_in|time:'H:i' }}"
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label for="check_out">
+                        Check Out
+                    </label>
+
+                    <input
+                        type="time"
+                        id="check_out"
+                        name="check_out"
+                        value="{{ attendance.check_out|time:'H:i' }}"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+
+                <a href="{% url 'attendance_list' %}"
+                   class="cancel-btn">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="save-btn">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+    <footer class="form-footer">
+        WORKPULSE • Employee Management System
+    </footer>
+
+</main>
+
+<script src="{% static 'core/js/app.js' %}"></script>
+
+</body>
+</html>

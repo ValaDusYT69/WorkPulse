@@ -1,0 +1,2228 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>WORKPULSE — Performance</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: #202538;
+
+            background:
+                radial-gradient(
+                    circle at 8% 8%,
+                    rgba(239, 68, 68, .18),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 92% 85%,
+                    rgba(248, 113, 113, .13),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #fff1f2 0%,
+                    #fff7f7 48%,
+                    #fffafa 100%
+                );
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           BACKGROUND
+        ====================================================== */
+
+        .bg-orb {
+            position: fixed;
+
+            border-radius: 50%;
+
+            filter: blur(70px);
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+        .orb-one {
+            width: 300px;
+            height: 300px;
+
+            top: -110px;
+            left: -80px;
+
+            background:
+                rgba(239, 68, 68, .15);
+        }
+
+        .orb-two {
+            width: 340px;
+            height: 340px;
+
+            right: -130px;
+            bottom: -120px;
+
+            background:
+                rgba(248, 113, 113, .12);
+        }
+
+        .orb-three {
+            width: 220px;
+            height: 220px;
+
+            top: 38%;
+            left: 46%;
+
+            background:
+                rgba(254, 202, 202, .08);
+        }
+
+
+        /* =====================================================
+           MAIN
+        ====================================================== */
+
+        .dashboard {
+            position: relative;
+
+            z-index: 1;
+
+            width:
+                min(
+                    1180px,
+                    calc(100% - 48px)
+                );
+
+            margin: 0 auto;
+
+            padding: 32px 0 50px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .topbar {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 18px;
+        }
+
+        .brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            color: white;
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 30px
+                rgba(220, 38, 38, .28);
+        }
+
+        .brand h2 {
+            margin: 0;
+
+            font-size: 18px;
+
+            letter-spacing: .02em;
+        }
+
+        .brand span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #9a7d83;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           TOP ACTIONS
+        ====================================================== */
+
+        .top-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .live-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: #9a6870;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .live-status span {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(34,197,94,.10);
+        }
+
+        .logout-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 40px;
+
+            padding: 0 16px;
+
+            border-radius: 11px;
+
+            background:
+                rgba(255,255,255,.82);
+
+            border:
+                1px solid #fecaca;
+
+            color: #b4232b;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+            transition: .22s ease;
+        }
+
+        .logout-btn:hover {
+            transform:
+                translateY(-2px);
+
+            color: #991b1b;
+
+            border-color:
+                #fca5a5;
+
+            background: #fff;
+
+            box-shadow:
+                0 9px 22px
+                rgba(185,28,28,.10);
+        }
+
+
+        /* =====================================================
+           BACK
+        ====================================================== */
+
+        .back-dashboard {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-bottom: 14px;
+
+            color: #8b6970;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 650;
+
+            transition: .22s ease;
+        }
+
+        .back-dashboard:hover {
+            color: #dc2626;
+
+            transform:
+                translateX(-3px);
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .main-navigation {
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin: 18px 0 28px;
+
+            position: relative;
+
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            min-height: 42px;
+
+            padding: 0 15px;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            color: #5f5962;
+
+            background:
+                rgba(255,255,255,.76);
+
+            border:
+                1px solid #f4d9dc;
+
+            font-size: 13px;
+
+            font-weight: 650;
+
+            transition: .22s ease;
+
+            backdrop-filter:
+                blur(12px);
+        }
+
+        .nav-link:hover {
+            transform:
+                translateY(-2px);
+
+            color: #dc2626;
+
+            background: #fff;
+
+            border-color:
+                #fecaca;
+
+            box-shadow:
+                0 9px 22px
+                rgba(185,28,28,.09);
+        }
+
+        .nav-link.active {
+            color: #fff;
+
+            border-color:
+                transparent;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            box-shadow:
+                0 9px 24px
+                rgba(220,38,38,.25);
+        }
+
+
+        /* =====================================================
+           NAV ACTIONS
+        ====================================================== */
+
+        .nav-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .nav-icon-button {
+            width: 42px;
+            height: 42px;
+
+            border:
+                1px solid #f4d9dc;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.78);
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 17px;
+
+            position: relative;
+
+            transition: .22s ease;
+        }
+
+        .nav-icon-button:hover {
+            transform:
+                translateY(-2px)
+                scale(1.03);
+
+            background: #fff;
+
+            border-color:
+                #fecaca;
+
+            box-shadow:
+                0 8px 20px
+                rgba(185,28,28,.12);
+        }
+
+        .notification-dot {
+            position: absolute;
+
+            top: 8px;
+            right: 8px;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #ef4444;
+
+            border:
+                2px solid white;
+        }
+
+
+        /* =====================================================
+           DROPDOWNS
+        ====================================================== */
+
+        .notification-wrapper,
+        .admin-wrapper {
+            position: relative;
+        }
+
+        .notification-panel,
+        .admin-menu {
+            position: absolute;
+
+            right: 0;
+
+            background:
+                rgba(255,255,255,.98);
+
+            border:
+                1px solid #fee2e2;
+
+            box-shadow:
+                0 18px 45px
+                rgba(120,35,45,.18);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            z-index: 999;
+
+            transition: .25s ease;
+        }
+
+        .notification-panel {
+            top: 52px;
+
+            width: 310px;
+
+            border-radius: 18px;
+
+            padding: 16px;
+
+            transform:
+                translateY(-8px)
+                scale(.98);
+        }
+
+        .notification-panel.show {
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+        .notification-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding-bottom: 12px;
+
+            border-bottom:
+                1px solid #f9e5e7;
+        }
+
+        .notification-header strong {
+            color: #252333;
+
+            font-size: 14px;
+        }
+
+        .notification-header span {
+            color: #a1848a;
+
+            font-size: 11px;
+        }
+
+        .notification-item {
+            display: flex;
+
+            gap: 11px;
+
+            padding: 13px 0;
+
+            border-bottom:
+                1px solid #f7eaeb;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item-icon {
+            width: 34px;
+            height: 34px;
+
+            min-width: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                #fff0f1;
+        }
+
+        .notification-item strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #30303d;
+
+            font-size: 12px;
+        }
+
+        .notification-item p {
+            margin: 0;
+
+            color: #9a858a;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        .admin-menu {
+            top: 55px;
+
+            width: 220px;
+
+            border-radius: 16px;
+
+            padding: 8px;
+
+            transform:
+                translateY(-8px);
+        }
+
+        .admin-menu.show {
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translateY(0);
+        }
+
+        .admin-menu a {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 11px 12px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: #5c5055;
+
+            font-size: 13px;
+
+            font-weight: 650;
+
+            transition: .2s ease;
+        }
+
+        .admin-menu a:hover {
+            background:
+                #fff1f2;
+
+            color: #dc2626;
+
+            transform:
+                translateX(3px);
+        }
+
+
+        /* =====================================================
+           PERFORMANCE CARD
+        ====================================================== */
+
+        .performance-card {
+            padding: 30px;
+
+            border-radius: 24px;
+
+            background:
+                rgba(255,255,255,.92);
+
+            border:
+                1px solid #fee2e2;
+
+            box-shadow:
+                0 18px 50px
+                rgba(110,45,55,.075);
+
+            animation:
+                pageFadeIn .65s ease both;
+        }
+
+
+        /* =====================================================
+           HEADING
+        ====================================================== */
+
+        .form-heading {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+        .form-icon {
+            width: 55px;
+            height: 55px;
+
+            display: grid;
+
+            place-items: center;
+
+            flex: 0 0 55px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff0f1,
+                    #fee2e2
+                );
+
+            font-size: 25px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(220,38,38,.08);
+        }
+
+        .section-label {
+            display: inline-block;
+
+            color: #dc2626;
+
+            font-size: 10px;
+
+            font-weight: 850;
+
+            letter-spacing: .16em;
+        }
+
+        .form-heading h1 {
+            margin:
+                5px 0 3px;
+
+            color: #252938;
+
+            font-size: 30px;
+
+            letter-spacing: -.035em;
+        }
+
+        .form-heading p {
+            margin: 0;
+
+            color: #95848a;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           MESSAGES
+        ====================================================== */
+
+        .form-error {
+            margin-bottom: 18px;
+
+            padding: 12px 14px;
+
+            border-radius: 11px;
+
+            background:
+                #fff1f2;
+
+            border:
+                1px solid #fecaca;
+
+            color: #b4232b;
+
+            font-size: 12px;
+
+            font-weight: 650;
+        }
+
+
+        /* =====================================================
+           ANALYTICS BAR
+        ====================================================== */
+
+        .analytics-bar {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 18px;
+
+            padding: 13px 15px;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff5f5,
+                    #fffafa
+                );
+
+            border:
+                1px solid #f7dfe1;
+        }
+
+        .analytics-bar strong {
+            color: #b4232b;
+
+            font-size: 12px;
+        }
+
+        .analytics-bar span {
+            color: #9b858b;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           FILTER
+        ====================================================== */
+
+        .filter-form {
+            display: flex;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-bottom: 22px;
+
+            padding: 14px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,247,247,.78);
+
+            border:
+                1px solid #f8dfe1;
+        }
+
+        .filter-form select,
+        .filter-form input {
+            min-height: 42px;
+
+            padding: 0 12px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid #efd7da;
+
+            outline: none;
+
+            background: #fff;
+
+            color: #5c5156;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            transition: .2s ease;
+        }
+
+        .filter-form select {
+            min-width: 200px;
+        }
+
+        .filter-form input {
+            min-width: 175px;
+        }
+
+        .filter-form select:focus,
+        .filter-form input:focus {
+            border-color:
+                #ef4444;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(239,68,68,.08);
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .save-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 42px;
+
+            padding: 0 17px;
+
+            border: 0;
+
+            border-radius: 11px;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ef4444,
+                    #dc2626
+                );
+
+            text-decoration: none;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 20px
+                rgba(220,38,38,.20);
+
+            transition: .22s ease;
+        }
+
+        .save-btn:hover {
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 26px
+                rgba(220,38,38,.27);
+        }
+
+
+        /* =====================================================
+           TABLE
+        ====================================================== */
+
+        .performance-table-wrapper {
+            overflow-x: auto;
+
+            border-radius: 17px;
+
+            border:
+                1px solid #f2dadd;
+
+            background: #fff;
+
+            margin-top: 5px;
+        }
+
+        .performance-table {
+            width: 100%;
+
+            min-width: 950px;
+
+            border-collapse:
+                separate;
+
+            border-spacing: 0;
+        }
+
+        .performance-table th {
+            padding: 14px 15px;
+
+            text-align: left;
+
+            color: #8d7278;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #fff7f7,
+                    #fff2f3
+                );
+
+            border-bottom:
+                1px solid #f1dadd;
+
+            font-size: 10px;
+
+            font-weight: 850;
+
+            letter-spacing: .06em;
+
+            text-transform: uppercase;
+        }
+
+        .performance-table td {
+            padding: 15px;
+
+            color: #5b5258;
+
+            border-bottom:
+                1px solid #f7e8e9;
+
+            font-size: 12px;
+
+            vertical-align: middle;
+        }
+
+        .performance-table tbody tr {
+            transition: .18s ease;
+        }
+
+        .performance-table tbody tr:hover {
+            background:
+                #fff8f8;
+        }
+
+        .performance-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =====================================================
+           EMPLOYEE
+        ====================================================== */
+
+        .employee-id {
+            color: #b4232b;
+
+            font-weight: 800;
+
+            font-size: 11px;
+        }
+
+        .employee-name {
+            display: inline-block;
+
+            margin-top: 4px;
+
+            color: #8f7d83;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           SCORE
+        ====================================================== */
+
+        .score {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 48px;
+
+            padding: 6px 9px;
+
+            border-radius: 9px;
+
+            color: #b4232b;
+
+            background:
+                #fff0f1;
+
+            border:
+                1px solid #fecaca;
+
+            font-size: 14px;
+
+            font-weight: 850;
+        }
+
+
+        /* =====================================================
+           RATING
+        ====================================================== */
+
+        .rating-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background:
+                #fff1f2;
+
+            border:
+                1px solid #fecaca;
+
+            color:
+                #b4232b;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           ACTION
+        ====================================================== */
+
+        .action-links {
+            display: flex;
+
+            gap: 8px;
+
+            white-space: nowrap;
+        }
+
+        .action-links a {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 30px;
+
+            padding: 0 10px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            color: #b4232b;
+
+            background:
+                #fff0f1;
+
+            border:
+                1px solid #fecaca;
+
+            font-size: 10px;
+
+            font-weight: 750;
+
+            transition: .2s ease;
+        }
+
+        .action-links a:hover {
+            transform:
+                translateY(-1px);
+
+            background:
+                #fee2e2;
+
+            color:
+                #991b1b;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ====================================================== */
+
+        .empty-state {
+            text-align: center;
+
+            padding: 55px 20px !important;
+
+            color: #9b8b90 !important;
+        }
+
+        .empty-state strong {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #4a4247;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        footer {
+            padding:
+                28px 0 0;
+
+            text-align: center;
+
+            color: #a18e93;
+
+            font-size: 11px;
+        }
+
+        footer strong {
+            color: #dc2626;
+        }
+
+
+        /* =====================================================
+           ANIMATION
+        ====================================================== */
+
+        @keyframes pageFadeIn {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 850px) {
+
+            .dashboard {
+                width:
+                    min(
+                        100% - 28px,
+                        1180px
+                    );
+
+                padding-top: 22px;
+            }
+
+            .main-navigation {
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
+            }
+
+            .nav-links {
+                justify-content:
+                    center;
+            }
+
+            .nav-actions {
+                justify-content:
+                    flex-end;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .topbar {
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+            .top-actions {
+                width: 100%;
+
+                justify-content:
+                    space-between;
+            }
+
+            .performance-card {
+                padding: 20px;
+
+                border-radius: 19px;
+            }
+
+            .form-heading h1 {
+                font-size: 26px;
+            }
+
+            .filter-form {
+                align-items:
+                    stretch;
+
+                flex-direction:
+                    column;
+            }
+
+            .filter-form select,
+            .filter-form input,
+            .filter-form .save-btn {
+                width: 100%;
+            }
+
+            .nav-links {
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                width: 100%;
+            }
+
+            .nav-link {
+                justify-content:
+                    center;
+
+                padding:
+                    9px 7px;
+
+                font-size:
+                    11px;
+            }
+
+            .notification-panel,
+            .admin-menu {
+                right:
+                    -5px;
+            }
+
+            .notification-panel {
+                width:
+                    min(
+                        310px,
+                        calc(100vw - 35px)
+                    );
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- BACKGROUND -->
+
+    <div class="bg-orb orb-one"></div>
+    <div class="bg-orb orb-two"></div>
+    <div class="bg-orb orb-three"></div>
+
+
+    <main class="dashboard">
+
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <header class="topbar">
+
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    W
+                </div>
+
+                <div>
+
+                    <h2>
+                        WORKPULSE
+                    </h2>
+
+                    <span>
+                        Employee Management System
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <div class="live-status">
+                    <span></span>
+                    System Online
+                </div>
+
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="logout-btn"
+                >
+                    ↪ Log out
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- BACK -->
+
+        <a
+            href="{% url 'dashboard_page' %}"
+            class="back-dashboard"
+        >
+            ← Back to Dashboard
+        </a>
+
+
+        <!-- =====================================================
+             NAVIGATION
+        ====================================================== -->
+
+        <nav class="main-navigation">
+
+
+            <div class="nav-links">
+
+
+                <a
+                    href="{% url 'dashboard_page' %}"
+                    class="nav-link"
+                >
+                    🏠 Dashboard
+                </a>
+
+
+                <a
+                    href="{% url 'employee_list' %}"
+                    class="nav-link"
+                >
+                    👥 Employees
+                </a>
+
+
+                <a
+                    href="{% url 'attendance_list' %}"
+                    class="nav-link"
+                >
+                    🕐 Attendance
+                </a>
+
+
+                <a
+                    href="{% url 'leave_list' %}"
+                    class="nav-link"
+                >
+                    📅 Leave
+                </a>
+
+
+                <a
+                    href="{% url 'task_list' %}"
+                    class="nav-link"
+                >
+                    📋 Tasks
+                </a>
+
+
+                <a
+                    href="{% url 'performance_list' %}"
+                    class="nav-link active"
+                >
+                    ⭐ Performance
+                </a>
+
+
+                <a
+                    href="{% url 'payroll_list' %}"
+                    class="nav-link"
+                >
+                    💰 Payroll
+                </a>
+
+
+            </div>
+
+
+            <!-- NAV ACTIONS -->
+
+            <div class="nav-actions">
+
+
+                <!-- NOTIFICATIONS -->
+
+                <div
+                    class="notification-wrapper"
+                >
+
+                    <button
+                        type="button"
+                        class="nav-icon-button"
+                        id="notificationButton"
+                        title="Notifications"
+                    >
+
+                        🔔
+
+                        <span
+                            class="notification-dot"
+                        ></span>
+
+                    </button>
+
+
+                    <div
+                        class="notification-panel"
+                        id="notificationPanel"
+                    >
+
+                        <div
+                            class="notification-header"
+                        >
+
+                            <strong>
+                                Notifications
+                            </strong>
+
+                            <span>
+                                Recent
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="notification-item"
+                        >
+
+                            <div
+                                class="notification-item-icon"
+                            >
+                                ⭐
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Performance Management
+                                </strong>
+
+                                <p>
+                                    Review and manage
+                                    employee performance.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="notification-item"
+                        >
+
+                            <div
+                                class="notification-item-icon"
+                            >
+                                📋
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Task Analytics
+                                </strong>
+
+                                <p>
+                                    Performance scores use
+                                    task completion data.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="notification-item"
+                        >
+
+                            <div
+                                class="notification-item-icon"
+                            >
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    System Online
+                                </strong>
+
+                                <p>
+                                    WORKPULSE is currently
+                                    running normally.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ADMIN -->
+
+                <div
+                    class="admin-wrapper"
+                >
+
+                    <button
+                        type="button"
+                        class="nav-icon-button"
+                        id="adminButton"
+                        title="Administrator"
+                    >
+                        👤
+                    </button>
+
+
+                    <div
+                        class="admin-menu"
+                        id="adminMenu"
+                    >
+
+                        <a
+                            href="{% url 'admin:index' %}"
+                            target="_blank"
+                        >
+                            ⚙️
+                            Django Administration
+                        </a>
+
+
+                        <a
+                            href="{% url 'dashboard_page' %}"
+                        >
+                            🏠
+                            Back to Dashboard
+                        </a>
+
+
+                        <a
+                            href="{% url 'logout' %}"
+                        >
+                            ↪
+                            Log out
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </nav>
+
+
+        <!-- =====================================================
+             PERFORMANCE CARD
+        ====================================================== -->
+
+        <section
+            class="performance-card"
+        >
+
+
+            <!-- HEADING -->
+
+            <div
+                class="form-heading"
+            >
+
+                <div
+                    class="form-icon"
+                >
+                    ⭐
+                </div>
+
+
+                <div>
+
+                    <span
+                        class="section-label"
+                    >
+                        PERFORMANCE MANAGEMENT
+                    </span>
+
+
+                    <h1>
+                        Employee Performance
+                    </h1>
+
+
+                    <p>
+                        Review and manage employee
+                        performance records.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MESSAGES
+            ================================================== -->
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div
+                        class="form-error"
+                    >
+
+                        <span>
+                            ✓
+                        </span>
+
+                        <strong>
+                            {{ message }}
+                        </strong>
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <!-- ANALYTICS INFO -->
+
+            <div
+                class="analytics-bar"
+            >
+
+                <strong>
+                    Live performance analytics
+                </strong>
+
+                <span>
+                    Scores are calculated from
+                    tasks and attendance.
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 FILTER
+            ================================================== -->
+
+            <form
+                method="get"
+                class="filter-form"
+            >
+
+
+                <select
+                    name="employee"
+                >
+
+                    <option value="">
+                        All employees
+                    </option>
+
+
+                    {% for employee in employees %}
+
+                        <option
+                            value="{{ employee.id }}"
+                            {% if employee_filter == employee.id|stringformat:'s' %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ employee.full_name }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <input
+                    type="date"
+                    name="period"
+                    value="{{ period_filter }}"
+                >
+
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    Filter
+                </button>
+
+
+            </form>
+
+
+            <!-- =================================================
+                 TABLE
+            ================================================== -->
+
+            <div
+                class="performance-table-wrapper"
+            >
+
+
+                <table
+                    class="performance-table"
+                >
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Employee
+                            </th>
+
+                            <th>
+                                Department
+                            </th>
+
+                            <th>
+                                Total Tasks
+                            </th>
+
+                            <th>
+                                Completed
+                            </th>
+
+                            <th>
+                                Pending
+                            </th>
+
+                            <th>
+                                Overall
+                            </th>
+
+                            <th>
+                                Grade
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for row in performance_rows %}
+
+
+                        <tr>
+
+
+                            <!-- EMPLOYEE -->
+
+                            <td>
+
+                                <span
+                                    class="employee-id"
+                                >
+                                    {{ row.employee.employee_id }}
+                                </span>
+
+
+                                <br>
+
+
+                                <span
+                                    class="employee-name"
+                                >
+                                    {{ row.employee.full_name }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- DEPARTMENT -->
+
+                            <td>
+                                {{ row.employee.department }}
+                            </td>
+
+
+                            <!-- TOTAL TASKS -->
+
+                            <td>
+                                {{ row.metrics.total_tasks }}
+                            </td>
+
+
+                            <!-- COMPLETED -->
+
+                            <td>
+                                {{ row.metrics.completed_tasks }}
+                            </td>
+
+
+                            <!-- PENDING -->
+
+                            <td>
+                                {{ row.metrics.pending_tasks }}
+                            </td>
+
+
+                            <!-- OVERALL -->
+
+                            <td>
+
+                                <span
+                                    class="score"
+                                >
+                                    {{ row.metrics.overall_score }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- GRADE -->
+
+                            <td>
+
+                                <span
+                                    class="rating-badge"
+                                >
+                                    {{ row.metrics.grade }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+                                <div
+                                    class="action-links"
+                                >
+
+                                    <a
+                                        href="{% url 'employee_performance_detail' row.employee.employee_id %}"
+                                    >
+                                        View
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% empty %}
+
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="empty-state"
+                            >
+
+                                <strong>
+                                    No Performance Records Found
+                                </strong>
+
+                                Add a performance record
+                                to begin.
+
+                            </td>
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <strong>
+                WORKPULSE
+            </strong>
+
+            <p>
+                Employee Management System
+                •
+                Built with Django
+            </p>
+
+        </footer>
+
+
+    </main>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        const notificationButton =
+            document.getElementById(
+                "notificationButton"
+            );
+
+        const notificationPanel =
+            document.getElementById(
+                "notificationPanel"
+            );
+
+        const adminButton =
+            document.getElementById(
+                "adminButton"
+            );
+
+        const adminMenu =
+            document.getElementById(
+                "adminMenu"
+            );
+
+
+        /* =====================================================
+           NOTIFICATIONS
+        ====================================================== */
+
+        if (
+            notificationButton &&
+            notificationPanel
+        ) {
+
+            notificationButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    notificationPanel.classList.toggle(
+                        "show"
+                    );
+
+                    if (adminMenu) {
+
+                        adminMenu.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ADMIN MENU
+        ====================================================== */
+
+        if (
+            adminButton &&
+            adminMenu
+        ) {
+
+            adminButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    adminMenu.classList.toggle(
+                        "show"
+                    );
+
+                    if (notificationPanel) {
+
+                        notificationPanel.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CLOSE DROPDOWNS
+        ====================================================== */
+
+        document.addEventListener(
+            "click",
+            function() {
+
+                if (notificationPanel) {
+
+                    notificationPanel.classList.remove(
+                        "show"
+                    );
+
+                }
+
+                if (adminMenu) {
+
+                    adminMenu.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           KEEP DROPDOWNS OPEN
+        ====================================================== */
+
+        if (notificationPanel) {
+
+            notificationPanel.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                }
+            );
+
+        }
+
+
+        if (adminMenu) {
+
+            adminMenu.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                }
+            );
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

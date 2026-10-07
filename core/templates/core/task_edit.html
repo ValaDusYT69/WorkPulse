@@ -1,0 +1,451 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>WORKPULSE — Edit Task</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/style.css' %}"
+    >
+
+    <style>
+        .page-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .page-nav a {
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 10px;
+            background: #f3f4ff;
+            color: #25283a;
+            border: 1px solid #e4e5f1;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .page-nav a:hover {
+            background: #6848f5;
+            color: white;
+        }
+
+        .page-nav a.active {
+            background: #6848f5;
+            color: white;
+        }
+
+        .field-error {
+            display: block;
+            margin-top: 5px;
+            color: #d83a3a;
+            font-size: 11px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #303449;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 13px;
+            border: 1px solid #dedfea;
+            border-radius: 10px;
+            background: white;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #6848f5;
+        }
+
+        .form-help {
+            display: block;
+            margin-top: 5px;
+            color: #888c9e;
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+
+<body class="form-page">
+
+<div class="form-background"></div>
+
+<main class="form-wrapper">
+
+
+    <!-- TOP -->
+
+    <div class="form-top">
+
+        <a
+            href="{% url 'task_list' %}"
+            class="back-link"
+        >
+            ← Back to Tasks
+        </a>
+
+        <div class="form-brand">
+
+            <div class="brand-icon">
+                W
+            </div>
+
+            <div>
+                <strong>WORKPULSE</strong>
+                <span>Employee Management</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="page-nav">
+
+        <a href="{% url 'dashboard_page' %}">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'employee_list' %}">
+            👥 Employees
+        </a>
+
+        <a href="{% url 'attendance_list' %}">
+            🕘 Attendance
+        </a>
+
+        <a href="{% url 'leave_list' %}">
+            📅 Leave
+        </a>
+
+        <a
+            href="{% url 'task_list' %}"
+            class="active"
+        >
+            📋 Tasks
+        </a>
+
+        <a href="{% url 'performance_list' %}">
+            ⭐ Performance
+        </a>
+
+        <a href="{% url 'payroll_list' %}">
+            💰 Payroll
+        </a>
+
+    </nav>
+
+
+    <!-- FORM CARD -->
+
+    <section class="form-card">
+
+        <div class="form-heading">
+
+            <div class="form-icon">
+                ✎
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    TASK MANAGEMENT
+                </span>
+
+                <h1>
+                    Edit Task
+                </h1>
+
+                <p>
+                    Update the task information below.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ERRORS -->
+
+        {% if form.non_field_errors %}
+
+            <div class="form-error">
+
+                <span>⚠</span>
+
+                <div>
+                    {{ form.non_field_errors }}
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- FORM -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- TITLE -->
+
+            <div class="form-group">
+
+                <label for="{{ form.title.id_for_label }}">
+                    Task Title
+                </label>
+
+                {{ form.title }}
+
+                {% if form.title.errors %}
+                    <span class="field-error">
+                        {{ form.title.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+                <label for="{{ form.description.id_for_label }}">
+                    Description
+                </label>
+
+                {{ form.description }}
+
+                {% if form.description.errors %}
+                    <span class="field-error">
+                        {{ form.description.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- ASSIGNED EMPLOYEE -->
+
+            <div class="form-group">
+
+                <label for="{{ form.assigned_to.id_for_label }}">
+                    Assign To
+                </label>
+
+                {{ form.assigned_to }}
+
+                {% if form.assigned_to.errors %}
+                    <span class="field-error">
+                        {{ form.assigned_to.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- PRIORITY -->
+
+            <div class="form-group">
+
+                <label for="{{ form.priority.id_for_label }}">
+                    Priority
+                </label>
+
+                {{ form.priority }}
+
+                {% if form.priority.errors %}
+                    <span class="field-error">
+                        {{ form.priority.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="form-group">
+
+                <label for="{{ form.status.id_for_label }}">
+                    Status
+                </label>
+
+                {{ form.status }}
+
+                {% if form.status.errors %}
+                    <span class="field-error">
+                        {{ form.status.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- PROGRESS -->
+
+            <div class="form-group">
+
+                <label for="{{ form.progress.id_for_label }}">
+                    Progress (%)
+                </label>
+
+                {{ form.progress }}
+
+                <span class="form-help">
+                    Enter a value between 0 and 100.
+                </span>
+
+                {% if form.progress.errors %}
+                    <span class="field-error">
+                        {{ form.progress.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- DUE DATE -->
+
+            <div class="form-group">
+
+                <label for="{{ form.due_date.id_for_label }}">
+                    Due Date
+                </label>
+
+                {{ form.due_date }}
+
+                {% if form.due_date.errors %}
+                    <span class="field-error">
+                        {{ form.due_date.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- ESTIMATED HOURS -->
+
+            <div class="form-group">
+
+                <label for="{{ form.estimated_hours.id_for_label }}">
+                    Estimated Hours
+                </label>
+
+                {{ form.estimated_hours }}
+
+                {% if form.estimated_hours.errors %}
+                    <span class="field-error">
+                        {{ form.estimated_hours.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- ACTUAL HOURS -->
+
+            <div class="form-group">
+
+                <label for="{{ form.actual_hours.id_for_label }}">
+                    Actual Hours
+                </label>
+
+                {{ form.actual_hours }}
+
+                {% if form.actual_hours.errors %}
+                    <span class="field-error">
+                        {{ form.actual_hours.errors }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    ✓ Save Changes
+                </button>
+
+                <a
+                    href="{% url 'task_detail' task.id %}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+                <a
+                    href="{% url 'task_list' %}"
+                    class="cancel-btn"
+                >
+                    ← Tasks
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="form-footer">
+        WORKPULSE • Employee Management System
+    </footer>
+
+</main>
+
+
+<script
+    src="{% static 'core/js/app.js' %}"
+></script>
+
+</body>
+
+</html>
